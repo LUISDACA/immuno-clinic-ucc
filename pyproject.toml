@@ -1,0 +1,29 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "UP",
+    "SIM",
+]
+ignore = [
+    "B008",
+    "E501",
+    "UP017",
+    "UP042",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"backend/app/db/models_registry.py" = ["F401"]
+"backend/tests/conftest.py" = ["E402", "F401"]
+"backend/tests/test_vaccination_rules.py" = ["F401"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
