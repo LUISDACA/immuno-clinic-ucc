@@ -1,0 +1,28 @@
+# Python/backend
+backend/.env
+backend/*firebase*.json
+backend/*service-account*.json
+backend/venv/
+backend/__pycache__/
+backend/**/*.py[cod]
+backend/.pytest_cache/
+backend/pytest-cache-files-*/
+backend/.mypy_cache/
+backend/uploads/
+backend/*.log
+
+# Local databases and generated files
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# Editor/system noise
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Android release signing secrets
+frontend/android/key.properties
+frontend/android/app/*.jks
+frontend/android/app/*.keystore
