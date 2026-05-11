@@ -1,4 +1,4 @@
-﻿---
+---
 name: Reporte de bug
 about: Reportar un problema reproducible en el sistema
 title: "[BUG] "

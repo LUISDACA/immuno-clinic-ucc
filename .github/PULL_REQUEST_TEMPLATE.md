@@ -1,4 +1,4 @@
-﻿## Resumen
+## Resumen
 <!-- Qué cambia y por qué. -->
 
 ## Issue relacionado

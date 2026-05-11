@@ -1,4 +1,4 @@
-﻿---
+---
 name: Solicitud de funcionalidad
 about: Proponer una nueva funcionalidad o mejora
 title: "[FEAT] "
