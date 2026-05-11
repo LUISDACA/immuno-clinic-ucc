@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend (FastAPI + pytest + ruff)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            backend/requirements.txt
+            backend/requirements-dev.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Ruff lint
+        run: ruff check app tests
+
+      - name: Ruff format check
+        run: ruff format --check app tests
+
+      - name: Run tests
+        env:
+          DATABASE_URL: "sqlite+aiosqlite:///:memory:"
+          SECRET_KEY: "ci-secret-key"
+          REFRESH_SECRET_KEY: "ci-refresh-secret-key"
+          DEBUG: "true"
+          VACCINE_REMINDER_ENABLED: "false"
+        run: pytest tests -v
+
+  frontend:
+    name: Frontend (Flutter analyze + test)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.41.6"
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Widget + e2e tests
+        run: flutter test
+
+      - name: Build web (smoke build)
+        run: |
+          flutter build web --release \
+            --dart-define=API_BASE_URL=https://example.com/api/v1 \
+            --no-wasm-dry-run
