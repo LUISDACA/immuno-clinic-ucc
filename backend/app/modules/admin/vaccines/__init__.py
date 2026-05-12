@@ -1,0 +1,1 @@
+"""Admin vaccine catalog management."""
