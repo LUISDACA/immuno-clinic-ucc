@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Recordatorio de vacuna - ImmunoClinic</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #233044;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7fb;
+        }
+        .header {
+            background-color: #0056b3;
+            color: white;
+            padding: 22px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #ffffff;
+            padding: 30px;
+            border: 1px solid #dfe7f3;
+            border-radius: 0 0 8px 8px;
+        }
+        .summary {
+            background-color: #fff8e6;
+            border: 1px solid #f1d28a;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #667085;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ImmunoClinic</h1>
+    </div>
+    <div class="content">
+        <h2>Hola {{ full_name }},</h2>
+        <p>Te recordamos que tienes una vacuna programada <strong>{{ due_text }}</strong>.</p>
+
+        <div class="summary">
+            <p><strong>Vacuna:</strong> {{ vaccine_name }}</p>
+            <p><strong>Dosis:</strong> {{ dose_label }}</p>
+            <p><strong>Fecha limite:</strong> {{ due_date }}</p>
+        </div>
+
+        <p>Ingresa a ImmunoClinic para mantener tu esquema de vacunacion al dia y subir la evidencia correspondiente cuando la tengas.</p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2026 ImmunoClinic - Universidad Cooperativa de Colombia</p>
+    </div>
+</body>
+</html>
