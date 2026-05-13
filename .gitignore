@@ -1,6 +1,7 @@
 # Python/backend
 backend/.env
 backend/*firebase*.json
+!backend/firebase-credentials.example.json
 backend/*service-account*.json
 backend/venv/
 backend/__pycache__/
