@@ -8,7 +8,9 @@ backend/**/*.py[cod]
 backend/.pytest_cache/
 backend/pytest-cache-files-*/
 backend/.mypy_cache/
-backend/uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep
+!backend/uploads/README.md
 backend/*.log
 
 # Local databases and generated files
