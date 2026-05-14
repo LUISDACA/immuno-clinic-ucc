@@ -1,5 +1,6 @@
 """Auth module - API router (thin HTTP layer)."""
 
+from app.core.config import settings
 from app.core.dependencies import get_current_active_user
 from app.core.rate_limit import limiter
 from app.db.session import get_db
@@ -17,7 +18,7 @@ from app.modules.auth.schemas import (
 )
 from app.modules.auth.service import AuthService
 from app.modules.users.models import User
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -28,7 +29,7 @@ def _get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:
 
 
 @router.post("/login", response_model=TokenResponse)
-@limiter.limit("5/minute")
+@limiter.limit(settings.RATE_LIMIT_LOGIN)
 async def login(
     request: Request,
     data: LoginRequest,
@@ -65,14 +66,15 @@ async def change_password(
 
 
 @router.post("/forgot-password", response_model=MessageResponse)
-@limiter.limit("3/minute")
+@limiter.limit(settings.RATE_LIMIT_FORGOT_PASSWORD)
 async def forgot_password(
     request: Request,
     data: ForgotPasswordRequest,
+    background_tasks: BackgroundTasks,
     service: AuthService = Depends(_get_auth_service),
 ):
-    """Request a password reset token (sent via email in production)."""
-    await service.forgot_password(data)
+    """Request a password reset token (sent via email in background)."""
+    await service.forgot_password(data, background_tasks)
     # Always return success to avoid revealing user existence
     return MessageResponse(
         message="Si el correo existe, recibirás instrucciones para restablecer tu contraseña"

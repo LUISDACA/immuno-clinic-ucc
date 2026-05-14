@@ -6,6 +6,8 @@ import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 
+from fastapi import BackgroundTasks
+
 from app.common.enums import AuditAction
 from app.core.config import settings
 from app.core.email import send_password_reset_email
@@ -125,8 +127,17 @@ class AuthService:
         await self.repo.revoke_all_user_tokens(user.id)
         await self.repo.db.commit()
 
-    async def forgot_password(self, data: ForgotPasswordRequest) -> None:
-        """Generate a password reset token and 'send' it via email."""
+    async def forgot_password(
+        self,
+        data: ForgotPasswordRequest,
+        background_tasks: BackgroundTasks | None = None,
+    ) -> None:
+        """Generate a password reset token and 'send' it via email.
+
+        If ``background_tasks`` is provided, the SMTP/SendGrid call is dispatched
+        as a FastAPI background task so the HTTP response returns immediately.
+        Otherwise the email is sent inline (legacy behavior, useful in tests).
+        """
         requested_email = data.email.strip().lower()
         user = await self.repo.get_user_by_email(requested_email)
         if user is None:
@@ -142,7 +153,10 @@ class AuthService:
         await self.repo.create_reset_token(user.id, token_hash, expires_at)
         await self.repo.db.commit()
 
-        await send_password_reset_email(user.email, raw_token)
+        if background_tasks is not None:
+            background_tasks.add_task(send_password_reset_email, user.email, raw_token)
+        else:
+            await send_password_reset_email(user.email, raw_token)
 
     async def reset_password(self, data: ResetPasswordRequest) -> None:
         """Reset password using a valid reset token."""
