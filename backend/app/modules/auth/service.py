@@ -6,8 +6,6 @@ import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from fastapi import BackgroundTasks
-
 from app.common.enums import AuditAction
 from app.core.config import settings
 from app.core.email import send_password_reset_email
@@ -29,6 +27,7 @@ from app.modules.auth.schemas import (
     TokenResponse,
 )
 from app.modules.users.models import User
+from fastapi import BackgroundTasks
 
 logger = logging.getLogger(__name__)
 

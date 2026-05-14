@@ -4,13 +4,12 @@ from __future__ import annotations
 
 import asyncio
 
-from cachetools import TTLCache
-
 from app.common.access import is_app_admin, require_admin_scope
 from app.core.exceptions import ForbiddenException
 from app.modules.admin.reports.exporter import StudentCsvExporter
 from app.modules.admin.reports.repository import AdminStudentReportRepository
 from app.modules.users.models import User
+from cachetools import TTLCache
 
 # Process-wide cache for admin statistics.
 # Keyed by (program, campus, semester); TTL of 60 seconds means dashboards
