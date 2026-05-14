@@ -234,6 +234,88 @@ class VaccinationRulesTests(unittest.TestCase):
         self.assertEqual(len(overdue), 1)
         self.assertEqual(overdue[0].due_date, date(2026, 2, 15))
 
+    def test_approved_titer_does_not_complete_when_vaccine_has_no_titer_flag(self) -> None:
+        """A vaccine without ``has_titer`` cannot be certified via titer.
+
+        Defensive check: even if a titer-typed dose exists on a vaccine that
+        doesn't allow titration, the standard-dose path must still be enforced.
+        """
+        standard = _dose_config(dose_number=1, label="Primera dosis")
+        titer = _dose_config(
+            dose_number=5,
+            label="Titulacion",
+            is_required=False,
+            dose_type=DoseType.TITER,
+        )
+        student_vaccine = _student_vaccine(
+            has_titer=False,
+            doses=[
+                _dose(dose_number=1, config=standard, status=DoseStatus.PENDING),
+                _dose(dose_number=5, config=titer, status=DoseStatus.APPROVED),
+            ],
+        )
+
+        self.assertFalse(certificate_vaccine_complete(student_vaccine))
+        self.assertIsNone(certificate_completion_label(student_vaccine))
+        self.assertEqual(
+            vaccine_status_from_certificate_rules(student_vaccine.doses),
+            VaccineStatus.PENDING,
+        )
+
+    def test_denied_titer_falls_back_to_standard_doses_path(self) -> None:
+        """When the titer is not approved, the doses path must still drive status.
+
+        With all required standard doses APPROVED and the titer DENIED, the
+        vaccine should be approved via the doses path.
+        """
+        standard1 = _dose_config(dose_number=1, label="Primera dosis")
+        standard2 = _dose_config(dose_number=2, label="Segunda dosis")
+        titer = _dose_config(
+            dose_number=5,
+            label="Titulacion",
+            is_required=False,
+            dose_type=DoseType.TITER,
+        )
+        student_vaccine = _student_vaccine(
+            doses=[
+                _dose(dose_number=1, config=standard1, status=DoseStatus.APPROVED),
+                _dose(dose_number=2, config=standard2, status=DoseStatus.APPROVED),
+                _dose(dose_number=5, config=titer, status=DoseStatus.DENIED),
+            ],
+        )
+
+        self.assertTrue(certificate_vaccine_complete(student_vaccine))
+        self.assertEqual(certificate_completion_label(student_vaccine), "Dosis completas")
+        self.assertEqual(
+            vaccine_status_from_certificate_rules(student_vaccine.doses),
+            VaccineStatus.APPROVED,
+        )
+
+    def test_pending_titer_does_not_block_approval_via_doses(self) -> None:
+        """A pending titer must not downgrade a vaccine that is already complete via doses."""
+        standard1 = _dose_config(dose_number=1, label="Primera dosis")
+        standard2 = _dose_config(dose_number=2, label="Segunda dosis")
+        titer = _dose_config(
+            dose_number=5,
+            label="Titulacion",
+            is_required=False,
+            dose_type=DoseType.TITER,
+        )
+        student_vaccine = _student_vaccine(
+            doses=[
+                _dose(dose_number=1, config=standard1, status=DoseStatus.APPROVED),
+                _dose(dose_number=2, config=standard2, status=DoseStatus.APPROVED),
+                _dose(dose_number=5, config=titer, status=DoseStatus.PENDING),
+            ],
+        )
+
+        self.assertTrue(certificate_vaccine_complete(student_vaccine))
+        self.assertEqual(certificate_completion_label(student_vaccine), "Dosis completas")
+        self.assertEqual(
+            vaccine_status_from_certificate_rules(student_vaccine.doses),
+            VaccineStatus.APPROVED,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
