@@ -30,32 +30,25 @@ void main() {
       semester: 1,
     );
 
-    final mockResponse = PaginatedResponse<AdminStudentListItem>(
-      items: [mockStudent],
-      total: 1,
-      page: 1,
-      pageSize: 20,
-      totalPages: 1,
-    );
-
     test('initial state is correct', () {
       expect(notifier.state.isLoading, false);
       expect(notifier.state.students.isEmpty, true);
     });
 
     test('load fetches students successfully', () async {
-      when(() => mockDataSource.listStudents(
-            page: 1,
-            search: any(named: 'search'),
-            isActive: any(named: 'isActive'),
-            semester: any(named: 'semester'),
-            vaccinationStatus: any(named: 'vaccinationStatus'),
-          )).thenAnswer((_) async => mockResponse);
+      when(
+        () => mockDataSource.listAllStudents(
+          search: any(named: 'search'),
+          isActive: any(named: 'isActive'),
+          semester: any(named: 'semester'),
+          vaccinationStatus: any(named: 'vaccinationStatus'),
+        ),
+      ).thenAnswer((_) async => [mockStudent]);
 
       final loadFuture = notifier.load(page: 1);
-      
+
       expect(notifier.state.isLoading, true);
-      
+
       await loadFuture;
 
       expect(notifier.state.isLoading, false);
@@ -63,8 +56,15 @@ void main() {
       expect(notifier.state.students.first.id, '1');
       expect(notifier.state.total, 1);
       expect(notifier.state.page, 1);
-      
-      verify(() => mockDataSource.listStudents(page: 1)).called(1);
+
+      verify(
+        () => mockDataSource.listAllStudents(
+          search: null,
+          isActive: null,
+          semester: null,
+          vaccinationStatus: null,
+        ),
+      ).called(1);
     });
 
     test('load handles error gracefully', () async {
@@ -77,13 +77,14 @@ void main() {
         ),
       );
 
-      when(() => mockDataSource.listStudents(
-            page: 1,
-            search: any(named: 'search'),
-            isActive: any(named: 'isActive'),
-            semester: any(named: 'semester'),
-            vaccinationStatus: any(named: 'vaccinationStatus'),
-          )).thenThrow(dioError);
+      when(
+        () => mockDataSource.listAllStudents(
+          search: any(named: 'search'),
+          isActive: any(named: 'isActive'),
+          semester: any(named: 'semester'),
+          vaccinationStatus: any(named: 'vaccinationStatus'),
+        ),
+      ).thenThrow(dioError);
 
       await notifier.load(page: 1);
 
@@ -93,23 +94,29 @@ void main() {
     });
 
     test('deactivate successfully calls ds and reloads', () async {
-      when(() => mockDataSource.deactivateStudent('1'))
-          .thenAnswer((_) async => {});
-          
-      when(() => mockDataSource.listStudents(
-            page: 1,
-            search: any(named: 'search'),
-            isActive: any(named: 'isActive'),
-            semester: any(named: 'semester'),
-            vaccinationStatus: any(named: 'vaccinationStatus'),
-          )).thenAnswer((_) async => mockResponse);
+      when(() => mockDataSource.deactivateStudent('1')).thenAnswer((_) async {});
+
+      when(
+        () => mockDataSource.listAllStudents(
+          search: any(named: 'search'),
+          isActive: any(named: 'isActive'),
+          semester: any(named: 'semester'),
+          vaccinationStatus: any(named: 'vaccinationStatus'),
+        ),
+      ).thenAnswer((_) async => [mockStudent]);
 
       final result = await notifier.deactivate('1');
 
       expect(result, true);
       verify(() => mockDataSource.deactivateStudent('1')).called(1);
-      // Verify reload is called (2 times total in a real flow, 1 here since state.page is 1)
-      verify(() => mockDataSource.listStudents(page: 1)).called(1);
+      verify(
+        () => mockDataSource.listAllStudents(
+          search: null,
+          isActive: null,
+          semester: null,
+          vaccinationStatus: null,
+        ),
+      ).called(1);
     });
   });
 }
