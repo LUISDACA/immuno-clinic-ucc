@@ -19,7 +19,6 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-
 from app.core.config import settings
 from app.modules.auth.schemas import ForgotPasswordRequest
 from app.modules.auth.service import AuthService

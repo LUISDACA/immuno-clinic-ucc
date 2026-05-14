@@ -4,9 +4,8 @@ import time
 import uuid
 
 import pytest
-from cachetools import TTLCache
-
 from app.core import cache as cache_module
+from cachetools import TTLCache
 
 
 @pytest.fixture(autouse=True)

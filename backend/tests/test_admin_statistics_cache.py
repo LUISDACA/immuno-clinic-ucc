@@ -15,9 +15,8 @@ from __future__ import annotations
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
-import pytest
-
 import app.modules.admin.reports.service as report_service_module
+import pytest
 from app.modules.admin.reports.service import AdminReportService
 
 

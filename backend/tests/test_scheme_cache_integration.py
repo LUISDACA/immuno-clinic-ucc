@@ -16,7 +16,6 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-
 from app.common.enums import DoseStatus, VaccineStatus
 from app.core import cache as cache_module
 from app.modules.evidence.service import EvidenceService
