@@ -2,6 +2,16 @@
 
 import { use, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  ArrowLeft,
+  Award,
+  CalendarDays,
+  ChevronDown,
+  ChevronUp,
+  Edit3,
+  MessageSquare,
+  Trash2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -120,8 +130,55 @@ export default function AdminStudentDetailPage({
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <div className="-mx-4 -my-6 min-h-screen bg-[#071416] text-[#eaf7f7] sm:mx-0 sm:my-0 sm:min-h-0 sm:overflow-hidden sm:rounded-2xl sm:border sm:border-[#244247]">
+      <div className="sticky top-0 z-20 border-b border-[#244247] bg-[#0b1d20]/95 backdrop-blur">
+        <div className="flex items-center gap-2.5 px-4 py-3">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            aria-label="Volver"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
+          >
+            <ArrowLeft className="h-5 w-5" aria-hidden />
+          </button>
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-xl font-bold leading-tight tracking-normal">
+              {fullName}
+            </h1>
+            <p className="truncate text-sm text-[#a8bfc2]">{student.email}</p>
+          </div>
+          <div className="flex shrink-0 items-center gap-1">
+            <button
+              type="button"
+              onClick={onDownloadCertificate}
+              disabled={downloadingCertificate}
+              aria-label="Descargar certificado"
+              title="Descargar certificado"
+              className="grid h-9 w-9 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10 disabled:opacity-50"
+            >
+              <Award className="h-5 w-5" aria-hidden />
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("info")}
+              aria-label="Ver perfil"
+              title="Ver perfil"
+              className="grid h-9 w-9 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
+            >
+              <Edit3 className="h-5 w-5" aria-hidden />
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("evidence")}
+              aria-label="Ver evidencia"
+              title="Ver evidencia"
+              className="grid h-9 w-9 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
+            >
+              <MessageSquare className="h-5 w-5" aria-hidden />
+            </button>
+          </div>
+        </div>
+      <div className="hidden">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{fullName}</h1>
           <p className="text-sm text-muted-foreground">{student.email}</p>
@@ -170,32 +227,38 @@ export default function AdminStudentDetailPage({
         </div>
       </div>
 
-      <div className="flex gap-1 border-b">
+      <div className="flex border-t border-[#244247]">
         {(
           [
-            ["info", "Datos"],
+            ["info", "Perfil"],
             ["scheme", "Esquema"],
-            ["evidence", "Evidencias"],
+            ["evidence", "Evidencia"],
           ] as Array<[Tab, string]>
         ).map(([key, label]) => (
           <button
             key={key}
             onClick={() => setTab(key)}
             className={cn(
-              "border-b-2 px-4 py-2 text-sm font-medium transition-colors",
+              "relative flex-1 px-4 py-3 text-sm font-semibold tracking-normal transition-colors",
               tab === key
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground",
+                ? "text-[#45d2df]"
+                : "text-[#d8e2e3]/80 hover:text-[#eaf7f7]",
             )}
           >
             {label}
+            {tab === key && (
+              <span className="absolute inset-x-8 -bottom-px h-0.5 rounded-t-full bg-[#45d2df]" />
+            )}
           </button>
         ))}
       </div>
+      </div>
 
-      {tab === "info" && <InfoTab student={student} studentId={id} />}
-      {tab === "scheme" && <SchemeTab studentId={id} />}
-      {tab === "evidence" && <EvidenceTab studentId={id} />}
+      <div className="px-3 py-3 sm:px-4">
+        {tab === "info" && <InfoTab student={student} studentId={id} />}
+        {tab === "scheme" && <SchemeTab studentId={id} />}
+        {tab === "evidence" && <EvidenceTab studentId={id} />}
+      </div>
     </div>
   );
 }
@@ -463,9 +526,14 @@ function SchemeTab({ studentId }: { studentId: string }) {
       <p className="text-sm text-muted-foreground">Este estudiante no tiene esquema asignado.</p>
     );
   return (
-    <div className="flex flex-col gap-4">
-      {data.map((sv) => (
-        <AdminVaccineCard key={sv.id} vaccine={sv} studentId={studentId} />
+    <div className="flex flex-col gap-3">
+      {data.map((sv, index) => (
+        <AdminVaccineCard
+          key={sv.id}
+          vaccine={sv}
+          studentId={studentId}
+          defaultOpen={index < 2}
+        />
       ))}
     </div>
   );
@@ -474,37 +542,69 @@ function SchemeTab({ studentId }: { studentId: string }) {
 function AdminVaccineCard({
   vaccine,
   studentId,
+  defaultOpen,
 }: {
   vaccine: StudentVaccine;
   studentId: string;
+  defaultOpen: boolean;
 }) {
+  const [open, setOpen] = useState(defaultOpen);
+  const tone = statusColor(vaccine.status);
+
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <CardTitle className="text-base">
-              {vaccine.vaccine?.name ?? "Vacuna"}
-            </CardTitle>
-            {vaccine.vaccine?.code && (
-              <CardDescription>{vaccine.vaccine.code}</CardDescription>
-            )}
-          </div>
-          <Badge variant={statusVariant(vaccine.status)}>
+    <Card className="overflow-hidden rounded-xl border-[#2d4f55] bg-[#0e2023] text-[#eaf7f7] shadow-none">
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-[#142d31]/45"
+      >
+        <span
+          className="h-11 w-1.5 shrink-0 rounded-full"
+          style={{ backgroundColor: tone }}
+          aria-hidden
+        />
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-lg font-bold leading-tight">
+            {vaccine.vaccine?.name ?? "Vacuna"}
+          </span>
+          <span
+            className="mt-0.5 block text-sm font-semibold"
+            style={{ color: tone }}
+          >
             {vaccineStatusLabel(vaccine.status)}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        {vaccine.doses
-          .slice()
-          .sort((a, b) => a.dose_number - b.dose_number)
-          .map((dose) => (
-            <AdminDoseRow key={dose.id} dose={dose} studentId={studentId} />
-          ))}
-      </CardContent>
+          </span>
+        </span>
+        {open ? (
+          <ChevronUp className="h-5 w-5 shrink-0 text-[#45d2df]" aria-hidden />
+        ) : (
+          <ChevronDown className="h-5 w-5 shrink-0 text-[#d8e2e3]" aria-hidden />
+        )}
+      </button>
+      {open && (
+        <CardContent className="flex flex-col gap-3 px-4 pb-4 pt-0">
+          {vaccine.doses
+            .slice()
+            .sort((a, b) => a.dose_number - b.dose_number)
+            .map((dose) => (
+              <AdminDoseRow key={dose.id} dose={dose} studentId={studentId} />
+            ))}
+        </CardContent>
+      )}
     </Card>
   );
+}
+
+function statusColor(status: string): string {
+  switch (status) {
+    case "approved":
+      return "#5fae36";
+    case "denied":
+      return "#c94242";
+    case "in_review":
+      return "#e6a700";
+    default:
+      return "#829196";
+  }
 }
 
 function AdminDoseRow({
@@ -515,40 +615,109 @@ function AdminDoseRow({
   studentId: string;
 }) {
   const queryClient = useQueryClient();
-  const [reviewing, setReviewing] = useState(false);
-  const [status, setStatus] = useState<string>(dose.status);
+  const [reviewAction, setReviewAction] = useState<null | "approved" | "denied">(
+    null,
+  );
   const [notes, setNotes] = useState(dose.admin_notes ?? "");
 
   const review = useMutation({
-    mutationFn: () => reviewDose(dose.id, { status, admin_notes: notes || null }),
-    onSuccess: () => {
-      toast.success("Dosis revisada");
-      setReviewing(false);
+    mutationFn: (payload: {
+      status: "approved" | "denied";
+      notesOverride?: string | null;
+    }) =>
+      reviewDose(dose.id, {
+        status: payload.status,
+        admin_notes:
+          payload.notesOverride === undefined ? notes || null : payload.notesOverride,
+      }),
+    onSuccess: (_, payload) => {
+      toast.success(
+        payload.status === "approved" ? "Dosis aprobada" : "Dosis rechazada",
+      );
+      setReviewAction(null);
       queryClient.invalidateQueries({
         queryKey: ["admin", "student", studentId, "scheme"],
       });
     },
-    onError: () => toast.error("No se pudo revisar"),
+    onError: () => toast.error("No se pudo guardar"),
   });
 
+  const isApproved = dose.status === "approved";
+  const isDenied = dose.status === "denied";
+  const tone = statusColor(dose.status);
+  const label = dose.dose_config?.label ?? `Dosis ${dose.dose_number}`;
+
+  const cancel = () => {
+    setReviewAction(null);
+    setNotes(dose.admin_notes ?? "");
+  };
+
   return (
-    <div className="rounded-md border p-3">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className="font-medium">
+    <div className="relative">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-base font-semibold leading-tight text-[#eaf7f7]">
+            {label}
+          </p>
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: tone }}
+          />
+          <span className="hidden">
             {dose.dose_config?.label ?? `Dosis ${dose.dose_number}`}
           </span>
-          <Badge variant={statusVariant(dose.status)}>
+          <Badge variant={statusVariant(dose.status)} className="text-xs">
             {doseStatusLabel(dose.status)}
           </Badge>
+          {dose.applied_date && (
+            <>
+              <CalendarDays className="h-4 w-4 text-[#647478]" aria-hidden />
+              <span className="text-[#647478]">{dose.applied_date}</span>
+            </>
+          )}
+          {dose.due_date && (
+            <VaccineDueBadge
+              dueDate={dose.due_date}
+              days={dose.days_until_due ?? null}
+            />
+          )}
+          {dose.titer_value && (
+            <span className="text-[#a8bfc2]">Titulacion: {dose.titer_value}</span>
+          )}
         </div>
-        {!reviewing && (
-          <Button size="sm" variant="outline" onClick={() => setReviewing(true)}>
-            Revisar
-          </Button>
+        </div>
+        {!reviewAction && (
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
+            {!isApproved && (
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 rounded-full bg-[#5fae36]/15 px-2.5 text-[#8dd965] hover:bg-[#5fae36]/25 hover:text-[#a7da64] [&>span:first-child]:hidden"
+                onClick={() => setReviewAction("approved")}
+                title="Aprobar dosis"
+              >
+                <span aria-hidden className="text-base leading-none">✓</span>
+                <span className="ml-1">Aprobar</span>
+              </Button>
+            )}
+            {!isDenied && (
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 rounded-full bg-[#c94242]/15 px-2.5 text-[#ff7373] hover:bg-[#c94242]/25 hover:text-[#ff8a8a] [&>span:first-child]:hidden"
+                onClick={() => setReviewAction("denied")}
+                title="Rechazar dosis"
+              >
+                <span aria-hidden className="text-base leading-none">✗</span>
+                <span className="ml-1">Denegar</span>
+              </Button>
+            )}
+          </div>
         )}
       </div>
-      <div className="mt-2 grid gap-2 text-sm sm:grid-cols-3">
+
+      <div className="hidden">
         {dose.applied_date && <span>{formatDate(dose.applied_date)}</span>}
         {dose.due_date && (
           <VaccineDueBadge
@@ -563,42 +732,86 @@ function AdminDoseRow({
           </span>
         )}
       </div>
-      {dose.admin_notes && !reviewing && (
-        <p className="mt-2 text-xs text-muted-foreground">
-          <span className="font-medium">Nota: </span>
-          {dose.admin_notes}
-        </p>
-      )}
-      {reviewing && (
-        <div className="mt-3 flex flex-col gap-2">
-          <div className="grid gap-2 sm:grid-cols-2">
-            <div className="flex flex-col gap-1.5">
-              <Label>Estado</Label>
-              <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                <option value="pending">Pendiente</option>
-                <option value="in_review">En revisión</option>
-                <option value="approved">Aprobar</option>
-                <option value="denied">Rechazar</option>
-              </Select>
-            </div>
+
+      {dose.admin_notes && !reviewAction && (
+        <div className="mt-3 rounded-lg border border-[#2d4f55] bg-[#063d43] p-3">
+          <div className="mb-2 flex items-center gap-2 text-[#45d2df]">
+            <MessageSquare className="h-4 w-4" aria-hidden />
+            <p className="flex-1 text-sm font-bold leading-tight">
+              Comentario del administrador
+            </p>
+            <button
+              type="button"
+              onClick={() => setReviewAction(isDenied ? "denied" : "approved")}
+              className="grid h-7 w-7 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
+              title="Editar comentario"
+              aria-label="Editar comentario"
+            >
+              <Edit3 className="h-4 w-4" aria-hidden />
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                review.mutate({
+                  status: isDenied ? "denied" : "approved",
+                  notesOverride: null,
+                })
+              }
+              className="grid h-7 w-7 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
+              title="Eliminar comentario"
+              aria-label="Eliminar comentario"
+              disabled={review.isPending}
+            >
+              <Trash2 className="h-4 w-4" aria-hidden />
+            </button>
           </div>
+          <p className="text-sm leading-snug text-[#eaf7f7]">
+            {dose.admin_notes}
+          </p>
+        </div>
+      )}
+
+      {reviewAction && (
+        <div
+          className={cn(
+            "mt-3 flex flex-col gap-3 rounded-lg border-l-4 p-3",
+            reviewAction === "approved"
+              ? "border-[#5fae36] bg-[#11341a]"
+              : "border-[#c94242] bg-[#3a1313]",
+          )}
+        >
+          <p className="text-sm font-medium">
+            {reviewAction === "approved"
+              ? "¿Confirmar aprobación de esta dosis?"
+              : "¿Confirmar rechazo de esta dosis?"}
+          </p>
           <div className="flex flex-col gap-1.5">
-            <Label>Notas</Label>
+            <Label className="text-xs">Nota (opcional)</Label>
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
+              placeholder={
+                reviewAction === "approved"
+                  ? "Ej: Evidencia válida, dosis aplicada correctamente."
+                  : "Ej: Documento ilegible, fecha incorrecta…"
+              }
             />
           </div>
           <div className="flex gap-2">
             <Button
               size="sm"
-              onClick={() => review.mutate()}
+              variant={reviewAction === "approved" ? "default" : "destructive"}
+              onClick={() => review.mutate({ status: reviewAction })}
               disabled={review.isPending}
             >
-              {review.isPending ? "Guardando…" : "Guardar"}
+              {review.isPending
+                ? "Guardando…"
+                : reviewAction === "approved"
+                  ? "Aprobar"
+                  : "Rechazar"}
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => setReviewing(false)}>
+            <Button size="sm" variant="ghost" onClick={cancel}>
               Cancelar
             </Button>
           </div>
