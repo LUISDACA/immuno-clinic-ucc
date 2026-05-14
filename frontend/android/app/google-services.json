@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "70400191615",
+    "project_id": "ucc-immunoclinic",
+    "storage_bucket": "ucc-immunoclinic.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70400191615:android:6780acac9b4cc92a9f634a",
+        "android_client_info": {
+          "package_name": "com.immunoclinic.immuno_clinic_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGvK57duJctQNEVafwD7dCTxaDwv3MatA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
