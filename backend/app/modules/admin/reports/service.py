@@ -2,11 +2,22 @@
 
 from __future__ import annotations
 
+import asyncio
+
+from cachetools import TTLCache
+
 from app.common.access import is_app_admin, require_admin_scope
 from app.core.exceptions import ForbiddenException
 from app.modules.admin.reports.exporter import StudentCsvExporter
 from app.modules.admin.reports.repository import AdminStudentReportRepository
 from app.modules.users.models import User
+
+# Process-wide cache for admin statistics.
+# Keyed by (program, campus, semester); TTL of 60 seconds means dashboards
+# reflect changes within a minute while protecting the DB from repeated
+# aggregations during traffic spikes.
+_STATISTICS_CACHE: TTLCache = TTLCache(maxsize=256, ttl=60)
+_STATISTICS_LOCK = asyncio.Lock()
 
 
 class AdminReportService:
@@ -67,11 +78,26 @@ class AdminReportService:
         semester: int | None = None,
     ) -> dict:
         program, campus = self._scoped_filters(admin)
-        return await self.student_reports.get_statistics(
-            program=program,
-            campus=campus,
-            semester=semester,
-        )
+        cache_key = (program, campus, semester)
+
+        cached = _STATISTICS_CACHE.get(cache_key)
+        if cached is not None:
+            return cached
+
+        async with _STATISTICS_LOCK:
+            # Double-check pattern: another coroutine may have populated the
+            # cache while we were waiting on the lock.
+            cached = _STATISTICS_CACHE.get(cache_key)
+            if cached is not None:
+                return cached
+
+            result = await self.student_reports.get_statistics(
+                program=program,
+                campus=campus,
+                semester=semester,
+            )
+            _STATISTICS_CACHE[cache_key] = result
+            return result
 
     async def export_students_csv(
         self,
