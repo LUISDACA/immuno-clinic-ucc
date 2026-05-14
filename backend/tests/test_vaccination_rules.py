@@ -129,7 +129,13 @@ class VaccinationRulesTests(unittest.TestCase):
             VaccineStatus.APPROVED,
         )
 
-    def test_titer_does_not_complete_when_standard_record_exists(self) -> None:
+    def test_approved_titer_dominates_even_when_standard_doses_were_applied(self) -> None:
+        """An approved titer marks the vaccine as APPROVED regardless of standard doses.
+
+        Clinical rationale: a measurable antibody titer demonstrates immunity, so
+        additional doses are no longer required even if some were already applied
+        (and even if they are pending review or overdue).
+        """
         standard = _dose_config(dose_number=1, label="Primera dosis")
         titer = _dose_config(
             dose_number=5,
@@ -149,11 +155,11 @@ class VaccinationRulesTests(unittest.TestCase):
             ]
         )
 
-        self.assertFalse(certificate_vaccine_complete(student_vaccine))
-        self.assertIsNone(certificate_completion_label(student_vaccine))
+        self.assertTrue(certificate_vaccine_complete(student_vaccine))
+        self.assertEqual(certificate_completion_label(student_vaccine), "Titulacion aprobada")
         self.assertEqual(
             vaccine_status_from_certificate_rules(student_vaccine.doses),
-            VaccineStatus.PENDING,
+            VaccineStatus.APPROVED,
         )
 
     def test_hepatitis_b_due_dates_are_calculated_from_previous_doses(self) -> None:

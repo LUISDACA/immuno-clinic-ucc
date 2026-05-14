@@ -186,18 +186,21 @@ def _build_due_info(
 
 def _certificate_path(student_vaccine: StudentVaccine) -> str | None:
     doses = list(student_vaccine.doses)
+    vaccine = student_vaccine.vaccine
+
+    # An approved titer demonstrates immunity and DOMINATES the vaccine status,
+    # regardless of whether standard doses were applied, overdue or denied.
+    # Rationale: if the patient already has measurable antibody levels,
+    # additional doses are clinically unnecessary.
+    if vaccine is not None and vaccine.has_titer:
+        titer_doses = _titer_doses(doses)
+        if any(dose.status == DoseStatus.APPROVED for dose in titer_doses):
+            return "titer"
+
     standard_required = _required_standard_doses(doses)
     if standard_required and all(dose.status == DoseStatus.APPROVED for dose in standard_required):
         return "doses"
 
-    vaccine = student_vaccine.vaccine
-    if vaccine is None or not vaccine.has_titer:
-        return None
-    if _has_standard_dose_record(standard_required):
-        return None
-    titer_doses = _titer_doses(doses)
-    if any(dose.status == DoseStatus.APPROVED for dose in titer_doses):
-        return "titer"
     return None
 
 

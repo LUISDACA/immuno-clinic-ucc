@@ -15,6 +15,7 @@ from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccine
 from app.modules.vaccination_scheme.repository import SchemeRepository, VaccineRepository
 from app.modules.vaccination_scheme.rules import (
     certificate_overdue_doses,
+    certificate_vaccine_complete,
     vaccine_status_from_certificate_rules,
 )
 from app.modules.vaccination_scheme.schemas import ReviewDoseRequest, UpdateDoseRequest
@@ -36,10 +37,19 @@ class SchemeService:
 
         Auto-denies any pending doses whose calculated due date has already
         passed, so both the student and admin always see up-to-date status.
+        Vaccines already approved via titer are exempt: their pending doses
+        are no longer clinically required, so they are not auto-denied.
         """
         vaccines = await self.scheme_repo.get_student_vaccines(user_id)
         any_changed = False
         for sv in vaccines:
+            # Skip auto-deny entirely if an approved titer already covers
+            # this vaccine — pending doses are not needed anymore.
+            if certificate_vaccine_complete(sv):
+                if sv.status != VaccineStatus.APPROVED:
+                    sv.status = VaccineStatus.APPROVED
+                    any_changed = True
+                continue
             sv_changed = False
             for due_info in certificate_overdue_doses(sv):
                 dose = next((d for d in sv.doses if d.id == due_info.dose_id), None)
