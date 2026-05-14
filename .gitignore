@@ -38,3 +38,15 @@ frontend/build/
 frontend/.pub-cache/
 frontend/.metadata
 frontend/coverage/
+
+# Frontend Next.js — node_modules y artefactos de build
+node_modules/
+frontend-next/node_modules/
+frontend-next/.next/
+frontend-next/out/
+frontend-next/coverage/
+frontend-next/.env.local
+frontend-next/.env*.local
+frontend-next/*.tsbuildinfo
+frontend-next/.turbo/
+frontend-next/.vercel/
