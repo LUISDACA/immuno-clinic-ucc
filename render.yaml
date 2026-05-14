@@ -1,0 +1,86 @@
+services:
+  - type: web
+    name: immunoclinic-backend
+    runtime: python
+    rootDir: backend
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    preDeployCommand: python -m alembic upgrade head
+    startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: PYTHONPATH
+        value: .
+      - key: DATABASE_URL
+        fromDatabase:
+          name: immunoclinic-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: REFRESH_SECRET_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "7"
+      - key: STORAGE_TYPE
+        value: s3
+      - key: S3_BUCKET
+        sync: false
+      - key: S3_ACCESS_KEY
+        sync: false
+      - key: S3_SECRET_KEY
+        sync: false
+      - key: S3_ENDPOINT
+        sync: false
+      - key: EMAIL_ENABLED
+        value: "true"
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: PASSWORD_RESET_URL_BASE
+        value: https://immunoclinic-backend.onrender.com
+      - key: APP_DEEP_LINK_BASE
+        value: immunoclinic://auth
+      - key: ANDROID_PACKAGE_NAME
+        value: com.immunoclinic.immuno_clinic_app
+      - key: FCM_ENABLED
+        value: "true"
+      - key: VACCINE_EMAIL_REMINDER_DAYS
+        value: "3,2,1,0"
+      - key: CRON_SECRET
+        sync: false
+      - key: FIREBASE_CREDENTIALS_JSON
+        sync: false
+      - key: APP_NAME
+        value: ImmunoClinic
+      - key: APP_VERSION
+        value: 2.0.0
+      - key: DEBUG
+        value: "false"
+      - key: LOG_LEVEL
+        value: "INFO"
+      - key: CORS_ORIGINS
+        sync: false
+      - key: CORS_ORIGIN_REGEX
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_FIRST_NAME
+        value: Admin
+      - key: ADMIN_LAST_NAME
+        value: ImmunoClinic
+
+databases:
+  - name: immunoclinic-db
+    plan: starter
+    databaseName: immunoclinic
+    user: immunoclinic
+    postgresMajorVersion: "17"
