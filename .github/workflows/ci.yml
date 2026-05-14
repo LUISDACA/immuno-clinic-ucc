@@ -74,3 +74,28 @@ jobs:
           flutter build web --release \
             --dart-define=API_BASE_URL=https://example.com/api/v1 \
             --no-wasm-dry-run
+
+  next:
+    name: Frontend Next.js (vitest + lint)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend-next
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend-next/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests (vitest)
+        run: npm test
