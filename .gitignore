@@ -29,3 +29,12 @@ Thumbs.db
 frontend/android/key.properties
 frontend/android/app/*.jks
 frontend/android/app/*.keystore
+# Flutter artefactos locales (no commitear)
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/.packages
+frontend/build/
+frontend/.pub-cache/
+frontend/.metadata
+frontend/coverage/
