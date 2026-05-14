@@ -3,6 +3,7 @@
 import uuid
 
 from app.common.enums import VaccineStatus
+from app.core.cache import student_scheme_cache
 from app.core.dependencies import get_current_active_user
 from app.db.session import get_db
 from app.modules.users.models import User
@@ -35,10 +36,14 @@ async def get_my_scheme(
     service: SchemeService = Depends(_get_scheme_service),
 ):
     """Get the current student's full vaccination scheme with overview stats."""
+    cached = student_scheme_cache.get(current_user.id)
+    if cached is not None:
+        return cached
+
     vaccines = await service.get_student_scheme(current_user.id)
     approved_count = sum(1 for v in vaccines if _vaccine_current_for_certificate(v))
 
-    return SchemeOverviewResponse(
+    response = SchemeOverviewResponse(
         total_vaccines=len(vaccines),
         approved_vaccines=approved_count,
         pending_vaccines=sum(
@@ -50,6 +55,8 @@ async def get_my_scheme(
         in_review_vaccines=sum(1 for v in vaccines if v.status == VaccineStatus.IN_REVIEW),
         vaccines=[_student_vaccine_response(v) for v in vaccines],
     )
+    student_scheme_cache[current_user.id] = response
+    return response
 
 
 def _vaccine_current_for_certificate(student_vaccine) -> bool:

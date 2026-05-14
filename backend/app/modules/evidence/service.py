@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 from app.common.access import ensure_student_in_admin_scope, is_app_admin
 from app.common.enums import AuditAction, EvidenceBatchStatus, Role
+from app.core.cache import invalidate_student_scheme
 from app.core.exceptions import BadRequestException, ForbiddenException, NotFoundException
 from app.core.file_validators import validate_pdf_file
 from app.modules.audit.service import AuditService
@@ -75,6 +76,7 @@ class EvidenceService:
             },
         )
         await self.repo.commit()
+        invalidate_student_scheme(user_id)
         return await self.repo.get_batch_by_id(batch.id)
 
     async def get_student_batches(
@@ -162,3 +164,4 @@ class EvidenceService:
         )
         await self.repo.delete_batch(batch)
         await self.repo.commit()
+        invalidate_student_scheme(batch.user_id)

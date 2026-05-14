@@ -8,6 +8,7 @@ import uuid
 from datetime import datetime, timezone
 
 from app.common.enums import AppliesTo, AuditAction, DoseStatus, Gender, Role, VaccineStatus
+from app.core.cache import invalidate_student_scheme, invalidate_student_scheme_all
 from app.core.exceptions import ForbiddenException, NotFoundException
 from app.modules.audit.service import AuditService, build_change_details
 from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose
@@ -51,6 +52,7 @@ class SchemeService:
                 sv.status = self.recalculate_vaccine_status(sv.doses)
         if any_changed:
             await self.scheme_repo.commit()
+            invalidate_student_scheme(user_id)
         return vaccines
 
     # ── Vaccine assignment ────────────────────────────────────────────
@@ -90,6 +92,7 @@ class SchemeService:
 
         if commit:
             await self.scheme_repo.commit()
+            invalidate_student_scheme(user_id)
         return assigned
 
     # ── Scheme regeneration (sex change) ──────────────────────────────
@@ -149,6 +152,7 @@ class SchemeService:
 
         if commit:
             await self.scheme_repo.commit()
+            invalidate_student_scheme(user_id)
         return assigned
 
     async def regenerate_all_active_students(self, *, commit: bool = True) -> int:
@@ -177,6 +181,7 @@ class SchemeService:
 
         if commit:
             await self.scheme_repo.commit()
+            invalidate_student_scheme_all()
         return len(users)
 
     # ── Student: update dose date ─────────────────────────────────────
@@ -250,6 +255,7 @@ class SchemeService:
 
         if commit:
             await self.scheme_repo.commit()
+            invalidate_student_scheme(user_id)
         return dose
 
     # ── Admin: review dose ────────────────────────────────────────────
@@ -274,6 +280,7 @@ class SchemeService:
 
         # Recalculate parent vaccine status
         sv = await self.scheme_repo.get_student_vaccine(dose.student_vaccine_id)
+        student_user_id = sv.user_id if sv else None
         if sv:
             sv.status = self.recalculate_vaccine_status(sv.doses)
             sv.reviewed_by = admin_id
@@ -281,6 +288,8 @@ class SchemeService:
 
         if commit:
             await self.scheme_repo.commit()
+            if student_user_id is not None:
+                invalidate_student_scheme(student_user_id)
         return dose
 
     # ── Domain rule: status recalculation ─────────────────────────────
