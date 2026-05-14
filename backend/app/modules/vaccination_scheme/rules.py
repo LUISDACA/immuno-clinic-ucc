@@ -6,10 +6,9 @@ from dataclasses import dataclass
 from datetime import date
 from uuid import UUID
 
-from dateutil.relativedelta import relativedelta
-
 from app.common.enums import DoseStatus, DoseType, VaccineStatus
 from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose
+from dateutil.relativedelta import relativedelta
 
 
 @dataclass(frozen=True)

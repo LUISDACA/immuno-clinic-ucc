@@ -2,11 +2,6 @@
 
 import uuid
 
-from fastapi import APIRouter, Depends, Query
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload
-
 from app.common.access import is_app_admin, student_in_admin_scope
 from app.core.dependencies import get_current_active_user, require_role
 from app.db.session import get_db
@@ -14,6 +9,10 @@ from app.modules.audit.models import AuditLog
 from app.modules.audit.schemas import AuditActorResponse, AuditLogResponse
 from app.modules.audit.service import AuditService
 from app.modules.users.models import User
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 router = APIRouter(prefix="/audit", tags=["Audit"])
 

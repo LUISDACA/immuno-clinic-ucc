@@ -3,9 +3,6 @@
 import hmac
 import uuid
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.config import settings
 from app.core.dependencies import get_current_active_user
 from app.db.session import get_db
@@ -20,6 +17,8 @@ from app.modules.notifications.schemas import (
 from app.modules.notifications.service import NotificationService
 from app.modules.notifications.vaccine_due import send_due_vaccine_reminders
 from app.modules.users.models import User
+from fastapi import APIRouter, Depends, Header, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
 

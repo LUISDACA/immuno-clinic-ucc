@@ -6,9 +6,6 @@ import logging
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
-from fastapi import UploadFile
-from pydantic import ValidationError
-
 from app.common.enums import AuditAction, DoseStatus
 from app.core.exceptions import BadRequestException, ConflictException
 from app.modules.admin.import_students.import_helpers import (
@@ -33,6 +30,8 @@ from app.modules.admin.schemas import (
 )
 from app.modules.users.models import User
 from app.modules.vaccination_scheme.models import StudentVaccineDose
+from fastapi import UploadFile
+from pydantic import ValidationError
 
 if TYPE_CHECKING:
     from app.modules.admin.service import AdminDependencies
@@ -217,9 +216,8 @@ class AdminStudentImportService:
 
         existing_emails: set[str] = set()
         if candidate_emails:
-            from sqlalchemy import select as sa_select
-
             from app.modules.users.models import User as UserModel
+            from sqlalchemy import select as sa_select
 
             result = await self.admin_deps.db.execute(
                 sa_select(UserModel.email).where(UserModel.email.in_(candidate_emails))

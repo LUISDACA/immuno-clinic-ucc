@@ -4,11 +4,10 @@ import uuid
 from datetime import date, datetime, timezone
 from enum import Enum
 
+from app.modules.audit.models import AuditLog
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-
-from app.modules.audit.models import AuditLog
 
 
 def audit_value(value):

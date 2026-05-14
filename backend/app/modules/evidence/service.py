@@ -3,8 +3,6 @@
 import uuid
 from datetime import datetime, timezone
 
-from fastapi import UploadFile
-
 from app.common.access import ensure_student_in_admin_scope, is_app_admin
 from app.common.enums import AuditAction, EvidenceBatchStatus, Role
 from app.core.exceptions import BadRequestException, ForbiddenException, NotFoundException
@@ -14,6 +12,7 @@ from app.modules.evidence.models import EvidenceBatch, EvidenceFile
 from app.modules.evidence.repository import EvidenceRepository
 from app.modules.users.models import User
 from app.storage.base import StorageService
+from fastapi import UploadFile
 
 
 class EvidenceService:

@@ -10,10 +10,6 @@ editable here — they remain seeded.
 
 import uuid
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
-
 from app.common.enums import AuditAction
 from app.core.exceptions import ConflictException, NotFoundException
 from app.modules.admin.schemas import (
@@ -24,6 +20,9 @@ from app.modules.audit.service import AuditService, build_change_details
 from app.modules.users.models import User
 from app.modules.vaccination_scheme.service import SchemeService
 from app.modules.vaccines.models import Vaccine, VaccineDoseConfig
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 
 class VaccineCatalogService:

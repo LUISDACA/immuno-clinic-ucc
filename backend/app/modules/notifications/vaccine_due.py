@@ -6,10 +6,6 @@ import asyncio
 import logging
 from datetime import date, datetime, time, timezone
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload, selectinload
-
 from app.common.enums import Role
 from app.core.config import settings
 from app.core.email import send_vaccine_due_email
@@ -19,6 +15,9 @@ from app.modules.notifications.push import PushNotificationSender
 from app.modules.users.models import User
 from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose
 from app.modules.vaccination_scheme.rules import DoseDueInfo, due_reminders_for_scheme
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload, selectinload
 
 logger = logging.getLogger(__name__)
 

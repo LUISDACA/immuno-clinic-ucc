@@ -3,10 +3,9 @@
 import uuid
 from datetime import datetime, timezone
 
+from app.modules.notifications.models import DeviceToken, Notification
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.modules.notifications.models import DeviceToken, Notification
 
 
 class NotificationRepository:

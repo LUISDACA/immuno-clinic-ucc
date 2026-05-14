@@ -5,11 +5,10 @@ import logging
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import event
-
 from app.modules.notifications.models import Notification
 from app.modules.notifications.push import PushNotificationSender
 from app.modules.notifications.repository import NotificationRepository
+from sqlalchemy import event
 
 logger = logging.getLogger(__name__)
 

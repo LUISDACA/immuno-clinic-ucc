@@ -7,9 +7,8 @@ import json
 from functools import lru_cache
 
 import firebase_admin
-from firebase_admin import credentials, messaging
-
 from app.core.config import settings
+from firebase_admin import credentials, messaging
 
 
 @lru_cache(maxsize=1)

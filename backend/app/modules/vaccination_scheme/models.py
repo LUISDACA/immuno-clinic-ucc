@@ -4,12 +4,11 @@ import uuid
 from datetime import date, datetime
 from typing import TYPE_CHECKING
 
+from app.common.enums import DoseStatus, VaccineStatus
+from app.db.base import Base, TimestampMixin, UUIDMixin
 from sqlalchemy import Date, DateTime, Enum, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.common.enums import DoseStatus, VaccineStatus
-from app.db.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
     from app.modules.users.models import User

@@ -3,11 +3,10 @@
 import uuid
 from datetime import date
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
-
 from app.common.academic import ACADEMIC_PROGRAMS, CAMPUSES
 from app.common.enums import AppliesTo, DoseType, Gender
 from app.modules.users.schemas import UserResponse
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
 class AcademicScopeMixin(BaseModel):

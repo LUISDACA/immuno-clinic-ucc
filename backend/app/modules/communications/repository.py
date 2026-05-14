@@ -2,13 +2,12 @@
 
 import uuid
 
-from sqlalchemy import and_, func, or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload, noload, selectinload
-
 from app.common.enums import Role
 from app.modules.communications.models import CommunicationMessage, CommunicationThread
 from app.modules.users.models import Profile, User
+from sqlalchemy import and_, func, or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload, noload, selectinload
 
 
 class CommunicationRepository:

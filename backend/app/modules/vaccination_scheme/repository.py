@@ -2,12 +2,11 @@
 
 import uuid
 
+from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose
+from app.modules.vaccines.models import Vaccine
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
-
-from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose
-from app.modules.vaccines.models import Vaccine
 
 
 class VaccineRepository:

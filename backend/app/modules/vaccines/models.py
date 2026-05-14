@@ -2,12 +2,11 @@
 
 import uuid
 
+from app.common.enums import AppliesTo, DoseType
+from app.db.base import Base, TimestampMixin, UUIDMixin
 from sqlalchemy import JSON, Boolean, Enum, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.common.enums import AppliesTo, DoseType
-from app.db.base import Base, TimestampMixin, UUIDMixin
 
 
 class Vaccine(Base, UUIDMixin, TimestampMixin):

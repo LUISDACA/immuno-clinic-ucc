@@ -3,10 +3,6 @@
 import logging
 import uuid
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
-
 from app.common.access import ensure_student_in_admin_scope, is_app_admin, require_admin_scope
 from app.common.enums import AuditAction, Role
 from app.core.email import send_account_created_email
@@ -25,6 +21,9 @@ from app.modules.users.models import Profile, User
 from app.modules.users.repository import UserRepository
 from app.modules.vaccination_scheme.service import SchemeService
 from app.storage.base import StorageService
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 logger = logging.getLogger(__name__)
 

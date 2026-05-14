@@ -2,9 +2,6 @@
 
 import uuid
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.common.enums import VaccineStatus
 from app.core.dependencies import get_current_active_user
 from app.db.session import get_db
@@ -22,6 +19,8 @@ from app.modules.vaccination_scheme.schemas import (
     UpdateDoseRequest,
 )
 from app.modules.vaccination_scheme.service import SchemeService
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/scheme", tags=["Vaccination Scheme"])
 

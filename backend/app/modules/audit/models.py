@@ -4,11 +4,10 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from app.db.base import Base, UUIDMixin
 from sqlalchemy import JSON, DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.db.base import Base, UUIDMixin
 
 if TYPE_CHECKING:
     from app.modules.users.models import User

@@ -4,12 +4,11 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from app.common.enums import EvidenceBatchStatus
+from app.db.base import Base, TimestampMixin, UUIDMixin
 from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.common.enums import EvidenceBatchStatus
-from app.db.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
     from app.modules.users.models import User

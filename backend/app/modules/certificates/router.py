@@ -1,14 +1,13 @@
 """Certificate module — thin HTTP router."""
 
-from fastapi import APIRouter, Depends, Request
-from fastapi.responses import StreamingResponse
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.dependencies import get_current_active_user
 from app.core.rate_limit import limiter
 from app.db.session import get_db
 from app.modules.certificates.service import CertificateService
 from app.modules.users.models import User
+from fastapi import APIRouter, Depends, Request
+from fastapi.responses import StreamingResponse
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/certificates", tags=["Certificates"])
 

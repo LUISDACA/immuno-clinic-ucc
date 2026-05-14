@@ -2,12 +2,11 @@
 
 import uuid
 
+from app.modules.evidence.models import EvidenceBatch, EvidenceFile
+from app.modules.users.models import User
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
-
-from app.modules.evidence.models import EvidenceBatch, EvidenceFile
-from app.modules.users.models import User
 
 
 class EvidenceRepository:

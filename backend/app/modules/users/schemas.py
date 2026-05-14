@@ -3,9 +3,8 @@
 import uuid
 from datetime import date, datetime
 
-from pydantic import BaseModel, Field
-
 from app.common.enums import Gender, Role
+from pydantic import BaseModel, Field
 
 
 class ProfileResponse(BaseModel):

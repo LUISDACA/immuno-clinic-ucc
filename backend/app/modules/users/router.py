@@ -1,14 +1,13 @@
 """Users module — API router."""
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.dependencies import get_current_active_user
 from app.db.session import get_db
 from app.modules.users.models import User
 from app.modules.users.repository import UserRepository
 from app.modules.users.schemas import ProfileUpdateRequest, UserResponse
 from app.modules.users.service import UserService
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/users", tags=["Users"])
 

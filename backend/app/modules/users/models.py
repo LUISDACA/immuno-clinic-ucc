@@ -4,12 +4,11 @@ import uuid
 from datetime import date
 from typing import TYPE_CHECKING
 
+from app.common.enums import Gender, Role
+from app.db.base import Base, TimestampMixin, UUIDMixin
 from sqlalchemy import Boolean, Date, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from app.common.enums import Gender, Role
-from app.db.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
     from app.modules.audit.models import AuditLog

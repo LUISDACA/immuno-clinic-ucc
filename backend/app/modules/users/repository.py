@@ -2,12 +2,11 @@
 
 import uuid
 
+from app.common.enums import Role
+from app.modules.users.models import Profile, User
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-
-from app.common.enums import Role
-from app.modules.users.models import Profile, User
 
 
 class UserRepository:

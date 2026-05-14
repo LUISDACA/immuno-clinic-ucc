@@ -2,8 +2,6 @@
 
 import uuid
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.common.access import is_app_admin
 from app.common.enums import AuditAction, Gender, Role
 from app.core.exceptions import (
@@ -17,6 +15,7 @@ from app.modules.admin.schemas import CreateAdminRequest
 from app.modules.audit.service import AuditService
 from app.modules.users.models import Profile, User
 from app.modules.users.repository import UserRepository
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def _fallback_first_name(email: str) -> str:

@@ -5,13 +5,6 @@ import uuid
 from datetime import date, datetime, timezone
 from xml.sax.saxutils import escape
 
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import landscape, letter
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-from reportlab.lib.units import inch
-from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.common.enums import DoseStatus, Role
 from app.core.config import settings
 from app.core.exceptions import BadRequestException
@@ -24,6 +17,12 @@ from app.modules.vaccination_scheme.rules import (
     due_info_by_dose,
 )
 from app.modules.vaccination_scheme.service import SchemeService
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import landscape, letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class CertificateService:

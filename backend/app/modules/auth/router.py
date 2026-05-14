@@ -1,8 +1,5 @@
 """Auth module - API router (thin HTTP layer)."""
 
-from fastapi import APIRouter, Depends, Request
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.dependencies import get_current_active_user
 from app.core.rate_limit import limiter
 from app.db.session import get_db
@@ -20,6 +17,8 @@ from app.modules.auth.schemas import (
 )
 from app.modules.auth.service import AuthService
 from app.modules.users.models import User
+from fastapi import APIRouter, Depends, Request
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 

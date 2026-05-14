@@ -158,9 +158,8 @@ class SchemeService:
         and re-creates it from active vaccines, preserving applied_date and
         titer_value by (vaccine_code, dose_number) where the dose still exists.
         """
-        from sqlalchemy import select
-
         from app.modules.users.models import Profile, User
+        from sqlalchemy import select
 
         result = await self.scheme_repo.db.execute(
             select(User).join(Profile).where(User.is_active.is_(True), User.role == Role.STUDENT)

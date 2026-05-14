@@ -2,14 +2,13 @@
 
 from dataclasses import dataclass
 
-from sqlalchemy import case, func, or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload, selectinload
-
 from app.common.enums import Role, VaccineStatus
 from app.modules.users.models import Profile, User
 from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose
 from app.modules.vaccines.models import Vaccine
+from sqlalchemy import case, func, or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload, selectinload
 
 
 @dataclass(frozen=True)

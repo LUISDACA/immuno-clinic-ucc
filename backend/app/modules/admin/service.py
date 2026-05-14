@@ -5,8 +5,6 @@ delegating every single method. Now it only holds shared dependencies
 that sub-services need, while the router calls sub-services directly.
 """
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.modules.admin.accounts.service import AdminAccountService
 from app.modules.admin.dose_reviews.service import DoseReviewService
 from app.modules.admin.reports.repository import AdminStudentReportRepository
@@ -19,6 +17,7 @@ from app.modules.notifications.service import NotificationService
 from app.modules.users.repository import UserRepository
 from app.modules.vaccination_scheme.repository import SchemeRepository, VaccineRepository
 from app.modules.vaccination_scheme.service import SchemeService
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class AdminDependencies:

@@ -2,9 +2,6 @@
 
 import uuid
 
-from fastapi import APIRouter, Depends, Query
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.core.dependencies import get_current_active_user
 from app.db.session import get_db
 from app.modules.communications.models import CommunicationMessage, CommunicationThread
@@ -20,6 +17,8 @@ from app.modules.communications.schemas import (
 )
 from app.modules.communications.service import CommunicationService
 from app.modules.users.models import User
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/communications", tags=["Communications"])
 

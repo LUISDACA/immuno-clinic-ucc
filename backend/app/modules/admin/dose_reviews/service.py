@@ -2,8 +2,6 @@
 
 import uuid
 
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.common.access import ensure_student_in_admin_scope
 from app.common.enums import AuditAction, DoseStatus, Role
 from app.core.exceptions import NotFoundException
@@ -14,6 +12,7 @@ from app.modules.users.repository import UserRepository
 from app.modules.vaccination_scheme.models import StudentVaccineDose
 from app.modules.vaccination_scheme.schemas import ReviewDoseRequest
 from app.modules.vaccination_scheme.service import SchemeService
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class DoseReviewService:
