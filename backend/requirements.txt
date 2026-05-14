@@ -34,5 +34,11 @@ firebase-admin>=6.6.0
 # Rate Limiting
 slowapi>=0.1.9
 
+# Production server
+gunicorn>=23.0.0
+
+# In-memory caching
+cachetools>=5.5.0
+
 # Utilities
 python-dateutil>=2.9.0
