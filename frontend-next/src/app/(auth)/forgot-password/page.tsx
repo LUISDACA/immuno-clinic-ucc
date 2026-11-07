@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { accountFormError } from "@/lib/ui/account-form-error";
 import Link from "next/link";
 import { ArrowLeft, MailCheck, Send } from "lucide-react";
 import { forgotPassword } from "@/lib/auth/api";
@@ -19,12 +20,19 @@ import {
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const inFlight = useRef(false);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (inFlight.current) return;
     setError(null);
     if (!email) {
       setEmailError("Ingresa tu correo");
@@ -35,43 +43,16 @@ export default function ForgotPasswordPage() {
       return;
     }
     setEmailError(null);
+    inFlight.current = true;
     setSubmitting(true);
     try {
       await forgotPassword(email.trim().toLowerCase());
-      setSubmitted(true);
+      if (mounted.current) setSubmitted(true);
     } catch (err) {
-      const ax = err as {
-        code?: string;
-        message?: string;
-        response?: { status?: number; data?: { detail?: string } };
-      };
-      const status = ax.response?.status;
-      const detail = ax.response?.data?.detail;
-
-      if (status === 429) {
-        setError("Demasiados intentos. Espera un minuto e intenta de nuevo.");
-      } else if (typeof detail === "string") {
-        setError(`(${status ?? "?"}) ${detail}`);
-      } else if (status) {
-        setError(`Servidor respondió con estado ${status}.`);
-      } else if (
-        ax.code === "ERR_NETWORK" ||
-        ax.message?.toLowerCase().includes("network")
-      ) {
-        setError(
-          "No se pudo contactar al servidor (probablemente CORS o backend caído).",
-        );
-      } else if (ax.code === "ECONNABORTED") {
-        setError(
-          "El servidor tardó demasiado en responder. Intenta de nuevo en 30-60s (Render free puede estar 'durmiendo').",
-        );
-      } else {
-        setError(
-          `Error inesperado: ${ax.code ?? ""} ${ax.message ?? "sin detalle"}`.trim(),
-        );
-      }
+      if (mounted.current) setError(accountFormError(err, "forgot"));
     } finally {
-      setSubmitting(false);
+      inFlight.current = false;
+      if (mounted.current) setSubmitting(false);
     }
   }
 
@@ -116,7 +97,8 @@ export default function ForgotPasswordPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+        <form onSubmit={handleSubmit} aria-busy={submitting} noValidate>
+          <fieldset disabled={submitting} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="email">Correo electrónico</Label>
             <EmailInput
@@ -125,9 +107,10 @@ export default function ForgotPasswordPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               aria-invalid={!!emailError}
+              aria-describedby={emailError ? "email-error" : undefined}
             />
             {emailError && (
-              <p className="text-xs text-[color:var(--destructive)]">
+              <p id="email-error" className="text-xs text-[color:var(--destructive)]">
                 {emailError}
               </p>
             )}
@@ -148,6 +131,7 @@ export default function ForgotPasswordPage() {
               </>
             )}
           </Button>
+          </fieldset>
         </form>
       </CardContent>
     </Card>

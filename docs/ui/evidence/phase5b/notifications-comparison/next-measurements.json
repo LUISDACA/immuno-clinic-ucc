@@ -1,0 +1,682 @@
+[
+  {
+    "role": "student",
+    "state": "unread",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "backend-fixture-response"
+  },
+  {
+    "role": "student",
+    "state": "unread",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "unread",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "backend-fixture-response"
+  },
+  {
+    "role": "student",
+    "state": "read",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "read",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "read",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 426,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "unread",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "backend-fixture-response"
+  },
+  {
+    "role": "student",
+    "state": "unread",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "unread",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "backend-fixture-response"
+  },
+  {
+    "role": "student",
+    "state": "read",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "read",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "read",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "student",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 426,
+      "scrollY": 808
+    }
+  },
+  {
+    "role": "student",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "unread",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "backend-fixture-response"
+  },
+  {
+    "role": "admin",
+    "state": "unread",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "unread",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "backend-fixture-response"
+  },
+  {
+    "role": "admin",
+    "state": "read",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "read",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "read",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 426,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "unread",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "backend-fixture-response"
+  },
+  {
+    "role": "admin",
+    "state": "unread",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "unread",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "backend-fixture-response"
+  },
+  {
+    "role": "admin",
+    "state": "read",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "read",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "read",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 230,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "content_scroll": {
+      "top": 166,
+      "bottom": 426,
+      "scrollY": 676
+    }
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "font": "Inter, \"Inter Fallback\", Inter, Arial, Helvetica, sans-serif",
+    "source": "controlled-response-for-presentation"
+  }
+]

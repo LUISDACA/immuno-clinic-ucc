@@ -62,6 +62,7 @@ class _StudentDashboardScreenState
               child: const Icon(Icons.notifications_outlined),
             ),
             onPressed: () => context.push('/student/notifications'),
+            tooltip: 'Notificaciones',
           ),
           IconButton(
             icon: Badge(
@@ -120,7 +121,7 @@ class _StudentDashboardScreenState
                     const SizedBox(width: 8),
                     const Expanded(
                       child: Text(
-                        'Modo sin conexión: mostrando datos guardados. Conéctate a internet para ver la información más reciente.',
+                        'Información no verificada por falta de conexión.',
                         style: TextStyle(color: AppColors.warning),
                       ),
                     ),
@@ -346,8 +347,6 @@ class _StudentStatCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
@@ -504,7 +503,7 @@ class _QA extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
-                    color: action.color,
+                    color: colorScheme.onSurface,
                   ),
                 ),
               ],

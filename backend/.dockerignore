@@ -1,0 +1,16 @@
+.env
+.venv
+venv
+__pycache__
+.pytest_cache
+.mypy_cache
+.ruff_cache
+tests
+validation
+uploads
+*.log
+*firebase*.json
+*service-account*.json
+*.sqlite
+*.sqlite3
+*.db

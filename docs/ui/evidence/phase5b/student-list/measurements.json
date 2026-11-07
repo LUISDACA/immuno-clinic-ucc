@@ -1,0 +1,39 @@
+{
+  "stage": "verified-after",
+  "screen": "admin-student-list",
+  "viewport": 320,
+  "statusMapping": {
+    "backend": "in_review",
+    "display": "Pendiente"
+  },
+  "geometry": {
+    "viewport": 320,
+    "scrollWidth": 320,
+    "details": {
+      "left": 16,
+      "right": 304
+    },
+    "summary": {
+      "left": 17,
+      "right": 303
+    },
+    "open": true,
+    "badges": [
+      {
+        "text": "0 aprobados",
+        "left": 194.671875,
+        "right": 287
+      },
+      {
+        "text": "20 pendientes",
+        "left": 184.78125,
+        "right": 287
+      },
+      {
+        "text": "0 denegados",
+        "left": 167.9375,
+        "right": 263
+      }
+    ]
+  }
+}

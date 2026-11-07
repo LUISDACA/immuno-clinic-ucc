@@ -1,0 +1,270 @@
+--- a/frontend-next/src/app/admin/students/create/page.tsx
++++ b/frontend-next/src/app/admin/students/create/page.tsx
+@@ -4 +3,0 @@
+-import { useQueryClient } from "@tanstack/react-query";
+@@ -6 +5 @@
+-import { useId, useState } from "react";
++import { useEffect, useId, useRef, useState } from "react";
+@@ -39 +38,6 @@
+-  const queryClient = useQueryClient();
++  const formId = useId();
++  const mounted = useRef(true);
++  const busyRef = useRef(false);
++  const [busy, setBusy] = useState(false);
++  const [error, setError] = useState<string | null>(null);
++  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+@@ -48,2 +52,2 @@
+-    affectedQueries: [["admin", "students"],["audit"]],
+-    mutationFn: () => createStudent(cleanPayload(form)),
++    affectedQueries: [["admin", "students"], ["audit"]],
++    mutationFn: (payload: CreateStudentRequest) => createStudent(payload),
+@@ -50,0 +55 @@
++      if (!mounted.current) return;
+@@ -52 +56,0 @@
+-      queryClient.invalidateQueries({ queryKey: ["admin", "students"] });
+@@ -55 +59 @@
+-    onError: () => toast.error("No se pudo crear"),
++    onError: () => showError("No se pudo crear el estudiante. Revisa los datos antes de reintentar."),
+@@ -60,4 +64 @@
+-    mutationFn: () => {
+-      if (!file) throw new Error("Selecciona un archivo");
+-      return previewStudentImport(file);
+-    },
++    mutationFn: (selected: File) => previewStudentImport(selected),
+@@ -64,0 +66 @@
++      if (!mounted.current) return;
+@@ -66 +67,0 @@
+-      setImportResult(null);
+@@ -69 +70 @@
+-    onError: () => toast.error("No se pudo leer el archivo"),
++    onError: () => showError("No se pudo leer el archivo. Vuelve a solicitar la vista previa."),
+@@ -73,5 +74,2 @@
+-    affectedQueries: [["admin", "students"],["audit"]],
+-    mutationFn: () => {
+-      if (!file) throw new Error("Selecciona un archivo");
+-      return importStudentsFile(file);
+-    },
++    affectedQueries: [["admin", "students"], ["audit"]],
++    mutationFn: (selected: File) => importStudentsFile(selected),
+@@ -78,0 +77 @@
++      if (!mounted.current) return;
+@@ -80 +78,0 @@
+-      queryClient.invalidateQueries({ queryKey: ["admin", "students"] });
+@@ -83 +81 @@
+-    onError: () => toast.error("No se pudo importar"),
++    onError: () => showError("No se pudo confirmar la importación. Revisa la lista y solicita una nueva vista previa antes de reintentar."),
+@@ -84,0 +83,36 @@
++
++  function showError(message: string) {
++    if (!mounted.current) return;
++    setError(message);
++    toast.error(message);
++  }
++
++  async function perform(operation: () => Promise<unknown>) {
++    if (busyRef.current) return;
++    busyRef.current = true;
++    setBusy(true);
++    setError(null);
++    try { await operation(); }
++    catch { /* The mutation presents a safe error; never expose transport details. */ }
++    finally {
++      busyRef.current = false;
++      if (mounted.current) setBusy(false);
++    }
++  }
++
++  function requestPreview() {
++    if (!file || busyRef.current) return;
++    const selected = file;
++    setPreview(null);
++    setImportResult(null);
++    void perform(() => previewImport.mutateAsync(selected));
++  }
++
++  function confirmImport() {
++    if (!file || !preview || preview.will_create === 0 || busyRef.current) return;
++    const selected = file;
++    // A confirmation authorizes this attempt only, including ambiguous network failures.
++    setPreview(null);
++    setImportResult(null);
++    void perform(() => runImport.mutateAsync(selected));
++  }
+@@ -94,0 +129,5 @@
++      <form id={formId} onSubmit={(event) => {
++        event.preventDefault();
++        void perform(() => create.mutateAsync(cleanPayload(form)));
++      }}>
++      <fieldset disabled={busy} className="min-w-0">
+@@ -194,0 +234,2 @@
++      </fieldset>
++      </form>
+@@ -208 +249 @@
+-              disabled={previewImport.isPending || runImport.isPending}
++              disabled={busy}
+@@ -214,0 +256 @@
++                setError(null);
+@@ -221,2 +263,2 @@
+-              onClick={() => previewImport.mutate()}
+-              disabled={!file || previewImport.isPending || runImport.isPending}
++              onClick={requestPreview}
++              disabled={!file || busy}
+@@ -227,2 +269,2 @@
+-              onClick={() => runImport.mutate()}
+-              disabled={!file || runImport.isPending || previewImport.isPending || !preview}
++              onClick={confirmImport}
++              disabled={!file || busy || !preview || preview.will_create === 0}
+@@ -237,0 +280 @@
++      {error && <p role="alert">{error}</p>}
+@@ -239 +282 @@
+-        <Button onClick={() => create.mutate()} disabled={create.isPending}>
++        <Button type="submit" form={formId} disabled={busy}>
+@@ -242 +285 @@
+-        <Button variant="ghost" onClick={() => router.back()}>
++        <Button variant="ghost" disabled={busy} onClick={() => router.back()}>
+--- a/frontend-next/src/components/app-shell.tsx
++++ b/frontend-next/src/components/app-shell.tsx
+@@ -102 +102 @@
+-      <div className={cn("flex min-h-screen flex-col", (notificationPage || communicationPage || studentProfilePage || accountPasswordPage || pathname === "/admin") && "relative z-0", studentProfilePage && profileStyles.shell)}>
++      <div className={cn("flex min-h-screen flex-col", (notificationPage || communicationPage || studentProfilePage || accountPasswordPage || pathname === "/admin/students/create" || pathname === "/admin") && "relative z-0", studentProfilePage && profileStyles.shell)}>
+--- a/frontend/lib/features/admin/presentation/screens/create_student_screen.dart
++++ b/frontend/lib/features/admin/presentation/screens/create_student_screen.dart
+@@ -8 +7,0 @@
+-import '../../../../core/error/api_error_message.dart';
+@@ -42,0 +42,2 @@
++  bool get _busy => _loading || _isImporting;
++
+@@ -70,0 +72 @@
++    if (_busy) return;
+@@ -79 +81 @@
+-    if (picked != null) {
++    if (mounted && !_busy && picked != null) {
+@@ -85 +87 @@
+-    if (!_formKey.currentState!.validate()) return;
++    if (_busy || !_formKey.currentState!.validate()) return;
+@@ -123,5 +125,5 @@
+-    } on DioException catch (e) {
+-      setState(() {
+-        _loading = false;
+-        _err = apiErrorMessageFromData(e.response?.data) ?? 'Error';
+-      });
++    } catch (error) {
++      if (!mounted) return;
++      setState(() => _err = _safeError(error));
++    } finally {
++      if (mounted) setState(() => _loading = false);
+@@ -130,0 +133,14 @@
++  String _safeError(Object error) {
++    final status = error is DioException ? error.response?.statusCode : null;
++    return switch (status) {
++      401 => 'Tu sesión expiró. Vuelve a iniciar sesión.',
++      403 => 'No tienes permiso para esta operación.',
++      409 =>
++        'Hay un conflicto con los datos. Revisa la lista antes de reintentar.',
++      422 => 'Revisa los datos o el formato del archivo.',
++      429 => 'Demasiados intentos. Espera antes de reintentar.',
++      _ =>
++        'No se pudo confirmar la operación. Revisa la lista antes de reintentar.',
++    };
++  }
++
+@@ -132,19 +148 @@
+-    final picked = await FilePicker.platform.pickFiles(
+-      type: FileType.custom,
+-      allowedExtensions: ['xlsx', 'csv'],
+-      withData: true,
+-    );
+-    if (picked == null || picked.files.isEmpty) return;
+-
+-    final file = picked.files.single;
+-    final bytes = file.bytes;
+-    if (bytes == null) {
+-      if (!mounted) return;
+-      ScaffoldMessenger.of(context).showSnackBar(
+-        const SnackBar(
+-          content: Text('No se pudo leer el archivo seleccionado'),
+-        ),
+-      );
+-      return;
+-    }
+-
++    if (_busy) return;
+@@ -155,0 +154,12 @@
++      final picked = await FilePicker.platform.pickFiles(
++        type: FileType.custom,
++        allowedExtensions: ['xlsx', 'csv'],
++        withData: true,
++      );
++      if (!mounted || picked == null || picked.files.isEmpty) return;
++      final file = picked.files.single;
++      final bytes = file.bytes;
++      if (bytes == null) {
++        _showImportError('No se pudo leer el archivo seleccionado');
++        return;
++      }
+@@ -174 +184 @@
+-    } catch (e) {
++    } catch (error) {
+@@ -176,3 +186 @@
+-      ScaffoldMessenger.of(context).showSnackBar(
+-        SnackBar(content: Text('Error importando estudiantes: $e')),
+-      );
++      _showImportError(_safeError(error));
+@@ -181,0 +190,7 @@
++  }
++
++  void _showImportError(String message) {
++    setState(() => _err = message);
++    final messenger = ScaffoldMessenger.of(context);
++    messenger.hideCurrentSnackBar();
++    messenger.showSnackBar(SnackBar(content: Text(message)));
+@@ -372,0 +388 @@
++                enabled: !_busy,
+@@ -379,0 +396 @@
++                enabled: !_busy,
+@@ -393,0 +411 @@
++                      enabled: !_busy,
+@@ -402,0 +421 @@
++                      enabled: !_busy,
+@@ -414,0 +434 @@
++                enabled: !_busy,
+@@ -419,0 +440 @@
++                enabled: !_busy,
+@@ -436,4 +457,5 @@
+-                onChanged: (v) => setState(() => _sex = v!),
+-              ),
+-              const SizedBox(height: 12),
+-              TextFormField(
++                onChanged: _busy ? null : (v) => setState(() => _sex = v!),
++              ),
++              const SizedBox(height: 12),
++              TextFormField(
++                enabled: !_busy,
+@@ -444,0 +467 @@
++                enabled: !_busy,
+@@ -449,0 +473 @@
++                enabled: !_busy,
+@@ -456,0 +481 @@
++                enabled: !_busy,
+@@ -473 +498,3 @@
+-                  onChanged: (value) => setState(() => _program = value),
++                  onChanged: _busy
++                      ? null
++                      : (value) => setState(() => _program = value),
+@@ -485 +512,3 @@
+-                  onChanged: (value) => setState(() => _campus = value),
++                  onChanged: _busy
++                      ? null
++                      : (value) => setState(() => _campus = value),
+@@ -489,0 +519 @@
++                enabled: !_busy,
+@@ -499 +529,5 @@
+-                    style: const TextStyle(color: AppColors.error),
++                    style: TextStyle(
++                      color: Theme.of(context).brightness == Brightness.dark
++                          ? AppColors.darkTextPrimary
++                          : AppColors.error,
++                    ),
+@@ -507 +541 @@
+-                  onPressed: _loading ? null : _submit,
++                  onPressed: _busy ? null : _submit,

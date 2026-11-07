@@ -8,7 +8,8 @@ String dioErrorMessage(DioException error, {required String fallback}) {
 
 String? apiErrorMessageFromData(dynamic data) {
   if (data is Map) {
-    return _messageFromDetail(data['detail']) ?? _messageFromDetail(data['message']);
+    return _messageFromDetail(data['message']) ??
+        _messageFromDetail(data['detail']);
   }
   return _messageFromDetail(data);
 }

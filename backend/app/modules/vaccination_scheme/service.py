@@ -9,17 +9,23 @@ from datetime import datetime, timezone
 
 from app.common.enums import AppliesTo, AuditAction, DoseStatus, Gender, Role, VaccineStatus
 from app.core.cache import invalidate_student_scheme, invalidate_student_scheme_all
-from app.core.exceptions import ForbiddenException, NotFoundException
+from app.core.exceptions import ConflictException, ForbiddenException, NotFoundException
 from app.modules.audit.service import AuditService, build_change_details
-from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose
+from app.modules.users.models import Profile, User
+from app.modules.vaccination_scheme.models import (
+    StudentSchemeVersion,
+    StudentVaccine,
+    StudentVaccineDose,
+)
 from app.modules.vaccination_scheme.repository import SchemeRepository, VaccineRepository
 from app.modules.vaccination_scheme.rules import (
-    certificate_overdue_doses,
-    certificate_vaccine_complete,
     vaccine_status_from_certificate_rules,
+    validate_application_date,
 )
 from app.modules.vaccination_scheme.schemas import ReviewDoseRequest, UpdateDoseRequest
 from app.modules.vaccines.models import Vaccine, VaccineDoseConfig
+from sqlalchemy import func, select
+from sqlalchemy.orm import joinedload
 
 
 class SchemeService:
@@ -33,37 +39,8 @@ class SchemeService:
     # ── Query operations ──────────────────────────────────────────────
 
     async def get_student_scheme(self, user_id: uuid.UUID) -> list[StudentVaccine]:
-        """Get the full vaccination scheme for a student.
-
-        Auto-denies any pending doses whose calculated due date has already
-        passed, so both the student and admin always see up-to-date status.
-        Vaccines already approved via titer are exempt: their pending doses
-        are no longer clinically required, so they are not auto-denied.
-        """
-        vaccines = await self.scheme_repo.get_student_vaccines(user_id)
-        any_changed = False
-        for sv in vaccines:
-            # Skip auto-deny entirely if an approved titer already covers
-            # this vaccine — pending doses are not needed anymore.
-            if certificate_vaccine_complete(sv):
-                if sv.status != VaccineStatus.APPROVED:
-                    sv.status = VaccineStatus.APPROVED
-                    any_changed = True
-                continue
-            sv_changed = False
-            for due_info in certificate_overdue_doses(sv):
-                dose = next((d for d in sv.doses if d.id == due_info.dose_id), None)
-                if dose is None or dose.status == DoseStatus.DENIED:
-                    continue
-                dose.status = DoseStatus.DENIED
-                sv_changed = True
-                any_changed = True
-            if sv_changed:
-                sv.status = self.recalculate_vaccine_status(sv.doses)
-        if any_changed:
-            await self.scheme_repo.commit()
-            invalidate_student_scheme(user_id)
-        return vaccines
+        """Read the current scheme without creating clinical state transitions."""
+        return await self.scheme_repo.get_student_vaccines(user_id)
 
     # ── Vaccine assignment ────────────────────────────────────────────
 
@@ -100,6 +77,7 @@ class SchemeService:
 
             assigned.append(sv)
 
+        await self.append_scheme_version(user_id, "initial-assignment")
         if commit:
             await self.scheme_repo.commit()
             invalidate_student_scheme(user_id)
@@ -113,57 +91,209 @@ class SchemeService:
         new_sex: Gender,
         *,
         commit: bool = True,
+        before_recorded: bool = False,
+        created_by: uuid.UUID | None = None,
     ) -> list[StudentVaccine]:
-        """
-        Regenerate the entire vaccination scheme when a student's sex changes.
-        Preserves applied_date data where doses still apply.
-        """
-        # Get current scheme to preserve data
-        current_scheme = await self.scheme_repo.get_student_vaccines(user_id)
-        preserved_dates: dict[str, dict] = {}
+        """Reconcile to the current catalog while retaining all old assignment rows."""
+        if not before_recorded:
+            await self.append_scheme_version(
+                user_id,
+                "profile:reconciliation:before",
+                created_by=created_by,
+            )
+        return await self.reconcile_student_scheme(
+            user_id,
+            new_sex,
+            reason="profile:sex-change",
+            created_by=created_by,
+            commit=commit,
+        )
 
-        for sv in current_scheme:
-            vaccine_code = sv.vaccine.code if sv.vaccine else ""
-            for dose in sv.doses:
-                key = f"{vaccine_code}_{dose.dose_number}"
-                preserved_dates[key] = {
-                    "applied_date": dose.applied_date,
-                    "titer_value": dose.titer_value,
-                }
-
-        # Delete current scheme
-        await self.scheme_repo.delete_student_vaccines(user_id)
-
-        # Re-assign with new sex rules
+    async def reconcile_student_scheme(
+        self,
+        user_id: uuid.UUID,
+        sex: Gender,
+        *,
+        reason: str,
+        created_by: uuid.UUID | None = None,
+        commit: bool = True,
+    ) -> list[StudentVaccine]:
         vaccines = await self.vaccine_repo.get_active_vaccines()
-        assigned = []
+        vaccine_by_id = {vaccine.id: vaccine for vaccine in vaccines}
+        result = await self.scheme_repo.db.execute(
+            select(StudentVaccine)
+            .where(StudentVaccine.user_id == user_id)
+            .options(joinedload(StudentVaccine.vaccine))
+            .with_for_update(of=StudentVaccine)
+        )
+        assignments = list(result.unique().scalars().all())
+        assignment_by_vaccine = {item.vaccine_id: item for item in assignments}
 
         for vaccine in vaccines:
-            if not self._vaccine_applies_to_sex(vaccine, new_sex):
-                continue
+            assignment = assignment_by_vaccine.get(vaccine.id)
+            applies = self._vaccine_applies_to_sex(vaccine, sex)
+            if assignment is None:
+                if not applies:
+                    continue
+                assignment = StudentVaccine(
+                    user_id=user_id,
+                    vaccine_id=vaccine.id,
+                    status=VaccineStatus.IN_REVIEW,
+                    is_active=True,
+                )
+                self.scheme_repo.db.add(assignment)
+                await self.scheme_repo.db.flush()
+                assignments.append(assignment)
+                assignment_by_vaccine[vaccine.id] = assignment
+            assignment.is_active = applies
 
-            sv = StudentVaccine(
-                user_id=user_id,
-                vaccine_id=vaccine.id,
-                status=VaccineStatus.PENDING,
+            dose_result = await self.scheme_repo.db.execute(
+                select(StudentVaccineDose)
+                .where(StudentVaccineDose.student_vaccine_id == assignment.id)
+                .options(joinedload(StudentVaccineDose.dose_config))
+                .with_for_update(of=StudentVaccineDose)
             )
-            sv = await self.scheme_repo.create_student_vaccine(sv)
-
-            doses = self._generate_doses_for_vaccine(sv.id, vaccine, new_sex)
+            doses = list(dose_result.unique().scalars().all())
+            by_config = {dose.dose_config_id: dose for dose in doses}
+            applicable_configs = {
+                config.id: config
+                for config in vaccine.dose_configs
+                if self._dose_config_applies_to_sex(config, sex)
+            }
             for dose in doses:
-                # Restore preserved dates if they exist
-                key = f"{vaccine.code}_{dose.dose_number}"
-                if key in preserved_dates:
-                    dose.applied_date = preserved_dates[key]["applied_date"]
-                    dose.titer_value = preserved_dates[key]["titer_value"]
-                await self.scheme_repo.create_dose(dose)
+                dose.is_active = applies and dose.dose_config_id in applicable_configs
+            for config_id, config in applicable_configs.items():
+                if config_id not in by_config:
+                    new_dose = StudentVaccineDose(
+                        student_vaccine_id=assignment.id,
+                        dose_config_id=config_id,
+                        dose_number=config.dose_number,
+                        status=DoseStatus.IN_REVIEW,
+                        is_active=applies,
+                    )
+                    self.scheme_repo.db.add(new_dose)
+                    doses.append(new_dose)
+            assignment.status = self.recalculate_vaccine_status(
+                [dose for dose in doses if dose.is_active]
+            )
 
-            assigned.append(sv)
-
+        for assignment in assignments:
+            if assignment.vaccine_id not in vaccine_by_id:
+                assignment.is_active = False
+        await self.scheme_repo.db.flush()
         if commit:
+            await self.append_scheme_version(user_id, reason, created_by=created_by)
             await self.scheme_repo.commit()
             invalidate_student_scheme(user_id)
-        return assigned
+        return await self.scheme_repo.get_student_vaccines(user_id)
+
+    async def append_scheme_version(
+        self,
+        user_id: uuid.UUID,
+        reason: str,
+        *,
+        created_by: uuid.UUID | None = None,
+    ) -> StudentSchemeVersion:
+        """Append an immutable clinical snapshot before or after reconciliation."""
+        await self.scheme_repo.db.execute(
+            select(User.id).where(User.id == user_id).with_for_update()
+        )
+        current = await self.scheme_repo.get_student_vaccines(user_id)
+        profile = await self.scheme_repo.db.scalar(
+            select(Profile).where(Profile.user_id == user_id)
+        )
+        latest = await self.scheme_repo.db.scalar(
+            select(func.max(StudentSchemeVersion.version_number)).where(
+                StudentSchemeVersion.user_id == user_id
+            )
+        )
+        snapshot = {
+            "profile": {
+                "sex": profile.sex.value if profile else None,
+                "program": profile.program if profile else None,
+                "campus": profile.campus if profile else None,
+            },
+            "vaccines": [
+                {
+                    "assignment_id": str(vaccine.id),
+                    "vaccine_id": str(vaccine.vaccine_id),
+                    "code": vaccine.vaccine.code if vaccine.vaccine else None,
+                    "name": vaccine.vaccine.name if vaccine.vaccine else None,
+                    "is_annual": vaccine.vaccine.is_annual if vaccine.vaccine else None,
+                    "rules": [
+                        {
+                            "rule_type": rule.rule_type,
+                            "rule_config": rule.rule_config,
+                            "description": rule.description,
+                        }
+                        for rule in (vaccine.vaccine.rules or [])
+                    ]
+                    if vaccine.vaccine
+                    else [],
+                    "status": vaccine.status.value,
+                    "doses": [
+                        {
+                            "id": str(dose.id),
+                            "dose_number": dose.dose_number,
+                            "config_id": str(dose.dose_config_id),
+                            "label": dose.dose_config.label if dose.dose_config else None,
+                            "dose_type": (
+                                dose.dose_config.dose_type.value if dose.dose_config else None
+                            ),
+                            "is_required": (
+                                dose.dose_config.is_required if dose.dose_config else None
+                            ),
+                            "applied_date": (
+                                dose.applied_date.isoformat() if dose.applied_date else None
+                            ),
+                            "titer_value": dose.titer_value,
+                            "status": dose.status.value,
+                            "admin_notes": dose.admin_notes,
+                            "reviewed_by": str(dose.reviewed_by) if dose.reviewed_by else None,
+                            "reviewed_at": dose.reviewed_at.isoformat()
+                            if dose.reviewed_at
+                            else None,
+                        }
+                        for dose in vaccine.doses
+                    ],
+                }
+                for vaccine in current
+            ],
+        }
+        row = StudentSchemeVersion(
+            user_id=user_id,
+            version_number=(latest or 0) + 1,
+            reason=reason[:80],
+            snapshot=snapshot,
+            created_by=created_by,
+        )
+        self.scheme_repo.db.add(row)
+        await self.scheme_repo.db.flush()
+        return row
+
+    async def append_versions_for_active_students(
+        self,
+        reason: str,
+        *,
+        created_by: uuid.UUID | None = None,
+    ) -> int:
+        result = await self.scheme_repo.db.execute(
+            select(User.id)
+            .where(User.is_active.is_(True), User.role == Role.STUDENT)
+            .order_by(User.id)
+        )
+        user_ids = list(result.scalars().all())
+        for user_id in user_ids:
+            await self.append_scheme_version(user_id, reason, created_by=created_by)
+        return len(user_ids)
+
+    async def current_scheme_version(self, user_id: uuid.UUID) -> int:
+        version = await self.scheme_repo.db.scalar(
+            select(func.max(StudentSchemeVersion.version_number)).where(
+                StudentSchemeVersion.user_id == user_id
+            )
+        )
+        return version or 0
 
     async def regenerate_all_active_students(self, *, commit: bool = True) -> int:
         """Re-sync the scheme of every active student to the current catalog.
@@ -172,9 +302,6 @@ class SchemeService:
         and re-creates it from active vaccines, preserving applied_date and
         titer_value by (vaccine_code, dose_number) where the dose still exists.
         """
-        from app.modules.users.models import Profile, User
-        from sqlalchemy import select
-
         result = await self.scheme_repo.db.execute(
             select(User).join(Profile).where(User.is_active.is_(True), User.role == Role.STUDENT)
         )
@@ -183,11 +310,14 @@ class SchemeService:
         for user in users:
             if user.profile is None:
                 continue
-            await self.regenerate_scheme_for_sex_change(
+            await self.append_scheme_version(user.id, "catalog:reconcile:before")
+            await self.reconcile_student_scheme(
                 user.id,
                 user.profile.sex,
+                reason="catalog:reconcile:after",
                 commit=False,
             )
+            await self.append_scheme_version(user.id, "catalog:reconcile:after")
 
         if commit:
             await self.scheme_repo.commit()
@@ -213,6 +343,19 @@ class SchemeService:
         if dose.student_vaccine.user_id != user_id:
             raise ForbiddenException("You can only update your own doses")
 
+        try:
+            validate_application_date(data.applied_date)
+        except ValueError as exc:
+            raise ConflictException(str(exc)) from exc
+
+        if dose.status == DoseStatus.APPROVED and any(
+            field in data.model_fields_set and getattr(data, field) != getattr(dose, field)
+            for field in ("applied_date", "titer_value")
+        ):
+            raise ConflictException(
+                "La dosis está aprobada. Un administrador debe reabrir su revisión antes de editarla."
+            )
+
         applied_date_was_updated = "applied_date" in data.model_fields_set
         titer_value_was_updated = "titer_value" in data.model_fields_set
         before = {
@@ -226,10 +369,8 @@ class SchemeService:
             dose.titer_value = data.titer_value
 
         if (
-            (applied_date_was_updated or titer_value_was_updated)
-            and dose.applied_date is not None
-            and dose.status == DoseStatus.DENIED
-        ):
+            applied_date_was_updated or titer_value_was_updated
+        ) and dose.status == DoseStatus.DENIED:
             dose.status = DoseStatus.IN_REVIEW
             dose.admin_notes = None
             dose.reviewed_by = None
@@ -313,7 +454,7 @@ class SchemeService:
         - All required doses approved → vaccine approved
         - Any dose denied → vaccine denied
         - Any dose in_review and none denied → vaccine in_review
-        - Otherwise → vaccine pending
+        - Otherwise → vaccine in_review (the report label may be PENDING)
         """
         return vaccine_status_from_certificate_rules(doses)
 

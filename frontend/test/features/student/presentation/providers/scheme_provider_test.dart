@@ -12,9 +12,20 @@ import 'package:immuno_clinic_app/features/student/presentation/providers/scheme
 class MockSchemeRemoteDataSource extends Mock
     implements SchemeRemoteDataSource {}
 
+class FakeSchemeCacheStore implements SchemeCacheStore {
+  final Map<String, String> values = {};
+  @override
+  Future<String?> read(String key) async => values[key];
+  @override
+  Future<void> write(String key, String value) async => values[key] = value;
+  @override
+  Future<void> deleteAll() async => values.clear();
+}
+
 void main() {
   late MockSchemeRemoteDataSource mockDataSource;
   late SharedPreferences prefs;
+  late FakeSchemeCacheStore cache;
 
   const userId = 'student-1';
 
@@ -62,10 +73,11 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     prefs = await SharedPreferences.getInstance();
     mockDataSource = MockSchemeRemoteDataSource();
+    cache = FakeSchemeCacheStore();
   });
 
   SchemeNotifier createNotifier({String? id = userId}) {
-    return SchemeNotifier(mockDataSource, prefs, id);
+    return SchemeNotifier(mockDataSource, prefs, id, cacheStore: cache);
   }
 
   DioException dioError({int? statusCode}) {
@@ -90,15 +102,16 @@ void main() {
 
     final cacheKey = SchemeCache.keyForUser(userId);
     expect(cacheKey, isNotNull);
-    expect(prefs.getString(cacheKey!), isNotNull);
+    expect(cache.values[cacheKey], isNotNull);
+    expect(prefs.getString(cacheKey!), isNull);
     expect(prefs.getString(SchemeCache.legacyKey), isNull);
   });
 
   test('uses user-scoped cache when a network error occurs', () async {
-    await prefs.setString(
-      SchemeCache.keyForUser(userId)!,
-      jsonEncode(schemeJson),
-    );
+    cache.values[SchemeCache.keyForUser(userId)!] = jsonEncode({
+      'saved_at': DateTime.now().toUtc().millisecondsSinceEpoch,
+      'data': schemeJson,
+    });
     when(() => mockDataSource.getMyScheme()).thenThrow(dioError());
 
     final notifier = createNotifier();
@@ -109,11 +122,28 @@ void main() {
     expect(notifier.state.overview?.totalVaccines, 1);
   });
 
+  test('does not use an expired offline cache', () async {
+    cache.values[SchemeCache.keyForUser(userId)!] = jsonEncode({
+      'saved_at': DateTime.now()
+          .subtract(const Duration(days: 2))
+          .millisecondsSinceEpoch,
+      'data': schemeJson,
+    });
+    when(() => mockDataSource.getMyScheme()).thenThrow(dioError());
+
+    final notifier = createNotifier();
+    await notifier.loadScheme();
+
+    expect(notifier.state.isOffline, false);
+    expect(notifier.state.overview, isNull);
+    expect(cache.values, isEmpty);
+  });
+
   test('does not use offline cache for 401 or 403 responses', () async {
-    await prefs.setString(
-      SchemeCache.keyForUser(userId)!,
-      jsonEncode(schemeJson),
-    );
+    cache.values[SchemeCache.keyForUser(userId)!] = jsonEncode({
+      'saved_at': DateTime.now().toUtc().millisecondsSinceEpoch,
+      'data': schemeJson,
+    });
 
     for (final statusCode in [401, 403]) {
       when(
@@ -226,15 +256,16 @@ void main() {
     );
 
     final cached =
-        jsonDecode(prefs.getString(SchemeCache.keyForUser(userId)!)!)
+        jsonDecode(cache.values[SchemeCache.keyForUser(userId)!]!)
             as Map<String, dynamic>;
-    final vaccines = cached['vaccines'] as List<dynamic>;
+    final cachedData = cached['data'] as Map<String, dynamic>;
+    final vaccines = cachedData['vaccines'] as List<dynamic>;
     final vaccine = vaccines.single as Map<String, dynamic>;
     final doses = vaccine['doses'] as List<dynamic>;
     final dose = doses.single as Map<String, dynamic>;
 
     expect(updated, true);
-    expect(cached['in_review_vaccines'], 1);
+    expect(cachedData['in_review_vaccines'], 1);
     expect(vaccine['status'], 'in_review');
     expect(dose['applied_date'], '2026-05-01');
     expect(dose['status'], 'in_review');

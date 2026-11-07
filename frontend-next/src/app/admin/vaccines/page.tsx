@@ -1,8 +1,10 @@
 "use client";
+import { QueryError } from "@/components/query-error";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
-import { useState } from "react";
+import { isAxiosError } from "axios";
+import { Plus, RefreshCw } from "lucide-react";
+import { useId, useLayoutEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
   VaccineCreateRequest,
@@ -25,6 +27,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
+import { Modal } from "@/components/ui/modal";
 
 type FlagKey = "has_booster" | "has_titer" | "has_titer_value" | "is_annual";
 
@@ -45,7 +48,6 @@ const DOSE_TYPE_LABEL: Record<DoseType, string> = {
   standard: "Estándar",
   booster: "Refuerzo",
   titer: "Titulación",
-  annual: "Anual",
 };
 
 type EditorState =
@@ -90,7 +92,7 @@ const EMPTY: DraftForm = {
 
 export default function VaccineCatalogPage() {
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetching, error, refetch } = useQuery({
     queryKey: ["vaccines"],
     queryFn: listVaccines,
   });
@@ -113,10 +115,12 @@ export default function VaccineCatalogPage() {
     },
     onError: () => toast.error("No se pudo actualizar"),
   });
+  const accessDenied =
+    isAxiosError(error) && [401, 403].includes(error.response?.status ?? 0);
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
             Catálogo de vacunas
@@ -126,13 +130,34 @@ export default function VaccineCatalogPage() {
             de los estudiantes activos.
           </p>
         </div>
-        <Button onClick={() => setEditor({ mode: "create" })}>
-          + Nueva vacuna
-        </Button>
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          {!error && (
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              title="Actualizar catálogo"
+              aria-label="Actualizar catálogo"
+              disabled={isFetching}
+              onClick={() => void refetch()}
+            >
+              <RefreshCw aria-hidden className="h-4 w-4" />
+            </Button>
+          )}
+          {!accessDenied && (
+            <Button onClick={() => setEditor({ mode: "create" })}>
+              + Nueva vacuna
+            </Button>
+          )}
+        </div>
       </div>
 
-      {isLoading ? (
-        <p className="text-sm text-muted-foreground">Cargando…</p>
+      {error ? (
+        <QueryError error={error} retry={refetch} />
+      ) : isLoading ? (
+        <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
+          Cargando…
+        </p>
       ) : !data || data.length === 0 ? (
         <Card>
           <CardContent className="py-10 text-center text-sm text-muted-foreground">
@@ -146,7 +171,7 @@ export default function VaccineCatalogPage() {
               key={v.id}
               vaccine={v}
               onEdit={() => setEditor({ mode: "edit", vaccine: v })}
-              onToggle={() => setEditor({ mode: "toggle", vaccine: v })}
+              onToggle={() => { toggle.reset(); setEditor({ mode: "toggle", vaccine: v }); }}
             />
           ))}
         </div>
@@ -167,6 +192,7 @@ export default function VaccineCatalogPage() {
         <ConfirmToggleModal
           vaccine={editor.vaccine}
           loading={toggle.isPending}
+          error={toggle.isError}
           onCancel={() => setEditor({ mode: "closed" })}
           onConfirm={() => toggle.mutate(editor.vaccine)}
         />
@@ -199,8 +225,8 @@ function VaccineRow({
           className={cn(
             "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
             vaccine.is_active
-              ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400"
-              : "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400",
+              ? "bg-[color:var(--success-light)] text-[color:var(--success-text)]"
+              : "bg-[color:var(--destructive-light)] text-[color:var(--destructive-text)]",
           )}
           aria-hidden
         >
@@ -221,9 +247,9 @@ function VaccineRow({
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <p className="truncate font-medium">{vaccine.name}</p>
+            <p className="min-w-0 break-words font-medium">{vaccine.name}</p>
             {!vaccine.is_active && (
-              <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-950 dark:text-red-400">
+              <span className="rounded-full bg-[color:var(--destructive-light)] px-2 py-0.5 text-xs font-medium text-[color:var(--destructive-text)]">
                 Inactiva
               </span>
             )}
@@ -249,6 +275,7 @@ function VaccineRow({
             variant="ghost"
             onClick={onEdit}
             title="Editar vacuna"
+            aria-label={`Editar vacuna ${vaccine.name}`}
           >
             <span aria-hidden>✏️</span>
             <span className="ml-1 hidden sm:inline">Editar</span>
@@ -258,9 +285,10 @@ function VaccineRow({
             variant="ghost"
             onClick={onToggle}
             title={vaccine.is_active ? "Desactivar" : "Reactivar"}
+            aria-label={`${vaccine.is_active ? "Desactivar" : "Reactivar"} vacuna ${vaccine.name}`}
             className={cn(
               vaccine.is_active
-                ? "text-green-700 hover:bg-green-100 hover:text-green-800 dark:text-green-400"
+                ? "text-[color:var(--success-text)] hover:bg-[color:var(--success-light)]"
                 : "text-muted-foreground hover:bg-muted",
             )}
           >
@@ -293,6 +321,11 @@ function VaccineEditorModal({
   onSaved: () => void;
 }) {
   const isEdit = initial !== null;
+  const titleId = useId();
+  const appliesId = useId();
+  const dosesRef = useRef<HTMLDivElement>(null);
+  const addRef = useRef<HTMLButtonElement>(null);
+  const doseFocus = useRef<number | null>(null);
   const [form, setForm] = useState<DraftForm>(() => {
     if (!initial) return EMPTY;
     const configs: VaccineDoseConfigInput[] = (initial.dose_configs ?? []).map(
@@ -375,6 +408,7 @@ function VaccineEditorModal({
   };
 
   const addDose = () => {
+    doseFocus.current = form.dose_configs.length;
     setForm((f) => {
       const nextNumber =
         Math.max(0, ...f.dose_configs.map((d) => d.dose_number)) + 1;
@@ -395,30 +429,41 @@ function VaccineEditorModal({
   };
 
   const removeDose = (idx: number) => {
+    doseFocus.current = Math.max(0, Math.min(idx, form.dose_configs.length - 2));
     setForm((f) => ({
       ...f,
       dose_configs: f.dose_configs.filter((_, i) => i !== idx),
     }));
   };
 
+  useLayoutEffect(() => {
+    const index = doseFocus.current;
+    doseFocus.current = null;
+    if (index === null) return;
+    const row = dosesRef.current?.querySelectorAll('[data-dose-row]')[index];
+    const input = row?.querySelector<HTMLInputElement>('input');
+    (input ?? addRef.current)?.focus();
+  }, [form.dose_configs]);
+
   return (
-    <Overlay onClose={onClose}>
-      <div className="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-[#244247] bg-[#24292c] p-5 text-[#eaf7f7] shadow-2xl [&_input]:h-11 [&_input]:rounded-xl [&_input]:border-[#2d4f55] [&_input]:bg-[#0e2023] [&_input]:px-4 [&_input]:text-sm [&_input]:shadow-none [&_input]:placeholder:text-[#a8bfc2] [&_label]:text-xs [&_label]:font-medium [&_label]:text-[#a8bfc2] [&_select]:h-11 [&_select]:rounded-xl [&_select]:border-[#2d4f55] [&_select]:bg-[#0e2023] [&_select]:px-4 [&_select]:text-sm [&_select]:shadow-none">
+    <Modal onClose={onClose} titleId={titleId} busy={save.isPending} initialFocusSelector="input:not(:disabled)">
+      <fieldset disabled={save.isPending} className="m-0 min-w-0 border-0 p-0">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight tracking-normal">
+          <h2 id={titleId} className="text-xl font-semibold leading-tight tracking-normal">
             {isEdit ? "Editar vacuna" : "Nueva vacuna"}
           </h2>
           <button
+            type="button"
             onClick={onClose}
             aria-label="Cerrar"
-            className="grid h-10 w-10 place-items-center rounded-full text-[#45d2df] hover:bg-[#45d2df]/10"
+            className="grid h-10 w-10 place-items-center rounded-full text-[color:var(--interactive-foreground)] hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             ✕
           </button>
         </div>
 
         {isEdit && (
-          <div className="mb-4 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200">
+          <div className="mb-4 rounded-md border border-warning/40 bg-[color:var(--warning-light)] p-3 text-sm text-[color:var(--warning-text)]">
             Al guardar se regenerará el esquema de todos los estudiantes
             activos. Las fechas aplicadas se preservan para las dosis cuyo
             número se mantenga.
@@ -462,8 +507,9 @@ function VaccineEditorModal({
             }
           />
           <div className="flex flex-col gap-1.5">
-            <Label>Aplica a</Label>
+            <Label htmlFor={appliesId}>Aplica a</Label>
             <Select
+              id={appliesId}
               value={form.applies_to}
               onChange={(e) =>
                 setForm({ ...form, applies_to: e.target.value as AppliesTo })
@@ -474,8 +520,8 @@ function VaccineEditorModal({
               <option value="male">Hombres</option>
             </Select>
           </div>
-          <div className="flex flex-col gap-1.5 sm:col-span-2">
-            <Label>Características</Label>
+          <fieldset className="min-w-0 sm:col-span-2">
+            <legend className="mb-1.5 text-sm font-medium">Características</legend>
             <div className="flex flex-wrap gap-2">
               {(Object.keys(FLAG_LABELS) as FlagKey[]).map((flag) => (
                 <ToggleChip
@@ -486,7 +532,7 @@ function VaccineEditorModal({
                 />
               ))}
             </div>
-          </div>
+          </fieldset>
         </div>
 
         {/* Dosis */}
@@ -496,20 +542,24 @@ function VaccineEditorModal({
               Dosis ({form.dose_configs.length})
             </h3>
             <Button
+              ref={addRef}
               size="sm"
               variant="ghost"
               onClick={addDose}
-              className="text-sm text-[#45d2df] hover:bg-[#45d2df]/10"
+              className="text-sm text-[color:var(--interactive-foreground)] hover:bg-primary/10"
             >
               <Plus className="h-4 w-4" aria-hidden />
               <span className="ml-1">Agregar</span>
             </Button>
           </div>
-          <div className="flex flex-col gap-3">
+          <div ref={dosesRef} className="flex flex-col gap-3">
             {form.dose_configs.map((dose, idx) => (
               <div
                 key={idx}
-                className="rounded-lg border border-[#d8e2e3]/80 bg-transparent p-3"
+                data-dose-row
+                role="group"
+                aria-label={`Configuración de dosis ${idx + 1}`}
+                className="rounded-lg border border-[color:var(--divider)] bg-transparent p-3"
               >
                 <div className="flex items-start gap-2">
                   <div className="flex flex-1 flex-col gap-3 sm:grid sm:grid-cols-[80px_1fr] sm:items-end">
@@ -533,15 +583,17 @@ function VaccineEditorModal({
                     type="button"
                     onClick={() => removeDose(idx)}
                     title="Eliminar dosis"
-                    className="mt-5 grid h-9 w-9 shrink-0 place-items-center rounded-full text-[#c94242] hover:bg-[#c94242]/10"
+                    aria-label={`Eliminar configuración de dosis ${idx + 1}`}
+                    className="mt-5 grid h-9 w-9 shrink-0 place-items-center rounded-full text-[color:var(--destructive-text)] hover:bg-destructive/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     🗑️
                   </button>
                 </div>
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   <div className="flex flex-col gap-1.5">
-                    <Label className="text-xs">Tipo</Label>
+                    <Label htmlFor={`${titleId}-type-${idx}`} className="text-xs">Tipo</Label>
                     <Select
+                      id={`${titleId}-type-${idx}`}
                       value={dose.dose_type}
                       onChange={(e) =>
                         updateDose(idx, {
@@ -552,12 +604,12 @@ function VaccineEditorModal({
                       <option value="standard">{DOSE_TYPE_LABEL.standard}</option>
                       <option value="booster">{DOSE_TYPE_LABEL.booster}</option>
                       <option value="titer">{DOSE_TYPE_LABEL.titer}</option>
-                      <option value="annual">{DOSE_TYPE_LABEL.annual}</option>
                     </Select>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <Label className="text-xs">Aplica a</Label>
+                    <Label htmlFor={`${titleId}-applies-${idx}`} className="text-xs">Aplica a</Label>
                     <Select
+                      id={`${titleId}-applies-${idx}`}
                       value={dose.applies_to}
                       onChange={(e) =>
                         updateDose(idx, {
@@ -574,7 +626,7 @@ function VaccineEditorModal({
                 <label className="mt-3 inline-flex cursor-pointer items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="!h-5 !w-5 accent-[#45d2df]"
+                    className="!h-5 !w-5 accent-primary"
                     checked={dose.is_required}
                     onChange={(e) =>
                       updateDose(idx, { is_required: e.target.checked })
@@ -591,14 +643,13 @@ function VaccineEditorModal({
           <Button
             variant="ghost"
             onClick={onClose}
-            className="text-[#45d2df] hover:bg-[#45d2df]/10"
+            className="text-[color:var(--interactive-foreground)] hover:bg-primary/10"
           >
             Cancelar
           </Button>
           <Button
             onClick={() => save.mutate()}
             disabled={save.isPending}
-            className="bg-[#007f93] text-white hover:bg-[#00afc6]"
           >
             {save.isPending
               ? "Guardando…"
@@ -607,30 +658,35 @@ function VaccineEditorModal({
                 : "Crear"}
           </Button>
         </div>
-      </div>
-    </Overlay>
+        {save.isError && <p role="alert" className="mt-3 text-sm text-[color:var(--destructive-text)]">No se pudo guardar. Intenta nuevamente.</p>}
+      </fieldset>
+    </Modal>
   );
 }
 
 function ConfirmToggleModal({
   vaccine,
   loading,
+  error,
   onCancel,
   onConfirm,
 }: {
   vaccine: VaccineCatalogItem;
   loading: boolean;
+  error: boolean;
   onCancel: () => void;
   onConfirm: () => void;
 }) {
   const willDeactivate = vaccine.is_active;
+  const titleId = useId();
+  const descriptionId = useId();
   return (
-    <Overlay onClose={onCancel}>
-      <div className="w-full max-w-md rounded-lg border bg-background p-5 shadow-lg">
-        <h2 className="mb-2 text-lg font-semibold">
+    <Modal onClose={onCancel} titleId={titleId} descriptionId={descriptionId} busy={loading} className="max-w-md rounded-lg">
+      <fieldset disabled={loading} className="m-0 min-w-0 border-0 p-0">
+        <h2 id={titleId} className="mb-2 text-lg font-semibold">
           {willDeactivate ? "Desactivar vacuna" : "Reactivar vacuna"}
         </h2>
-        <p className="text-sm text-muted-foreground">
+        <p id={descriptionId} className="text-sm text-muted-foreground">
           {willDeactivate
             ? `Al desactivar "${vaccine.name}" se eliminará del esquema de los estudiantes activos. ¿Continuar?`
             : `Al reactivar "${vaccine.name}" se asignará al esquema de los estudiantes activos. ¿Continuar?`}
@@ -651,27 +707,9 @@ function ConfirmToggleModal({
                 : "Reactivar"}
           </Button>
         </div>
-      </div>
-    </Overlay>
-  );
-}
-
-function Overlay({
-  children,
-  onClose,
-}: {
-  children: React.ReactNode;
-  onClose: () => void;
-}) {
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#02090a]/85 p-4"
-      onClick={onClose}
-    >
-      <div onClick={(e) => e.stopPropagation()} className="w-full max-w-2xl">
-        {children}
-      </div>
-    </div>
+        {error && <p role="alert" className="mt-3 text-sm text-[color:var(--destructive-text)]">No se pudo actualizar. Intenta nuevamente.</p>}
+      </fieldset>
+    </Modal>
   );
 }
 
@@ -692,13 +730,16 @@ function Field({
   disabled?: boolean;
   helperText?: string;
 }) {
+  const id = useId();
   return (
     <div className="flex flex-col gap-1.5">
-      <Label>
+      <Label htmlFor={id}>
         {label}
         {required && " *"}
       </Label>
       <Input
+        id={id}
+        aria-describedby={helperText ? `${id}-help` : undefined}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -706,7 +747,7 @@ function Field({
         disabled={disabled}
       />
       {helperText && (
-        <p className="text-xs text-muted-foreground">{helperText}</p>
+        <p id={`${id}-help`} className="text-xs text-muted-foreground">{helperText}</p>
       )}
     </div>
   );
@@ -727,10 +768,10 @@ function ToggleChip({
       onClick={onToggle}
       aria-pressed={selected}
       className={cn(
-        "rounded-lg border px-3 py-2 text-sm font-bold transition-colors",
+        "rounded-lg border px-3 py-2 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         selected
-          ? "border-[#2d4f55] bg-[#0e3a3f] text-[#eaf7f7]"
-          : "border-[#2d4f55] bg-[#0e2023] text-[#eaf7f7] hover:bg-[#142d31]",
+          ? "border-[color:var(--interactive-foreground)] bg-primary/10 text-[color:var(--interactive-foreground)]"
+          : "border-[color:var(--divider)] bg-card text-foreground hover:bg-[color:var(--surface-variant)]",
       )}
     >
       {label}

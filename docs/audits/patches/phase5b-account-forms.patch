@@ -1,0 +1,422 @@
+--- a/frontend-next/src/app/(auth)/forgot-password/page.tsx
++++ b/frontend-next/src/app/(auth)/forgot-password/page.tsx
+@@ -3 +3,2 @@
+-import { useState } from "react";
++import { useEffect, useRef, useState } from "react";
++import { accountFormError } from "@/lib/ui/account-form-error";
+@@ -21,0 +23,6 @@
++  const inFlight = useRef(false);
++  const mounted = useRef(true);
++  useEffect(() => {
++    mounted.current = true;
++    return () => { mounted.current = false; };
++  }, []);
+@@ -27,0 +35 @@
++    if (inFlight.current) return;
+@@ -37,0 +46 @@
++    inFlight.current = true;
+@@ -41 +50 @@
+-      setSubmitted(true);
++      if (mounted.current) setSubmitted(true);
+@@ -43,30 +52 @@
+-      const ax = err as {
+-        code?: string;
+-        message?: string;
+-        response?: { status?: number; data?: { detail?: string } };
+-      };
+-      const status = ax.response?.status;
+-      const detail = ax.response?.data?.detail;
+-
+-      if (status === 429) {
+-        setError("Demasiados intentos. Espera un minuto e intenta de nuevo.");
+-      } else if (typeof detail === "string") {
+-        setError(`(${status ?? "?"}) ${detail}`);
+-      } else if (status) {
+-        setError(`Servidor respondió con estado ${status}.`);
+-      } else if (
+-        ax.code === "ERR_NETWORK" ||
+-        ax.message?.toLowerCase().includes("network")
+-      ) {
+-        setError(
+-          "No se pudo contactar al servidor (probablemente CORS o backend caído).",
+-        );
+-      } else if (ax.code === "ECONNABORTED") {
+-        setError(
+-          "El servidor tardó demasiado en responder. Intenta de nuevo en 30-60s (Render free puede estar 'durmiendo').",
+-        );
+-      } else {
+-        setError(
+-          `Error inesperado: ${ax.code ?? ""} ${ax.message ?? "sin detalle"}`.trim(),
+-        );
+-      }
++      if (mounted.current) setError(accountFormError(err, "forgot"));
+@@ -74 +54,2 @@
+-      setSubmitting(false);
++      inFlight.current = false;
++      if (mounted.current) setSubmitting(false);
+@@ -119 +100,2 @@
+-        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
++        <form onSubmit={handleSubmit} aria-busy={submitting} noValidate>
++          <fieldset disabled={submitting} className="flex flex-col gap-4">
+@@ -127,0 +110 @@
++              aria-describedby={emailError ? "email-error" : undefined}
+@@ -130 +113 @@
+-              <p className="text-xs text-[color:var(--destructive)]">
++              <p id="email-error" className="text-xs text-[color:var(--destructive)]">
+@@ -150,0 +134 @@
++          </fieldset>
+--- a/frontend-next/src/app/(auth)/reset-password/page.tsx
++++ b/frontend-next/src/app/(auth)/reset-password/page.tsx
+@@ -3 +3,2 @@
+-import { Suspense, useState } from "react";
++import { Suspense, useEffect, useRef, useState } from "react";
++import { accountFormError } from "@/lib/ui/account-form-error";
+@@ -30,0 +32,6 @@
++  const inFlight = useRef(false);
++  const mounted = useRef(true);
++  useEffect(() => {
++    mounted.current = true;
++    return () => { mounted.current = false; };
++  }, []);
+@@ -54,0 +62 @@
++    if (inFlight.current) return;
+@@ -61,0 +70 @@
++    inFlight.current = true;
+@@ -65,3 +74,3 @@
+-      setSuccess(true);
+-    } catch {
+-      setError("Token inválido o expirado.");
++      if (mounted.current) setSuccess(true);
++    } catch (err) {
++      if (mounted.current) setError(accountFormError(err, "reset"));
+@@ -69 +78,2 @@
+-      setSubmitting(false);
++      inFlight.current = false;
++      if (mounted.current) setSubmitting(false);
+@@ -110 +120,2 @@
+-        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
++        <form onSubmit={handleSubmit} aria-busy={submitting} noValidate>
++          <fieldset disabled={submitting} className="flex flex-col gap-4">
+@@ -118,0 +130 @@
++              aria-describedby={passwordError ? "password-error" : undefined}
+@@ -124 +136 @@
+-              <p className="text-xs text-[color:var(--destructive)]">
++              <p id="password-error" className="text-xs text-[color:var(--destructive)]">
+@@ -137,0 +150 @@
++              aria-describedby={confirmError ? "confirm-error" : undefined}
+@@ -140 +153 @@
+-              <p className="text-xs text-[color:var(--destructive)]">
++              <p id="confirm-error" className="text-xs text-[color:var(--destructive)]">
+@@ -155,0 +169 @@
++          </fieldset>
+--- a/frontend-next/src/components/change-password-form.tsx
++++ b/frontend-next/src/components/change-password-form.tsx
+@@ -3 +3,2 @@
+-import { useState } from "react";
++import { useEffect, useRef, useState } from "react";
++import { accountFormError } from "@/lib/ui/account-form-error";
+@@ -6 +6,0 @@
+-import { isAxiosError } from "axios";
+@@ -33,0 +34,6 @@
++  const inFlight = useRef(false);
++  const mounted = useRef(true);
++  useEffect(() => {
++    mounted.current = true;
++    return () => { mounted.current = false; };
++  }, []);
+@@ -53,0 +60 @@
++    if (inFlight.current) return;
+@@ -55,0 +63 @@
++    inFlight.current = true;
+@@ -60,2 +68 @@
+-      router.replace("/login");
+-      setSuccess(true);
++      if (mounted.current) { router.replace("/login"); setSuccess(true); }
+@@ -63,12 +70 @@
+-      if (isAxiosError(err)) {
+-        const detail = err.response?.data?.detail;
+-        if (typeof detail === "string") {
+-          setError(detail);
+-        } else if (err.response?.status === 401) {
+-          setError("La contraseña actual no es correcta.");
+-        } else {
+-          setError("Error al cambiar contraseña.");
+-        }
+-      } else {
+-        setError("Error al cambiar contraseña.");
+-      }
++      if (mounted.current) setError(accountFormError(err, "change"));
+@@ -76 +72,2 @@
+-      setSubmitting(false);
++      inFlight.current = false;
++      if (mounted.current) setSubmitting(false);
+@@ -129 +126,2 @@
+-        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
++        <form onSubmit={handleSubmit} aria-busy={submitting} noValidate>
++          <fieldset disabled={submitting} className="flex flex-col gap-4">
+@@ -137,0 +136 @@
++              aria-describedby={errors.current ? "current-error" : undefined}
+@@ -140 +139 @@
+-              <p className="text-xs text-[color:var(--destructive)]">
++              <p id="current-error" className="text-xs text-[color:var(--destructive)]">
+@@ -153,0 +153 @@
++              aria-describedby={errors.next ? "next-error" : undefined}
+@@ -159 +159 @@
+-              <p className="text-xs text-[color:var(--destructive)]">
++              <p id="next-error" className="text-xs text-[color:var(--destructive)]">
+@@ -172,0 +173 @@
++              aria-describedby={errors.confirm ? "confirm-error" : undefined}
+@@ -175 +176 @@
+-              <p className="text-xs text-[color:var(--destructive)]">
++              <p id="confirm-error" className="text-xs text-[color:var(--destructive)]">
+@@ -192,0 +194 @@
++          </fieldset>
+--- a/frontend-next/src/components/app-shell.tsx
++++ b/frontend-next/src/components/app-shell.tsx
+@@ -70,0 +71 @@
++  const accountPasswordPage = pathname === "/student/change-password" || pathname === "/admin/change-password";
+@@ -101 +102 @@
+-      <div className={cn("flex min-h-screen flex-col", (notificationPage || communicationPage || studentProfilePage || pathname === "/admin") && "relative z-0", studentProfilePage && profileStyles.shell)}>
++      <div className={cn("flex min-h-screen flex-col", (notificationPage || communicationPage || studentProfilePage || accountPasswordPage || pathname === "/admin") && "relative z-0", studentProfilePage && profileStyles.shell)}>
+--- a/frontend/lib/features/auth/presentation/screens/forgot_password_screen.dart
++++ b/frontend/lib/features/auth/presentation/screens/forgot_password_screen.dart
+@@ -1 +0,0 @@
+-import 'package:dio/dio.dart';
+@@ -5,0 +5 @@
++import '../../../../core/error/account_form_error.dart';
+@@ -32 +32 @@
+-    if (!_formKey.currentState!.validate()) return;
++    if (_isLoading || _formKey.currentState?.validate() != true) return;
+@@ -42,0 +43 @@
++      if (!mounted) return;
+@@ -47 +48,2 @@
+-    } on DioException {
++    } catch (e) {
++      if (!mounted) return;
+@@ -50 +52 @@
+-        _error = 'Error al enviar la solicitud';
++        _error = accountFormError(e, AccountFormOperation.forgot);
+@@ -65,3 +67,12 @@
+-      body: Padding(
+-        padding: const EdgeInsets.all(28),
+-        child: _emailSent ? _buildSuccessView() : _buildFormView(),
++      body: LayoutBuilder(
++        builder: (context, constraints) => SingleChildScrollView(
++          padding: const EdgeInsets.all(28),
++          child: ConstrainedBox(
++            constraints: BoxConstraints(
++              minHeight: constraints.maxHeight > 56
++                  ? constraints.maxHeight - 56
++                  : 0,
++            ),
++            child: _emailSent ? _buildSuccessView() : _buildFormView(),
++          ),
++        ),
+@@ -125,0 +137 @@
++            enabled: !_isLoading,
+@@ -141 +153,11 @@
+-          Text(_error!, style: const TextStyle(color: AppColors.error)),
++          Semantics(
++            liveRegion: true,
++            child: Text(
++              _error!,
++              style: TextStyle(
++                color: Theme.of(context).brightness == Brightness.dark
++                    ? AppColors.darkTextPrimary
++                    : AppColors.error,
++              ),
++            ),
++          ),
+--- a/frontend/lib/features/auth/presentation/screens/reset_password_screen.dart
++++ b/frontend/lib/features/auth/presentation/screens/reset_password_screen.dart
+@@ -3 +2,0 @@
+-import 'package:dio/dio.dart';
+@@ -6 +5 @@
+-import '../../../../core/error/api_error_message.dart';
++import '../../../../core/error/account_form_error.dart';
+@@ -39 +38 @@
+-    if (!_formKey.currentState!.validate()) return;
++    if (_isLoading || _formKey.currentState?.validate() != true) return;
+@@ -48,0 +48 @@
++      if (!mounted) return;
+@@ -53 +53,2 @@
+-    } on DioException catch (e) {
++    } catch (e) {
++      if (!mounted) return;
+@@ -56,6 +57 @@
+-        _error = dioErrorMessage(e, fallback: 'Token inválido o expirado.');
+-      });
+-    } catch (_) {
+-      setState(() {
+-        _isLoading = false;
+-        _error = 'No se pudo restablecer la contraseña.';
++        _error = accountFormError(e, AccountFormOperation.reset);
+@@ -159 +155,6 @@
+-                style: const TextStyle(color: AppColors.error, fontSize: 13),
++                style: TextStyle(
++                  color: Theme.of(context).brightness == Brightness.dark
++                      ? AppColors.darkTextPrimary
++                      : AppColors.error,
++                  fontSize: 13,
++                ),
+@@ -164,0 +166 @@
++            enabled: !_isLoading,
+@@ -171,0 +174,3 @@
++                tooltip: _obscurePassword
++                    ? 'Mostrar contraseña'
++                    : 'Ocultar contraseña',
+@@ -177,2 +182,4 @@
+-                onPressed: () =>
+-                    setState(() => _obscurePassword = !_obscurePassword),
++                onPressed: _isLoading
++                    ? null
++                    : () =>
++                          setState(() => _obscurePassword = !_obscurePassword),
+@@ -184,0 +192 @@
++            enabled: !_isLoading,
+@@ -190,0 +199,3 @@
++                tooltip: _obscureConfirm
++                    ? 'Mostrar contraseña'
++                    : 'Ocultar contraseña',
+@@ -196,2 +207,3 @@
+-                onPressed: () =>
+-                    setState(() => _obscureConfirm = !_obscureConfirm),
++                onPressed: _isLoading
++                    ? null
++                    : () => setState(() => _obscureConfirm = !_obscureConfirm),
+--- a/frontend/lib/features/shared/presentation/screens/change_password_screen.dart
++++ b/frontend/lib/features/shared/presentation/screens/change_password_screen.dart
+@@ -1 +0,0 @@
+-import 'package:dio/dio.dart';
+@@ -6 +5 @@
+-import '../../../../core/error/api_error_message.dart';
++import '../../../../core/error/account_form_error.dart';
+@@ -43 +42 @@
+-    if (!_formKey.currentState!.validate()) return;
++    if (_isLoading || _formKey.currentState?.validate() != true) return;
+@@ -48,0 +48 @@
++    final notifier = ref.read(authStateProvider.notifier);
+@@ -53 +53 @@
+-      await ref.read(authStateProvider.notifier).logout();
++      await notifier.logout();
+@@ -59 +59,2 @@
+-    } on DioException catch (e) {
++    } catch (e) {
++      if (!mounted) return;
+@@ -62,6 +63 @@
+-        _error = dioErrorMessage(e, fallback: 'Error al cambiar contraseña');
+-      });
+-    } catch (_) {
+-      setState(() {
+-        _isLoading = false;
+-        _error = 'Error al cambiar contraseña';
++        _error = accountFormError(e, AccountFormOperation.change);
+@@ -84,3 +80,12 @@
+-      body: Padding(
+-        padding: const EdgeInsets.all(24),
+-        child: _success ? _buildSuccess(authState) : _buildForm(authState),
++      body: LayoutBuilder(
++        builder: (context, constraints) => SingleChildScrollView(
++          padding: const EdgeInsets.all(24),
++          child: ConstrainedBox(
++            constraints: BoxConstraints(
++              minHeight: constraints.maxHeight > 48
++                  ? constraints.maxHeight - 48
++                  : 0,
++            ),
++            child: _success ? _buildSuccess(authState) : _buildForm(authState),
++          ),
++        ),
+@@ -132 +137 @@
+-                'Tu contraseña temporal es tu cédula. Debes cambiarla antes de continuar.',
++                'Usa la contraseña temporal recibida por correo. Debes cambiarla antes de continuar.',
+@@ -138,0 +144 @@
++            enabled: !_isLoading,
+@@ -153,2 +159,3 @@
+-                onPressed: () =>
+-                    setState(() => _obscureCurrent = !_obscureCurrent),
++                onPressed: _isLoading
++                    ? null
++                    : () => setState(() => _obscureCurrent = !_obscureCurrent),
+@@ -160,0 +168 @@
++            enabled: !_isLoading,
+@@ -176 +184,3 @@
+-                onPressed: () => setState(() => _obscureNew = !_obscureNew),
++                onPressed: _isLoading
++                    ? null
++                    : () => setState(() => _obscureNew = !_obscureNew),
+@@ -182,0 +193 @@
++            enabled: !_isLoading,
+@@ -197,2 +208,3 @@
+-                onPressed: () =>
+-                    setState(() => _obscureConfirm = !_obscureConfirm),
++                onPressed: _isLoading
++                    ? null
++                    : () => setState(() => _obscureConfirm = !_obscureConfirm),
+@@ -209 +221,5 @@
+-                style: const TextStyle(color: AppColors.error),
++                style: TextStyle(
++                  color: Theme.of(context).brightness == Brightness.dark
++                      ? AppColors.darkTextPrimary
++                      : AppColors.error,
++                ),
+--- /dev/null
++++ b/frontend-next/src/lib/ui/account-form-error.ts
+@@ -0,0 +1,21 @@
++import { isAxiosError } from 'axios';
++
++// Presentation only. Never display diagnostics, response bodies or identifiers.
++export function accountFormError(error: unknown, operation: 'forgot' | 'reset' | 'change'): string {
++  const status = isAxiosError(error) ? error.response?.status : undefined;
++  if (status === 400 && operation === 'reset') return 'Token inválido o expirado. Solicita un nuevo enlace.';
++  if (status === 400 && operation === 'change') return 'La contraseña actual no es correcta.';
++  const messages: Record<number, string> = {
++    401: 'Tu sesión expiró. Inicia sesión nuevamente.',
++    403: 'No tienes permiso para realizar esta acción.',
++    422: 'Revisa los datos del formulario.',
++    429: 'Demasiados intentos. Espera un minuto e intenta de nuevo.',
++    500: 'Ocurrió un error en el servidor. Intenta nuevamente.',
++    503: 'El servicio no está disponible temporalmente.',
++  };
++  if (status && messages[status]) return messages[status];
++  if (isAxiosError(error) && ['ECONNABORTED', 'ETIMEDOUT'].includes(error.code ?? '')) {
++    return 'El servicio tardó demasiado en responder. Intenta nuevamente.';
++  }
++  return 'No se pudo completar la solicitud. Comprueba la conexión e intenta nuevamente.';
++}
+--- /dev/null
++++ b/frontend/lib/core/error/account_form_error.dart
+@@ -0,0 +1,33 @@
++import 'package:dio/dio.dart';
++
++enum AccountFormOperation { forgot, reset, change }
++
++/// Presentation only; never renders response bodies, tokens or diagnostics.
++String accountFormError(Object error, AccountFormOperation operation) {
++  final status = error is DioException ? error.response?.statusCode : null;
++  if (status == 400 && operation == AccountFormOperation.reset) {
++    return 'Token inválido o expirado. Solicita un nuevo enlace.';
++  }
++  if (status == 400 && operation == AccountFormOperation.change) {
++    return 'La contraseña actual no es correcta.';
++  }
++  final message = switch (status) {
++    401 => 'Tu sesión expiró. Inicia sesión nuevamente.',
++    403 => 'No tienes permiso para realizar esta acción.',
++    422 => 'Revisa los datos del formulario.',
++    429 => 'Demasiados intentos. Espera un minuto e intenta de nuevo.',
++    500 => 'Ocurrió un error en el servidor. Intenta nuevamente.',
++    503 => 'El servicio no está disponible temporalmente.',
++    _ => null,
++  };
++  if (message != null) return message;
++  if (error is DioException &&
++      const [
++        DioExceptionType.connectionTimeout,
++        DioExceptionType.sendTimeout,
++        DioExceptionType.receiveTimeout,
++      ].contains(error.type)) {
++    return 'El servicio tardó demasiado en responder. Intenta nuevamente.';
++  }
++  return 'No se pudo completar la solicitud. Comprueba la conexión e intenta nuevamente.';
++}

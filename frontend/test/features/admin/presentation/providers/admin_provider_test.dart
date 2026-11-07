@@ -37,13 +37,23 @@ void main() {
 
     test('load fetches students successfully', () async {
       when(
-        () => mockDataSource.listAllStudents(
+        () => mockDataSource.listStudents(
+          page: 1,
+          pageSize: 20,
           search: any(named: 'search'),
           isActive: any(named: 'isActive'),
           semester: any(named: 'semester'),
           vaccinationStatus: any(named: 'vaccinationStatus'),
         ),
-      ).thenAnswer((_) async => [mockStudent]);
+      ).thenAnswer(
+        (_) async => PaginatedResponse(
+          items: [mockStudent],
+          total: 1,
+          page: 1,
+          pageSize: 20,
+          totalPages: 1,
+        ),
+      );
 
       final loadFuture = notifier.load(page: 1);
 
@@ -58,7 +68,9 @@ void main() {
       expect(notifier.state.page, 1);
 
       verify(
-        () => mockDataSource.listAllStudents(
+        () => mockDataSource.listStudents(
+          page: 1,
+          pageSize: 20,
           search: null,
           isActive: null,
           semester: null,
@@ -78,7 +90,9 @@ void main() {
       );
 
       when(
-        () => mockDataSource.listAllStudents(
+        () => mockDataSource.listStudents(
+          page: 1,
+          pageSize: 20,
           search: any(named: 'search'),
           isActive: any(named: 'isActive'),
           semester: any(named: 'semester'),
@@ -94,23 +108,37 @@ void main() {
     });
 
     test('deactivate successfully calls ds and reloads', () async {
-      when(() => mockDataSource.deactivateStudent('1')).thenAnswer((_) async {});
+      when(
+        () => mockDataSource.deactivateStudent('1'),
+      ).thenAnswer((_) async {});
 
       when(
-        () => mockDataSource.listAllStudents(
+        () => mockDataSource.listStudents(
+          page: 1,
+          pageSize: 20,
           search: any(named: 'search'),
           isActive: any(named: 'isActive'),
           semester: any(named: 'semester'),
           vaccinationStatus: any(named: 'vaccinationStatus'),
         ),
-      ).thenAnswer((_) async => [mockStudent]);
+      ).thenAnswer(
+        (_) async => PaginatedResponse(
+          items: [mockStudent],
+          total: 1,
+          page: 1,
+          pageSize: 20,
+          totalPages: 1,
+        ),
+      );
 
       final result = await notifier.deactivate('1');
 
       expect(result, true);
       verify(() => mockDataSource.deactivateStudent('1')).called(1);
       verify(
-        () => mockDataSource.listAllStudents(
+        () => mockDataSource.listStudents(
+          page: 1,
+          pageSize: 20,
           search: null,
           isActive: null,
           semester: null,

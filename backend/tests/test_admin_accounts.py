@@ -1,7 +1,7 @@
-import unittest
 from types import SimpleNamespace
 from uuid import uuid4
 
+import pytest
 from app.common.enums import Role
 from app.core.exceptions import BadRequestException, ForbiddenException
 from app.modules.admin.accounts.service import AdminAccountService
@@ -43,14 +43,15 @@ class _FakeDb:
         return None
 
 
-class AdminAccountTests(unittest.IsolatedAsyncioTestCase):
+class TestAdminAccountService:
     def test_non_app_admin_is_rejected(self) -> None:
         service = AdminAccountService.__new__(AdminAccountService)
         user = SimpleNamespace(role=Role.ADMIN)
 
-        with self.assertRaises(ForbiddenException):
+        with pytest.raises(ForbiddenException):
             service._ensure_app_admin(user, "crear administradores")
 
+    @pytest.mark.asyncio
     async def test_app_admin_cannot_delete_own_account(self) -> None:
         service = AdminAccountService.__new__(AdminAccountService)
         service.user_repo = SimpleNamespace()
@@ -59,9 +60,10 @@ class AdminAccountTests(unittest.IsolatedAsyncioTestCase):
         app_admin_id = uuid4()
         app_admin = SimpleNamespace(id=app_admin_id, role=Role.APP_ADMIN)
 
-        with self.assertRaises(BadRequestException):
+        with pytest.raises(BadRequestException):
             await service.delete_admin(app_admin, app_admin_id)
 
+    @pytest.mark.asyncio
     async def test_create_admin_stores_job_title(self) -> None:
         service = AdminAccountService.__new__(AdminAccountService)
         service.user_repo = _FakeRepo()
@@ -82,11 +84,7 @@ class AdminAccountTests(unittest.IsolatedAsyncioTestCase):
             ),
         )
 
-        self.assertEqual(admin.profile.first_name, "Ana")
-        self.assertEqual(admin.profile.last_name, "Perez")
-        self.assertEqual(admin.profile.job_title, "Coordinadora")
-        self.assertEqual(service.audit.details["job_title"], "Coordinadora")
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert admin.profile.first_name == "Ana"
+        assert admin.profile.last_name == "Perez"
+        assert admin.profile.job_title == "Coordinadora"
+        assert service.audit.details["job_title"] == "Coordinadora"

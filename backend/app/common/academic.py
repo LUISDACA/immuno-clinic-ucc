@@ -23,3 +23,6 @@ CAMPUSES = (
     "Santa Marta",
     "Villavicencio",
 )
+
+# These are the semester choices shown by the Flutter administrative flows.
+ACADEMIC_SEMESTERS = tuple(range(1, 11))

@@ -1,0 +1,36 @@
+{
+  "scope": "conversation counterpart presentation only",
+  "institutional_data": false,
+  "production_ready": false,
+  "runtime_backend_or_flutter_changes": false,
+  "renderer": "Chrome155.0.8059.39,Next16.3.6 production webpack",
+  "source": "synthetic PostgreSQL, actual authorized API participants",
+  "screenshots": {
+    "viewport": [
+      390,
+      844
+    ],
+    "theme": "light",
+    "flutter_paired_goldens": false,
+    "complete_visual_parity": false,
+    "known_decoration_overlap": "B5-C03 PENDING"
+  },
+  "references": [
+    {
+      "file": "results.json",
+      "sha256": "7132437a76275dc33bb1b15696455be62eddfd03a8c143fdef8932d391221fb0"
+    },
+    {
+      "file": "next-list-student-light.png",
+      "sha256": "c15900d825b41bdbea1d0f079308a313f66d467fcfaac5a9f34263cda84dcf45"
+    },
+    {
+      "file": "next-detail-student-light.png",
+      "sha256": "98b07c85762ce1c8aee345273cd36cc044d4fd6c0bb81a8a2f12dcfbe308db1c"
+    },
+    {
+      "file": "../../../fixtures/phase5b-communications-peer.json",
+      "sha256": "6b217f6df50abd14abc73bd618dd2eda8a4ed0a56d3ce34f9ef8e9f4883d0011"
+    }
+  ]
+}

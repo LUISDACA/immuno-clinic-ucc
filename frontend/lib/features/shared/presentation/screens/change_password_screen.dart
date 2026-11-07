@@ -1,9 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/error/api_error_message.dart';
+import '../../../../core/error/account_form_error.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/password_rules.dart';
 import '../../../../core/utils/role_utils.dart';
@@ -40,30 +39,38 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (_isLoading || _formKey.currentState?.validate() != true) return;
     setState(() {
       _isLoading = true;
       _error = null;
     });
 
+    final notifier = ref.read(authStateProvider.notifier);
+    final messenger = ScaffoldMessenger.maybeOf(context);
     try {
       await ref
           .read(authRemoteDataSourceProvider)
           .changePassword(_currentCtrl.text, _newCtrl.text);
-      ref.read(authStateProvider.notifier).markPasswordChanged();
+      await notifier.logout();
+      if (messenger != null && messenger.mounted) {
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Contraseña actualizada. Inicia sesión con tu nueva contraseña.',
+            ),
+          ),
+        );
+      }
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
         _success = true;
       });
-    } on DioException catch (e) {
+    } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
-        _error = dioErrorMessage(e, fallback: 'Error al cambiar contraseña');
-      });
-    } catch (_) {
-      setState(() {
-        _isLoading = false;
-        _error = 'Error al cambiar contraseña';
+        _error = accountFormError(e, AccountFormOperation.change);
       });
     }
   }
@@ -80,9 +87,18 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
         ),
         automaticallyImplyLeading: !authState.mustChangePassword,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: _success ? _buildSuccess(authState) : _buildForm(authState),
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight > 48
+                  ? constraints.maxHeight - 48
+                  : 0,
+            ),
+            child: _success ? _buildSuccess(authState) : _buildForm(authState),
+          ),
+        ),
       ),
     );
   }
@@ -128,15 +144,17 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 ),
               ),
               child: const Text(
-                'Tu contraseña temporal es tu cédula. Debes cambiarla antes de continuar.',
+                'Usa la contraseña temporal recibida por correo. Debes cambiarla antes de continuar.',
                 style: TextStyle(color: AppColors.warning),
               ),
             ),
             const SizedBox(height: 16),
           ],
           TextFormField(
+            enabled: !_isLoading,
             controller: _currentCtrl,
             obscureText: _obscureCurrent,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Contraseña actual',
               prefixIcon: const Icon(Icons.lock_outline),
@@ -149,16 +167,19 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
                 ),
-                onPressed: () =>
-                    setState(() => _obscureCurrent = !_obscureCurrent),
+                onPressed: _isLoading
+                    ? null
+                    : () => setState(() => _obscureCurrent = !_obscureCurrent),
               ),
             ),
             validator: (v) => v == null || v.isEmpty ? 'Requerido' : null,
           ),
           const SizedBox(height: 16),
           TextFormField(
+            enabled: !_isLoading,
             controller: _newCtrl,
             obscureText: _obscureNew,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Nueva contraseña',
               helperText: passwordRequirementsText,
@@ -172,15 +193,20 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
                 ),
-                onPressed: () => setState(() => _obscureNew = !_obscureNew),
+                onPressed: _isLoading
+                    ? null
+                    : () => setState(() => _obscureNew = !_obscureNew),
               ),
             ),
             validator: validateStrongPassword,
           ),
           const SizedBox(height: 16),
           TextFormField(
+            enabled: !_isLoading,
             controller: _confirmCtrl,
             obscureText: _obscureConfirm,
+            textInputAction: TextInputAction.done,
+            onFieldSubmitted: (_) => _submit(),
             decoration: InputDecoration(
               labelText: 'Confirmar nueva contraseña',
               prefixIcon: const Icon(Icons.lock_reset),
@@ -193,8 +219,9 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
                 ),
-                onPressed: () =>
-                    setState(() => _obscureConfirm = !_obscureConfirm),
+                onPressed: _isLoading
+                    ? null
+                    : () => setState(() => _obscureConfirm = !_obscureConfirm),
               ),
             ),
             validator: (v) =>
@@ -203,9 +230,16 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
           if (_error != null)
             Padding(
               padding: const EdgeInsets.only(top: 12),
-              child: Text(
-                _error!,
-                style: const TextStyle(color: AppColors.error),
+              child: Semantics(
+                liveRegion: true,
+                child: Text(
+                  _error!,
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.error,
+                  ),
+                ),
               ),
             ),
           const SizedBox(height: 24),

@@ -1,0 +1,8 @@
+{
+  "synthetic_only": true,
+  "cases": [
+    {"id": "sex-change", "field": "sex", "from": "female", "to": "male", "reason": "profile:reconciliation"},
+    {"id": "program-change", "field": "program", "from": "Medicina", "to": "Enfermería", "reason": "profile:reconciliation"},
+    {"id": "campus-change", "field": "campus", "from": "Principal", "to": "Bogotá", "reason": "profile:reconciliation"}
+  ]
+}

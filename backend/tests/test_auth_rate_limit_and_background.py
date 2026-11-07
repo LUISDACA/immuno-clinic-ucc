@@ -68,6 +68,9 @@ async def test_forgot_password_uses_background_task_when_provided():
             email="user@example.com",
         )
     )
+    repo.lock_user = AsyncMock(
+        return_value=SimpleNamespace(id="user-1", email="user@example.com", is_active=True)
+    )
     repo.create_reset_token = AsyncMock()
     repo.db = MagicMock()
     repo.db.commit = AsyncMock()
@@ -106,6 +109,9 @@ async def test_forgot_password_sends_inline_when_no_background_tasks(monkeypatch
             id="user-1",
             email="user@example.com",
         )
+    )
+    repo.lock_user = AsyncMock(
+        return_value=SimpleNamespace(id="user-1", email="user@example.com", is_active=True)
     )
     repo.create_reset_token = AsyncMock()
     repo.db = MagicMock()

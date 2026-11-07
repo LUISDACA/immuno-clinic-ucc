@@ -1,0 +1,340 @@
+{
+  "role": "admin",
+  "theme": "light",
+  "width": 390,
+  "cssZoom": 2,
+  "viewport": 445,
+  "scrollWidth": 445,
+  "clientWidth": 390,
+  "bodyWidth": 390,
+  "containerWidth": 326,
+  "overflow": [
+    {
+      "tag": "DIV",
+      "className": "flex h-4 w-full overflow-hidden rounded-full",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "DIV",
+      "className": "",
+      "right": 403.140625,
+      "width": 131.65625,
+      "scrollWidth": 66,
+      "clientWidth": 66
+    },
+    {
+      "tag": "UL",
+      "className": "flex flex-col gap-1 text-xs text-muted-foreground",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "LI",
+      "className": "flex items-center gap-2",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "LI",
+      "className": "flex items-center gap-2",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "DIV",
+      "className": "rounded-lg border border-[color:var(--divider)] bg-card text-card-foreground shadow-sm",
+      "right": 445.140625,
+      "width": 413.140625,
+      "scrollWidth": 205,
+      "clientWidth": 205
+    },
+    {
+      "tag": "DIV",
+      "className": "flex p-5 flex-row items-start justify-between gap-3 admin-dashboard_rankingHeader__1228P",
+      "right": 443.140625,
+      "width": 409.140625,
+      "scrollWidth": 205,
+      "clientWidth": 205
+    },
+    {
+      "tag": "DIV",
+      "className": "",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "H3",
+      "className": "font-bold tracking-tight text-sm",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "P",
+      "className": "text-sm text-muted-foreground",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "DIV",
+      "className": "p-5 pt-0",
+      "right": 443.140625,
+      "width": 409.140625,
+      "scrollWidth": 205,
+      "clientWidth": 205
+    },
+    {
+      "tag": "UL",
+      "className": "flex flex-col gap-2.5 text-sm",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "LI",
+      "className": "flex flex-col gap-1.5",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "DIV",
+      "className": "flex items-center justify-between gap-3",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "SPAN",
+      "className": "truncate font-semibold",
+      "right": 257.625,
+      "width": 183.625,
+      "scrollWidth": 122,
+      "clientWidth": 92
+    },
+    {
+      "tag": "SPAN",
+      "className": "shrink-0 text-xs font-bold text-[color:var(--success)]",
+      "right": 403.140625,
+      "width": 121.515625,
+      "scrollWidth": 61,
+      "clientWidth": 61
+    },
+    {
+      "tag": "DIV",
+      "className": "flex h-2.5 w-full overflow-hidden rounded-full bg-[color:var(--warning-light)]",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "P",
+      "className": "text-[11px] text-muted-foreground",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "LI",
+      "className": "flex flex-col gap-1.5",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "DIV",
+      "className": "flex items-center justify-between gap-3",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "SPAN",
+      "className": "truncate font-semibold",
+      "right": 255.609375,
+      "width": 181.609375,
+      "scrollWidth": 124,
+      "clientWidth": 91
+    },
+    {
+      "tag": "SPAN",
+      "className": "shrink-0 text-xs font-bold text-[color:var(--success)]",
+      "right": 403.140625,
+      "width": 123.53125,
+      "scrollWidth": 62,
+      "clientWidth": 62
+    },
+    {
+      "tag": "DIV",
+      "className": "flex h-2.5 w-full overflow-hidden rounded-full bg-[color:var(--warning-light)]",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "P",
+      "className": "text-[11px] text-muted-foreground",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "LI",
+      "className": "flex flex-col gap-1.5",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "DIV",
+      "className": "flex items-center justify-between gap-3",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "SPAN",
+      "className": "truncate font-semibold",
+      "right": 256.265625,
+      "width": 182.265625,
+      "scrollWidth": 125,
+      "clientWidth": 91
+    },
+    {
+      "tag": "SPAN",
+      "className": "shrink-0 text-xs font-bold text-[color:var(--success)]",
+      "right": 403.140625,
+      "width": 122.875,
+      "scrollWidth": 61,
+      "clientWidth": 61
+    },
+    {
+      "tag": "DIV",
+      "className": "flex h-2.5 w-full overflow-hidden rounded-full bg-[color:var(--warning-light)]",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    },
+    {
+      "tag": "P",
+      "className": "text-[11px] text-muted-foreground",
+      "right": 403.140625,
+      "width": 329.140625,
+      "scrollWidth": 165,
+      "clientWidth": 165
+    }
+  ],
+  "labels": [
+    {
+      "tag": "H1",
+      "width": 246,
+      "clipped": false
+    },
+    {
+      "tag": "H2",
+      "width": 185.09375,
+      "clipped": false
+    },
+    {
+      "tag": "SPAN",
+      "width": 110.03125,
+      "clipped": false
+    },
+    {
+      "tag": "SPAN",
+      "width": 108.921875,
+      "clipped": false
+    },
+    {
+      "tag": "SPAN",
+      "width": 148,
+      "clipped": false
+    },
+    {
+      "tag": "SPAN",
+      "width": 148,
+      "clipped": false
+    },
+    {
+      "tag": "SPAN",
+      "width": 148,
+      "clipped": false
+    },
+    {
+      "tag": "H2",
+      "width": 235.375,
+      "clipped": false
+    },
+    {
+      "tag": "H3",
+      "width": 329.140625,
+      "clipped": false
+    },
+    {
+      "tag": "H3",
+      "width": 329.140625,
+      "clipped": false
+    },
+    {
+      "tag": "H2",
+      "width": 117.46875,
+      "clipped": false
+    },
+    {
+      "tag": "H3",
+      "width": 242,
+      "clipped": false
+    },
+    {
+      "tag": "H3",
+      "width": 242,
+      "clipped": false
+    },
+    {
+      "tag": "H3",
+      "width": 123.4375,
+      "clipped": false
+    },
+    {
+      "tag": "H3",
+      "width": 242,
+      "clipped": false
+    },
+    {
+      "tag": "H3",
+      "width": 216.640625,
+      "clipped": false
+    },
+    {
+      "tag": "H3",
+      "width": 122.109375,
+      "clipped": false
+    }
+  ]
+}

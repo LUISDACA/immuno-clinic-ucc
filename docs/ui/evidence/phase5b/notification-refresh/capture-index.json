@@ -1,0 +1,108 @@
+{
+  "scope": "notification refresh failures and retry only",
+  "institutional_data": false,
+  "renderer": "Chrome 155 production Next 16.3.6 webpack, DPR 1",
+  "synthetic_API_errors": true,
+  "clinical_or_auth_rules_changed": false,
+  "comparison": "Flutter notifications retained-error snapshots; no cross-renderer pixel equality",
+  "css_zoom_is_not_native_zoom": true,
+  "references": [
+    {
+      "file": "blocked-after-denial-admin-dark-390.png",
+      "sha256": "6bfa6e338685e58ea3db2168933d81100e839d676ba1149bcfd0b36801ec95fd"
+    },
+    {
+      "file": "blocked-after-denial-admin-light-390.png",
+      "sha256": "210364eacadbf2ac15a941be404878c48797b8ff6733948c3431befbcd888009"
+    },
+    {
+      "file": "blocked-after-denial-student-dark-390.png",
+      "sha256": "26caa4bd14b4291df6161f0312ed6da12ee22b04fa2009ba2f005c5b929962f6"
+    },
+    {
+      "file": "blocked-after-denial-student-light-390.png",
+      "sha256": "ed36aed407612922866de0763d46c4fb2dbfb66e29a3dfec836a522137ae2687"
+    },
+    {
+      "file": "forbidden-admin-dark-390.png",
+      "sha256": "bcd5b70d1ffbf499b0d66b2985da8195998c748539038a395cba54d4f3f2e970"
+    },
+    {
+      "file": "forbidden-admin-light-390.png",
+      "sha256": "1f06f67e4bea7b5566e2d9c607fb9175b50e82f2d9ea606e6961586277b5d43b"
+    },
+    {
+      "file": "forbidden-student-dark-390.png",
+      "sha256": "3d25d74b3247ab3f860a724853772cab116fe877001fbcff5ebcb82056c622a7"
+    },
+    {
+      "file": "forbidden-student-light-390.png",
+      "sha256": "bee4a659ef64ee8082e61f6694aeb694714d849ddbd41216a0afc7110c31dde4"
+    },
+    {
+      "file": "recovered-admin-dark-390.png",
+      "sha256": "1c292837815452042ade7cfaed4838a934b7bbc6f7bc960adaa3937525bad1ad"
+    },
+    {
+      "file": "recovered-admin-light-390.png",
+      "sha256": "d8490886ef505b636c35874bfce36111439ce3c3902a632bc34ce487850af424"
+    },
+    {
+      "file": "recovered-student-dark-390.png",
+      "sha256": "e164bd04722410710f94f6058fd3a49d82976ab7f129e3518ab11813e35bfe95"
+    },
+    {
+      "file": "recovered-student-light-390.png",
+      "sha256": "99c70fc6d0999b44bb9cfcb20be5aad563e5fb48898fb3f5947e7303d909cb99"
+    },
+    {
+      "file": "retained-admin-dark-390-csszoom1.png",
+      "sha256": "3807eb40f5416cfd8ec95249d6776bc17dfce4e91a047e0a2ab99d5f848a006a"
+    },
+    {
+      "file": "retained-admin-dark-390-csszoom2-content.png",
+      "sha256": "d61361689af7557566a6cd9ddf9bf287ff0381c0ce56e31e9247e63507e28848"
+    },
+    {
+      "file": "retained-admin-light-390-csszoom1.png",
+      "sha256": "22eb24068ba03acbc617f5034630db117b35edf4a64964b37b57d53094f38de7"
+    },
+    {
+      "file": "retained-admin-light-390-csszoom2-content.png",
+      "sha256": "399cd9af14b5359f0fb96bb4dba2770cf9f26e30b0f59e9926124fb54219d068"
+    },
+    {
+      "file": "retained-student-dark-390-csszoom1.png",
+      "sha256": "4a212e4861bca206e101564fbf8b9bb25c932b75c6d944a3b510f74b8326cce7"
+    },
+    {
+      "file": "retained-student-dark-390-csszoom2-content.png",
+      "sha256": "c8861bebb26585e40cc4642f3fd38873f869b3376830126ad69dc3ddfdf1e6ae"
+    },
+    {
+      "file": "retained-student-light-390-csszoom1.png",
+      "sha256": "0a5d395e469e9fd391afbe1fcbaa8564ed2e51eb78890654d4323b8ec762cdbb"
+    },
+    {
+      "file": "retained-student-light-390-csszoom2-content.png",
+      "sha256": "68954df9c35e0564dd44feb33931577613db9f3b558d642f78a8733e0ba66234"
+    },
+    {
+      "file": "retrying-admin-dark-390.png",
+      "sha256": "80826a6c90017a45dcb3b0eed7ecc0ecc850773bfa22482f26151181f598d401"
+    },
+    {
+      "file": "retrying-admin-light-390.png",
+      "sha256": "bcab4838ee497cee22c5c28a6c127b508b91569d0e621be299219255cdbec26d"
+    },
+    {
+      "file": "retrying-student-dark-390.png",
+      "sha256": "ac4f37999c8f793e513acbf9b7fd9899b15e3589d09737ad234bd0ad00484b5e"
+    },
+    {
+      "file": "retrying-student-light-390.png",
+      "sha256": "d0e608f42ad1848318bdf9a5646be162a86bfe9c30cfb5aeb5e1d9d1e8cebcdd"
+    }
+  ],
+  "cache_guard": "QueryClient-scoped request ordering and denial memory; no identities or response data"
+}

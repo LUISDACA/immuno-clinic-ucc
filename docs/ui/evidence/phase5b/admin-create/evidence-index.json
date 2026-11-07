@@ -1,0 +1,51 @@
+{
+  "scope": "B5-M01 administrator creation validation/pending draft; S20 remains PARTIAL",
+  "institutional_data": false,
+  "production_ready": false,
+  "flutter_tests": 4,
+  "next_component_tests": 11,
+  "flutter_golden_references": 2,
+  "next_screenshots": 4,
+  "native_zoom": false,
+  "notes": [
+    "No backend runtime, permissions, authentication, contracts, clinical rules, dependencies or migrations changed.",
+    "Real browser validates native required/email/password minlength; synthetic account creation through production webpack/BFF/FastAPI/PostgreSQL.",
+    "GET failure after confirmed POST, empty/list loading recovery and native Flutter write races remain separate from this bounded block.",
+    "Browser role permissions use real 403; Flutter references alone do not prove route access or production behavior."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "1b2042059fd0053a4098066afb3109ef891a73d7e797f06f47605dbd137789f6"
+    },
+    {
+      "file": "flutter-form-dark-390.png",
+      "sha256": "6cf365da4e7ad545dfd17d6bf5f220d37ea10d73d1853f9efc0ae3520c3c38ca"
+    },
+    {
+      "file": "flutter-form-light-390.png",
+      "sha256": "82507fc0fe78bc36fc3c89af0eee3ccff1ee129f73d9d53e840a6e15c577d6be"
+    },
+    {
+      "file": "next-form-dark-390.png",
+      "sha256": "23b7104b5ca6d70c6c8dbdd24a4fb08043bf8bb1224ab82b4e4cf4eacbd44355"
+    },
+    {
+      "file": "next-form-light-390.png",
+      "sha256": "bba10dc74762100ae4fc9715cbcfe0915b63cccbc04e9d34dad7c900e22692a1"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "41db26e9bc620f768dd2ea9aa3f69c2b38bb243287540b0e4142fbbc3e5dbaa1"
+    },
+    {
+      "file": "next-pending-dark-390.png",
+      "sha256": "6c37f7ea350aea927835ab720b08df858b4163d55ba7d328f21325ca81cf19ef"
+    },
+    {
+      "file": "next-success-dark-390.png",
+      "sha256": "a5884245b3a8f3e88eee58a3122ad9473273a117173e81a23b06d5697511264c"
+    }
+  ],
+  "next_cases": 7
+}

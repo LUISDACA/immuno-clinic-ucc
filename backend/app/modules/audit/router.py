@@ -3,6 +3,7 @@
 import uuid
 
 from app.common.access import is_app_admin, student_in_admin_scope
+from app.common.api_contracts import PageResponse
 from app.core.dependencies import get_current_active_user, require_role
 from app.db.session import get_db
 from app.modules.audit.models import AuditLog
@@ -142,3 +143,38 @@ async def list_all_audit_history(
             )
         ]
     return [_audit_response(entry, lookup) for entry in entries]
+
+
+@router.get("/me/page", response_model=PageResponse[AuditLogResponse])
+async def my_audit_page(
+    page: int = Query(1, ge=1, le=10_000),
+    page_size: int = Query(20, ge=1, le=100),
+    include_self: bool = Query(True),
+    user: User = Depends(get_current_active_user),
+    db: AsyncSession = Depends(get_db),
+    service: AuditService = Depends(_get_audit_service),
+):
+    entries, total = await service.page_for_user(
+        user, administrative=False, page=page, size=page_size, include_self=include_self
+    )
+    lookup = await _student_lookup(db, entries)
+    return PageResponse.create(
+        [_audit_response(e, lookup) for e in entries], total, page, page_size
+    )
+
+
+@router.get("/admin/page", response_model=PageResponse[AuditLogResponse])
+async def admin_audit_page(
+    page: int = Query(1, ge=1, le=10_000),
+    page_size: int = Query(20, ge=1, le=100),
+    user: User = Depends(require_role("admin", "app_admin")),
+    db: AsyncSession = Depends(get_db),
+    service: AuditService = Depends(_get_audit_service),
+):
+    entries, total = await service.page_for_user(
+        user, administrative=True, page=page, size=page_size
+    )
+    lookup = await _student_lookup(db, entries)
+    return PageResponse.create(
+        [_audit_response(e, lookup) for e in entries], total, page, page_size
+    )

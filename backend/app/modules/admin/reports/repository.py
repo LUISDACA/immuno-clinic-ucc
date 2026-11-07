@@ -69,7 +69,7 @@ class AdminStudentReportRepository:
         total = total_result.scalar_one()
 
         result = await self.db.execute(
-            query.order_by(User.created_at.desc()).offset(offset).limit(limit)
+            query.order_by(User.created_at.desc(), User.id.desc()).offset(offset).limit(limit)
         )
         users = result.unique().scalars().all()
         return list(users), total
@@ -106,7 +106,7 @@ class AdminStudentReportRepository:
 
         query = self._apply_student_filters(query, filters)
 
-        result = await self.db.execute(query.order_by(User.created_at.desc()))
+        result = await self.db.execute(query.order_by(User.created_at.desc(), User.id.desc()))
         return list(result.unique().scalars().all())
 
     async def get_statistics(
@@ -161,6 +161,7 @@ class AdminStudentReportRepository:
 
         compliant_subq = (
             select(StudentVaccine.user_id)
+            .where(StudentVaccine.is_active.is_(True))
             .group_by(StudentVaccine.user_id)
             .having(
                 func.sum(case((StudentVaccine.status != VaccineStatus.APPROVED, 1), else_=0)) == 0
@@ -224,7 +225,7 @@ class AdminStudentReportRepository:
             .join(Vaccine, StudentVaccine.vaccine_id == Vaccine.id)
             .join(User, StudentVaccine.user_id == User.id)
             .join(Profile, Profile.user_id == User.id)
-            .where(User.role == Role.STUDENT)
+            .where(User.role == Role.STUDENT, StudentVaccine.is_active.is_(True))
             .group_by(Vaccine.id, Vaccine.name, Vaccine.code, Vaccine.display_order)
             .order_by(Vaccine.display_order, Vaccine.name)
         )
@@ -298,6 +299,7 @@ class AdminStudentReportRepository:
 
         approved_students_subq = (
             select(StudentVaccine.user_id)
+            .where(StudentVaccine.is_active.is_(True))
             .group_by(StudentVaccine.user_id)
             .having(func.every(StudentVaccine.status == VaccineStatus.APPROVED))
         )

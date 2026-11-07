@@ -1,41 +1,45 @@
 "use client";
+import { useSafeMutation } from "@/lib/query/safe-mutation";
+import { Pagination } from "@/components/pagination";
+import { usePageLocation } from "@/lib/ui/list-state";
+import { QueryError } from "@/components/query-error";
 
-import { use, useState } from "react";
+import { cloneElement, ReactElement, Suspense, use, useId, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft,
   Award,
-  CalendarDays,
   ChevronDown,
   ChevronUp,
   Edit3,
   MessageSquare,
-  Trash2,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import {
   deactivateStudent,
   deleteStudent,
   downloadStudentCertificate,
+  getAcademicOptions,
   getStudent,
+  listStudentCertificates,
   reactivateStudent,
+  revokeStudentCertificate,
   updateStudentProfile,
   type UpdateStudentProfileRequest,
 } from "@/lib/api/admin";
-import { getStudentScheme, reviewDose } from "@/lib/api/scheme";
+import { getStudentScheme } from "@/lib/api/scheme";
 import {
   deleteStudentEvidence,
   downloadEvidenceFile,
-  listStudentEvidence,
+  listStudentEvidencePage,
+  reviewEvidenceBatch,
 } from "@/lib/api/evidence";
-import { StudentDose, StudentVaccine } from "@/lib/api/types";
+import { StudentVaccine } from "@/lib/api/types";
 import {
-  doseStatusLabel,
   formatBytes,
   formatDate,
   formatDateTime,
-  statusVariant,
   vaccineStatusLabel,
 } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -51,12 +55,16 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { VaccineDueBadge } from "@/components/vaccine-due-badge";
+import { AdminDoseRow } from "@/components/admin-dose-row";
 
+import { studentDetailTab, safeStudentReturn } from "@/lib/navigation";
 type Tab = "info" | "scheme" | "evidence";
+const detailTabs: Array<[Tab, string]> = [["info", "Perfil"], ["scheme", "Esquema"], ["evidence", "Evidencia"]];
 
-export default function AdminStudentDetailPage({
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  return <Suspense fallback={<p>Cargando…</p>}><AdminStudentDetailPage params={params} /></Suspense>;
+}
+function AdminStudentDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -64,41 +72,52 @@ export default function AdminStudentDetailPage({
   const { id } = use(params);
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [tab, setTab] = useState<Tab>("info");
+  const searchParams = useSearchParams();
+  const tab = studentDetailTab(searchParams.get("tab"));
+  const tabsId = useId();
+  const tabButtons = useRef<Partial<Record<Tab, HTMLButtonElement | null>>>({});
+  const [focusedTab, setFocusedTab] = useState<Tab | null>(null);
+  const returnTo = safeStudentReturn(searchParams.get("returnTo"));
+  const setTab = (value: Tab) => { const params=new URLSearchParams(searchParams.toString());params.set("tab",value);params.set("returnTo",returnTo);router.replace(`/admin/students/${id}?${params}`,{scroll:false}); };
   const [downloadingCertificate, setDownloadingCertificate] = useState(false);
 
-  const { data: student, isLoading } = useQuery({
+  const { data: student, isLoading, error, refetch } = useQuery({
     queryKey: ["admin", "student", id],
     queryFn: () => getStudent(id),
   });
 
-  const deactivate = useMutation({
+  const deactivate = useSafeMutation({
+    affectedQueries: [["admin", "student", id],["admin", "students"],["audit"]],
     mutationFn: () => deactivateStudent(id),
     onSuccess: () => {
       toast.success("Estudiante desactivado");
+      queryClient.invalidateQueries({ queryKey: ["admin", "students"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "student", id] });
     },
     onError: () => toast.error("No se pudo desactivar"),
   });
 
-  const reactivate = useMutation({
+  const reactivate = useSafeMutation({
+    affectedQueries: [["admin", "student", id],["admin", "students"],["audit"]],
     mutationFn: () => reactivateStudent(id),
     onSuccess: () => {
       toast.success("Estudiante reactivado");
+      queryClient.invalidateQueries({ queryKey: ["admin", "students"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "student", id] });
     },
     onError: () => toast.error("No se pudo reactivar"),
   });
 
-  const remove = useMutation({
+  const remove = useSafeMutation({
+    affectedQueries: [["admin", "student"],["admin", "students"],["audit"]],
     mutationFn: () => deleteStudent(id),
     onSuccess: () => {
       toast.success("Estudiante eliminado");
-      router.replace("/admin/students");
+      router.replace(returnTo);
     },
     onError: () => toast.error("No se pudo eliminar"),
   });
-
+  if (error) return <QueryError error={error} retry={refetch} />;
   if (isLoading || !student) {
     return <p className="text-sm text-muted-foreground">Cargando…</p>;
   }
@@ -112,7 +131,7 @@ export default function AdminStudentDetailPage({
     setDownloadingCertificate(true);
     const toastId = toast.loading("Preparando certificado...");
     try {
-      await downloadStudentCertificate(id, student.email, {
+      await downloadStudentCertificate(id, {
         onProgress: (progress) =>
           toast.loading(
             progress == null
@@ -130,31 +149,31 @@ export default function AdminStudentDetailPage({
   }
 
   return (
-    <div className="-mx-4 -my-6 min-h-screen bg-[#071416] text-[#eaf7f7] sm:mx-0 sm:my-0 sm:min-h-0 sm:overflow-hidden sm:rounded-2xl sm:border sm:border-[#244247]">
-      <div className="sticky top-0 z-20 border-b border-[#244247] bg-[#0b1d20]/95 backdrop-blur">
-        <div className="flex items-center gap-2.5 px-4 py-3">
+    <div className="-mx-4 -my-6 min-h-screen bg-background text-foreground sm:mx-0 sm:my-0 sm:min-h-0 sm:overflow-hidden sm:rounded-2xl sm:border sm:border-[color:var(--divider)]">
+      <div className="sticky top-0 z-20 border-b border-[color:var(--divider)] bg-card/95 backdrop-blur">
+        <div className="flex flex-wrap items-center gap-2.5 px-4 py-3 sm:flex-nowrap">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={() => router.push(returnTo)}
             aria-label="Volver"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-[color:var(--interactive-foreground)] transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <ArrowLeft className="h-5 w-5" aria-hidden />
           </button>
-          <div className="min-w-0 flex-1">
-            <h1 className="truncate text-xl font-bold leading-tight tracking-normal">
+          <div className="order-3 min-w-0 basis-full sm:order-none sm:flex-1 sm:basis-0">
+            <h1 className="min-w-0 break-words text-xl font-bold leading-tight tracking-normal">
               {fullName}
             </h1>
-            <p className="truncate text-sm text-[#a8bfc2]">{student.email}</p>
+            <p className="truncate text-sm text-muted-foreground">{student.email}</p>
           </div>
-          <div className="flex shrink-0 items-center gap-1">
+          <div className="order-2 ml-auto flex shrink-0 items-center gap-1 sm:order-none sm:ml-0">
             <button
               type="button"
               onClick={onDownloadCertificate}
               disabled={downloadingCertificate}
               aria-label="Descargar certificado"
               title="Descargar certificado"
-              className="grid h-9 w-9 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10 disabled:opacity-50"
+              className="grid h-9 w-9 place-items-center rounded-full text-[color:var(--interactive-foreground)] transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
             >
               <Award className="h-5 w-5" aria-hidden />
             </button>
@@ -163,22 +182,22 @@ export default function AdminStudentDetailPage({
               onClick={() => setTab("info")}
               aria-label="Ver perfil"
               title="Ver perfil"
-              className="grid h-9 w-9 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
+              className="grid h-9 w-9 place-items-center rounded-full text-[color:var(--interactive-foreground)] transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Edit3 className="h-5 w-5" aria-hidden />
             </button>
             <button
               type="button"
-              onClick={() => setTab("evidence")}
-              aria-label="Ver evidencia"
-              title="Ver evidencia"
-              className="grid h-9 w-9 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
+              onClick={() => router.push(`/admin/communications?studentId=${id}&returnTo=${encodeURIComponent(`/admin/students/${id}?${searchParams}`)}`)}
+              aria-label="Enviar mensaje"
+              title="Enviar mensaje"
+              className="grid h-9 w-9 place-items-center rounded-full text-[color:var(--interactive-foreground)] transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <MessageSquare className="h-5 w-5" aria-hidden />
             </button>
           </div>
         </div>
-      <div className="hidden">
+      <div className="flex flex-wrap gap-2 px-4 py-2">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{fullName}</h1>
           <p className="text-sm text-muted-foreground">{student.email}</p>
@@ -199,7 +218,7 @@ export default function AdminStudentDetailPage({
           {student.is_active ? (
             <Button
               variant="outline"
-              onClick={() => deactivate.mutate()}
+              onClick={() => { if (confirm("¿Desactivar este estudiante?")) deactivate.mutate(); }}
               disabled={deactivate.isPending}
             >
               Desactivar
@@ -207,7 +226,7 @@ export default function AdminStudentDetailPage({
           ) : (
             <Button
               variant="outline"
-              onClick={() => reactivate.mutate()}
+              onClick={() => { if (confirm("¿Reactivar este estudiante?")) reactivate.mutate(); }}
               disabled={reactivate.isPending}
             >
               Reactivar
@@ -227,27 +246,46 @@ export default function AdminStudentDetailPage({
         </div>
       </div>
 
-      <div className="flex border-t border-[#244247]">
-        {(
-          [
-            ["info", "Perfil"],
-            ["scheme", "Esquema"],
-            ["evidence", "Evidencia"],
-          ] as Array<[Tab, string]>
-        ).map(([key, label]) => (
+      <div
+        role="tablist"
+        aria-label="Detalle del estudiante"
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setFocusedTab(null);
+        }}
+        className="flex border-t border-[color:var(--divider)]"
+      >
+        {detailTabs.map(([key, label], index) => (
           <button
             key={key}
+            type="button"
+            role="tab"
+            id={`${tabsId}-tab-${key}`}
+            aria-selected={tab === key}
+            aria-controls={`${tabsId}-panel-${key}`}
+            tabIndex={(focusedTab ?? tab) === key ? 0 : -1}
+            ref={(element) => { tabButtons.current[key] = element; }}
+            onFocus={() => setFocusedTab(key)}
+            onKeyDown={(event) => {
+              let next: number;
+              if (event.key === "ArrowRight") next = (index + 1) % detailTabs.length;
+              else if (event.key === "ArrowLeft") next = (index + detailTabs.length - 1) % detailTabs.length;
+              else if (event.key === "Home") next = 0;
+              else if (event.key === "End") next = detailTabs.length - 1;
+              else return;
+              event.preventDefault();
+              tabButtons.current[detailTabs[next][0]]?.focus();
+            }}
             onClick={() => setTab(key)}
             className={cn(
-              "relative flex-1 px-4 py-3 text-sm font-semibold tracking-normal transition-colors",
+              "relative flex-1 px-4 py-3 text-sm font-semibold tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
               tab === key
-                ? "text-[#45d2df]"
-                : "text-[#d8e2e3]/80 hover:text-[#eaf7f7]",
+                ? "text-[color:var(--interactive-foreground)]"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             {label}
             {tab === key && (
-              <span className="absolute inset-x-8 -bottom-px h-0.5 rounded-t-full bg-[#45d2df]" />
+              <span aria-hidden className="absolute inset-x-8 -bottom-px h-0.5 rounded-t-full bg-[color:var(--interactive-foreground)]" />
             )}
           </button>
         ))}
@@ -255,11 +293,62 @@ export default function AdminStudentDetailPage({
       </div>
 
       <div className="px-3 py-3 sm:px-4">
-        {tab === "info" && <InfoTab student={student} studentId={id} />}
-        {tab === "scheme" && <SchemeTab studentId={id} />}
-        {tab === "evidence" && <EvidenceTab studentId={id} />}
+        {detailTabs.map(([key]) => (
+          <div key={key} role="tabpanel" id={`${tabsId}-panel-${key}`} aria-labelledby={`${tabsId}-tab-${key}`} hidden={tab !== key} tabIndex={0} className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            {tab === key && key === "info" && <><InfoTab student={student} studentId={id} /><CertificateHistory studentId={id} /></>}
+            {tab === key && key === "scheme" && <SchemeTab studentId={id} />}
+            {tab === key && key === "evidence" && <EvidenceTab studentId={id} />}
+          </div>
+        ))}
       </div>
     </div>
+  );
+}
+
+function CertificateHistory({ studentId }: { studentId: string }) {
+  const queryClient = useQueryClient();
+  const [reason, setReason] = useState("");
+  const { data = [], isLoading, error, refetch } = useQuery({
+    queryKey: ["admin", "student", studentId, "certificates"],
+    queryFn: () => listStudentCertificates(studentId),
+  });
+  const revoke = useMutation({
+    mutationFn: (certificateId: string) => revokeStudentCertificate(certificateId, reason),
+    onSuccess: () => {
+      setReason("");
+      toast.success("Certificado revocado");
+      queryClient.invalidateQueries({ queryKey: ["admin", "student", studentId, "certificates"] });
+    },
+    onError: () => toast.error("No se pudo revocar el certificado"),
+  });
+  if (error) return <QueryError error={error} retry={refetch} />;
+  return (
+    <Card className="mt-4">
+      <CardHeader>
+        <CardTitle className="text-base">Certificados emitidos</CardTitle>
+        <CardDescription>La revocación queda registrada y no puede revertirse desde esta pantalla.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {isLoading ? <p className="text-sm text-muted-foreground">Cargando emisiones…</p> : data.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No hay certificados emitidos.</p>
+        ) : data.map((certificate) => (
+          <div key={certificate.id} className="flex flex-wrap items-center justify-between gap-3 rounded-md border p-3">
+            <div className="text-sm">
+              <p className="font-medium">{formatDateTime(certificate.issued_at)} · {certificate.status === "ISSUED" ? "Vigente" : "Revocado"}</p>
+              <a className="text-primary underline" href={`/verify/${certificate.public_id}`} target="_blank" rel="noreferrer">Abrir verificación pública</a>
+            </div>
+            {certificate.status === "ISSUED" && (
+              <div className="flex flex-wrap items-center gap-2">
+                <Input aria-label="Motivo de revocación" value={reason} maxLength={500} onChange={(event) => setReason(event.target.value)} placeholder="Motivo requerido" />
+                <Button variant="destructive" disabled={!reason.trim() || revoke.isPending} onClick={() => revoke.mutate(certificate.id)}>
+                  {revoke.isPending ? "Revocando…" : "Revocar"}
+                </Button>
+              </div>
+            )}
+          </div>
+        ))}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -289,6 +378,10 @@ function InfoTab({
   studentId: string;
 }) {
   const queryClient = useQueryClient();
+  const academicOptions = useQuery({
+    queryKey: ["academic-options"],
+    queryFn: getAcademicOptions,
+  });
   const p = student.profile;
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<UpdateStudentProfileRequest>({
@@ -304,16 +397,17 @@ function InfoTab({
     emergency_contact_phone: p?.emergency_contact_phone ?? "",
     semester: p?.semester ?? undefined,
   });
-  const update = useMutation({
+  const update = useSafeMutation({
+    affectedQueries: [["admin", "student", studentId],["admin", "students"],["audit"]],
     mutationFn: () =>
       updateStudentProfile(studentId, {
         ...form,
-        student_id: emptyToUndefined(form.student_id),
-        birth_date: emptyToUndefined(form.birth_date),
-        phone: emptyToUndefined(form.phone),
-        eps_affiliation: emptyToUndefined(form.eps_affiliation),
-        emergency_contact_name: emptyToUndefined(form.emergency_contact_name),
-        emergency_contact_phone: emptyToUndefined(form.emergency_contact_phone),
+        student_id: emptyToNull(form.student_id),
+        birth_date: emptyToNull(form.birth_date),
+        phone: emptyToNull(form.phone),
+        eps_affiliation: emptyToNull(form.eps_affiliation),
+        emergency_contact_name: emptyToNull(form.emergency_contact_name),
+        emergency_contact_phone: emptyToNull(form.emergency_contact_phone),
         semester: form.semester ? Number(form.semester) : undefined,
       }),
     onSuccess: () => {
@@ -350,18 +444,21 @@ function InfoTab({
         <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Field label="Nombre">
             <Input
+                disabled={update.isPending}
               value={form.first_name ?? ""}
               onChange={(e) => setForm({ ...form, first_name: e.target.value })}
             />
           </Field>
           <Field label="Apellido">
             <Input
+                disabled={update.isPending}
               value={form.last_name ?? ""}
               onChange={(e) => setForm({ ...form, last_name: e.target.value })}
             />
           </Field>
           <Field label="Documento">
             <Input
+                disabled={update.isPending}
               value={form.document_number ?? ""}
               onChange={(e) =>
                 setForm({ ...form, document_number: e.target.value })
@@ -370,12 +467,14 @@ function InfoTab({
           </Field>
           <Field label="Codigo institucional">
             <Input
+                disabled={update.isPending}
               value={form.student_id ?? ""}
               onChange={(e) => setForm({ ...form, student_id: e.target.value })}
             />
           </Field>
           <Field label="Fecha nacimiento">
             <Input
+                disabled={update.isPending}
               type="date"
               value={form.birth_date ?? ""}
               onChange={(e) => setForm({ ...form, birth_date: e.target.value })}
@@ -383,6 +482,7 @@ function InfoTab({
           </Field>
           <Field label="Sexo">
             <Select
+                disabled={update.isPending}
               value={form.sex}
               onChange={(e) =>
                 setForm({
@@ -393,17 +493,18 @@ function InfoTab({
             >
               <option value="male">Masculino</option>
               <option value="female">Femenino</option>
-              <option value="other">Otro</option>
             </Select>
           </Field>
           <Field label="Telefono">
             <Input
+                disabled={update.isPending}
               value={form.phone ?? ""}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
           </Field>
           <Field label="EPS">
             <Input
+                disabled={update.isPending}
               value={form.eps_affiliation ?? ""}
               onChange={(e) =>
                 setForm({ ...form, eps_affiliation: e.target.value })
@@ -411,21 +512,25 @@ function InfoTab({
             />
           </Field>
           <Field label="Semestre">
-            <Input
-              type="number"
-              min={1}
-              max={12}
-              value={form.semester ?? ""}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  semester: e.target.value ? Number(e.target.value) : undefined,
-                })
-              }
-            />
+            <Select
+              disabled={update.isPending || !academicOptions.data}
+              value={form.semester?.toString() ?? ""}
+              onChange={(e) => setForm({ ...form, semester: e.target.value ? Number(e.target.value) : undefined })}
+            >
+              <option value="">Sin semestre</option>
+              {form.semester != null && !academicOptions.data?.semesters.includes(form.semester) && (
+                <option value={form.semester} disabled>Semestre actual ({form.semester})</option>
+              )}
+              {academicOptions.data?.semesters.map((semester) => (
+                <option key={semester} value={semester}>{semester}</option>
+              ))}
+            </Select>
           </Field>
+          {academicOptions.isLoading && <p role="status" className="text-sm text-muted-foreground">Cargando opciones académicas…</p>}
+          {academicOptions.error && <QueryError error={academicOptions.error} retry={() => academicOptions.refetch({ cancelRefetch: false })} retrying={academicOptions.isFetching} />}
           <Field label="Contacto emergencia">
             <Input
+                disabled={update.isPending}
               value={form.emergency_contact_name ?? ""}
               onChange={(e) =>
                 setForm({ ...form, emergency_contact_name: e.target.value })
@@ -434,6 +539,7 @@ function InfoTab({
           </Field>
           <Field label="Tel. emergencia">
             <Input
+                disabled={update.isPending}
               value={form.emergency_contact_phone ?? ""}
               onChange={(e) =>
                 setForm({ ...form, emergency_contact_phone: e.target.value })
@@ -464,7 +570,7 @@ function InfoTab({
       </CardHeader>
       <CardContent className="grid gap-4 text-sm sm:grid-cols-2 lg:grid-cols-3">
         <div className="flex justify-end sm:col-span-2 lg:col-span-3">
-          <Button size="sm" variant="outline" onClick={() => setEditing(true)}>
+          <Button size="sm" variant="outline" onClick={() => { setForm({first_name:p?.first_name ?? "",last_name:p?.last_name ?? "",document_number:p?.document_number ?? "",student_id:p?.student_id ?? "",birth_date:p?.birth_date ?? "",sex:p?.sex as UpdateStudentProfileRequest["sex"],phone:p?.phone ?? "",eps_affiliation:p?.eps_affiliation ?? "",emergency_contact_name:p?.emergency_contact_name ?? "",emergency_contact_phone:p?.emergency_contact_phone ?? "",semester:p?.semester ?? undefined});setEditing(true); }}>
             Editar datos
           </Button>
         </div>
@@ -500,26 +606,29 @@ function Field({
   children,
 }: {
   label: string;
-  children: React.ReactNode;
+  children: ReactElement<{ id?: string }>;
 }) {
+  const generatedId = useId();
+  const id = children.props.id ?? generatedId;
   return (
     <div className="flex flex-col gap-1.5">
-      <Label>{label}</Label>
-      {children}
+      <Label htmlFor={id}>{label}</Label>
+      {cloneElement(children, { id })}
     </div>
   );
 }
 
-function emptyToUndefined(value: string | null | undefined) {
+function emptyToNull(value: string | null | undefined) {
   const clean = value?.trim();
-  return clean ? clean : undefined;
+  return clean ? clean : null;
 }
 
 function SchemeTab({ studentId }: { studentId: string }) {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["admin", "student", studentId, "scheme"],
     queryFn: () => getStudentScheme(studentId),
   });
+  if (error) return <QueryError error={error} retry={refetch} />;
   if (isLoading) return <p className="text-sm text-muted-foreground">Cargando…</p>;
   if (!data || data.length === 0)
     return (
@@ -527,12 +636,11 @@ function SchemeTab({ studentId }: { studentId: string }) {
     );
   return (
     <div className="flex flex-col gap-3">
-      {data.map((sv, index) => (
+      {data.map((sv) => (
         <AdminVaccineCard
           key={sv.id}
           vaccine={sv}
           studentId={studentId}
-          defaultOpen={index < 2}
         />
       ))}
     </div>
@@ -542,21 +650,24 @@ function SchemeTab({ studentId }: { studentId: string }) {
 function AdminVaccineCard({
   vaccine,
   studentId,
-  defaultOpen,
 }: {
   vaccine: StudentVaccine;
   studentId: string;
-  defaultOpen: boolean;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+  const triggerId = `${panelId}-trigger`;
   const tone = statusColor(vaccine.status);
 
   return (
-    <Card className="overflow-hidden rounded-xl border-[#2d4f55] bg-[#0e2023] text-[#eaf7f7] shadow-none">
+    <Card className="overflow-hidden rounded-xl border-border bg-card text-foreground shadow-none">
       <button
         type="button"
+        id={triggerId}
+        aria-expanded={open}
+        aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
-        className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-[#142d31]/45"
+        className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-[color:var(--surface-variant)]/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
       >
         <span
           className="h-11 w-1.5 shrink-0 rounded-full"
@@ -564,22 +675,23 @@ function AdminVaccineCard({
           aria-hidden
         />
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-lg font-bold leading-tight">
+          <span className="block break-words text-lg font-bold leading-tight">
             {vaccine.vaccine?.name ?? "Vacuna"}
           </span>
           <span
             className="mt-0.5 block text-sm font-semibold"
-            style={{ color: tone }}
+            style={{ color: statusColor(vaccine.status, true) }}
           >
             {vaccineStatusLabel(vaccine.status)}
           </span>
         </span>
         {open ? (
-          <ChevronUp className="h-5 w-5 shrink-0 text-[#45d2df]" aria-hidden />
+          <ChevronUp className="h-5 w-5 shrink-0 text-[color:var(--interactive-foreground)]" aria-hidden />
         ) : (
-          <ChevronDown className="h-5 w-5 shrink-0 text-[#d8e2e3]" aria-hidden />
+          <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
         )}
       </button>
+      <div id={panelId} role="region" aria-labelledby={triggerId} hidden={!open}>
       {open && (
         <CardContent className="flex flex-col gap-3 px-4 pb-4 pt-0">
           {vaccine.doses
@@ -590,244 +702,34 @@ function AdminVaccineCard({
             ))}
         </CardContent>
       )}
+      </div>
     </Card>
   );
 }
 
-function statusColor(status: string): string {
+function statusColor(status: string, text = false): string {
   switch (status) {
     case "approved":
-      return "#5fae36";
+      return text ? "var(--success-text)" : "var(--success)";
     case "denied":
-      return "#c94242";
+      return text ? "var(--destructive-text)" : "var(--destructive)";
     case "in_review":
-      return "#e6a700";
+      return text ? "var(--warning-text)" : "var(--warning)";
     default:
       return "#829196";
   }
 }
 
-function AdminDoseRow({
-  dose,
-  studentId,
-}: {
-  dose: StudentDose;
-  studentId: string;
-}) {
-  const queryClient = useQueryClient();
-  const [reviewAction, setReviewAction] = useState<null | "approved" | "denied">(
-    null,
-  );
-  const [notes, setNotes] = useState(dose.admin_notes ?? "");
-
-  const review = useMutation({
-    mutationFn: (payload: {
-      status: "approved" | "denied";
-      notesOverride?: string | null;
-    }) =>
-      reviewDose(dose.id, {
-        status: payload.status,
-        admin_notes:
-          payload.notesOverride === undefined ? notes || null : payload.notesOverride,
-      }),
-    onSuccess: (_, payload) => {
-      toast.success(
-        payload.status === "approved" ? "Dosis aprobada" : "Dosis rechazada",
-      );
-      setReviewAction(null);
-      queryClient.invalidateQueries({
-        queryKey: ["admin", "student", studentId, "scheme"],
-      });
-    },
-    onError: () => toast.error("No se pudo guardar"),
-  });
-
-  const isApproved = dose.status === "approved";
-  const isDenied = dose.status === "denied";
-  const tone = statusColor(dose.status);
-  const label = dose.dose_config?.label ?? `Dosis ${dose.dose_number}`;
-
-  const cancel = () => {
-    setReviewAction(null);
-    setNotes(dose.admin_notes ?? "");
-  };
-
-  return (
-    <div className="relative">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-base font-semibold leading-tight text-[#eaf7f7]">
-            {label}
-          </p>
-          <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm">
-          <span
-            className="h-2.5 w-2.5 shrink-0 rounded-full"
-            style={{ backgroundColor: tone }}
-          />
-          <span className="hidden">
-            {dose.dose_config?.label ?? `Dosis ${dose.dose_number}`}
-          </span>
-          <Badge variant={statusVariant(dose.status)} className="text-xs">
-            {doseStatusLabel(dose.status)}
-          </Badge>
-          {dose.applied_date && (
-            <>
-              <CalendarDays className="h-4 w-4 text-[#647478]" aria-hidden />
-              <span className="text-[#647478]">{dose.applied_date}</span>
-            </>
-          )}
-          {dose.due_date && (
-            <VaccineDueBadge
-              dueDate={dose.due_date}
-              days={dose.days_until_due ?? null}
-            />
-          )}
-          {dose.titer_value && (
-            <span className="text-[#a8bfc2]">Titulacion: {dose.titer_value}</span>
-          )}
-        </div>
-        </div>
-        {!reviewAction && (
-          <div className="flex shrink-0 flex-wrap items-center gap-2">
-            {!isApproved && (
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 rounded-full bg-[#5fae36]/15 px-2.5 text-[#8dd965] hover:bg-[#5fae36]/25 hover:text-[#a7da64] [&>span:first-child]:hidden"
-                onClick={() => setReviewAction("approved")}
-                title="Aprobar dosis"
-              >
-                <span aria-hidden className="text-base leading-none">✓</span>
-                <span className="ml-1">Aprobar</span>
-              </Button>
-            )}
-            {!isDenied && (
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 rounded-full bg-[#c94242]/15 px-2.5 text-[#ff7373] hover:bg-[#c94242]/25 hover:text-[#ff8a8a] [&>span:first-child]:hidden"
-                onClick={() => setReviewAction("denied")}
-                title="Rechazar dosis"
-              >
-                <span aria-hidden className="text-base leading-none">✗</span>
-                <span className="ml-1">Denegar</span>
-              </Button>
-            )}
-          </div>
-        )}
-      </div>
-
-      <div className="hidden">
-        {dose.applied_date && <span>{formatDate(dose.applied_date)}</span>}
-        {dose.due_date && (
-          <VaccineDueBadge
-            dueDate={dose.due_date}
-            days={dose.days_until_due ?? null}
-          />
-        )}
-        {dose.titer_value && (
-          <span>
-            <span className="text-muted-foreground">Titulación: </span>
-            {dose.titer_value}
-          </span>
-        )}
-      </div>
-
-      {dose.admin_notes && !reviewAction && (
-        <div className="mt-3 rounded-lg border border-[#2d4f55] bg-[#063d43] p-3">
-          <div className="mb-2 flex items-center gap-2 text-[#45d2df]">
-            <MessageSquare className="h-4 w-4" aria-hidden />
-            <p className="flex-1 text-sm font-bold leading-tight">
-              Comentario del administrador
-            </p>
-            <button
-              type="button"
-              onClick={() => setReviewAction(isDenied ? "denied" : "approved")}
-              className="grid h-7 w-7 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
-              title="Editar comentario"
-              aria-label="Editar comentario"
-            >
-              <Edit3 className="h-4 w-4" aria-hidden />
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                review.mutate({
-                  status: isDenied ? "denied" : "approved",
-                  notesOverride: null,
-                })
-              }
-              className="grid h-7 w-7 place-items-center rounded-full text-[#45d2df] transition-colors hover:bg-[#45d2df]/10"
-              title="Eliminar comentario"
-              aria-label="Eliminar comentario"
-              disabled={review.isPending}
-            >
-              <Trash2 className="h-4 w-4" aria-hidden />
-            </button>
-          </div>
-          <p className="text-sm leading-snug text-[#eaf7f7]">
-            {dose.admin_notes}
-          </p>
-        </div>
-      )}
-
-      {reviewAction && (
-        <div
-          className={cn(
-            "mt-3 flex flex-col gap-3 rounded-lg border-l-4 p-3",
-            reviewAction === "approved"
-              ? "border-[#5fae36] bg-[#11341a]"
-              : "border-[#c94242] bg-[#3a1313]",
-          )}
-        >
-          <p className="text-sm font-medium">
-            {reviewAction === "approved"
-              ? "¿Confirmar aprobación de esta dosis?"
-              : "¿Confirmar rechazo de esta dosis?"}
-          </p>
-          <div className="flex flex-col gap-1.5">
-            <Label className="text-xs">Nota (opcional)</Label>
-            <Textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={2}
-              placeholder={
-                reviewAction === "approved"
-                  ? "Ej: Evidencia válida, dosis aplicada correctamente."
-                  : "Ej: Documento ilegible, fecha incorrecta…"
-              }
-            />
-          </div>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              variant={reviewAction === "approved" ? "default" : "destructive"}
-              onClick={() => review.mutate({ status: reviewAction })}
-              disabled={review.isPending}
-            >
-              {review.isPending
-                ? "Guardando…"
-                : reviewAction === "approved"
-                  ? "Aprobar"
-                  : "Rechazar"}
-            </Button>
-            <Button size="sm" variant="ghost" onClick={cancel}>
-              Cancelar
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 
 function EvidenceTab({ studentId }: { studentId: string }) {
+ const [page,setPage]=usePageLocation("evidence_page");
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({
-    queryKey: ["admin", "student", studentId, "evidence"],
-    queryFn: () => listStudentEvidence(studentId),
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["admin", "student", studentId, "evidence", page],
+    queryFn: () => listStudentEvidencePage(studentId,page),
   });
-  const remove = useMutation({
+  const remove = useSafeMutation({
+    affectedQueries: [["admin", "student"],["admin", "students"],["audit"]],
     mutationFn: (batchId: string) => deleteStudentEvidence(studentId, batchId),
     onSuccess: () => {
       toast.success("Evidencia eliminada");
@@ -837,12 +739,28 @@ function EvidenceTab({ studentId }: { studentId: string }) {
     },
     onError: () => toast.error("No se pudo eliminar"),
   });
+  const review = useSafeMutation({
+    affectedQueries: [["admin", "student", studentId],["admin", "students"],["audit"]],
+    mutationFn: (input: { batchId: string; status: "in_review" | "approved" | "denied" }) =>
+      reviewEvidenceBatch(input.batchId, input.status),
+    onSuccess: () => {
+      toast.success("Estado de evidencia actualizado");
+      queryClient.invalidateQueries({queryKey:["admin", "student", studentId, "scheme"]});
+      queryClient.invalidateQueries({
+        queryKey: ["admin", "student", studentId, "evidence"],
+      });
+    },
+    onError: () => toast.error("No se pudo revisar la evidencia"),
+  });
+  if (error) return <QueryError error={error} retry={refetch} />;
   if (isLoading) return <p className="text-sm text-muted-foreground">Cargando…</p>;
-  if (!data || data.length === 0)
-    return <p className="text-sm text-muted-foreground">Sin evidencias.</p>;
+
   return (
+    <div>
+    <Pagination data={data} page={page} onPage={setPage} refresh={refetch} busy={isLoading} />
+    {!data?.items.length && <p>Sin evidencias.</p>}
     <ul className="flex flex-col gap-3">
-      {data.map((batch) => (
+      {data?.items.map((batch) => (
         <li key={batch.id} className="rounded-md border p-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="text-sm">
@@ -854,11 +772,24 @@ function EvidenceTab({ studentId }: { studentId: string }) {
             <Button
               size="sm"
               variant="ghost"
-              onClick={() => remove.mutate(batch.id)}
+              onClick={() => { if (confirm("¿Eliminar estos documentos?")) remove.mutate(batch.id); }}
               disabled={remove.isPending}
             >
               Eliminar
             </Button>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {(["in_review", "approved", "denied"] as const).map((status) => (
+              <Button
+                key={status}
+                size="sm"
+                variant="outline"
+                disabled={review.isPending}
+                onClick={() => review.mutate({ batchId: batch.id, status })}
+              >
+                {status === "in_review" ? "En revisión" : status === "approved" ? "Aprobar" : "Denegar"}
+              </Button>
+            ))}
           </div>
           {batch.notes && (
             <p className="mt-2 text-sm text-muted-foreground">{batch.notes}</p>
@@ -870,7 +801,7 @@ function EvidenceTab({ studentId }: { studentId: string }) {
           </ul>
         </li>
       ))}
-    </ul>
+    </ul></div>
   );
 }
 
@@ -905,7 +836,7 @@ function AdminEvidenceFileItem({
   return (
     <li>
       <button
-        className="text-sm text-primary hover:underline disabled:opacity-60"
+        className="max-w-full whitespace-normal break-all text-sm text-primary hover:underline disabled:opacity-60"
         onClick={onDownload}
         disabled={downloading}
       >

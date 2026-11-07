@@ -1,4 +1,3 @@
-import { getAccessToken } from "@/lib/api/client";
 
 export interface DownloadOptions {
   onProgress?: (progress: number | null) => void;
@@ -9,9 +8,9 @@ export async function fetchAndDownload(
   filename: string,
   options: DownloadOptions = {},
 ) {
-  const token = getAccessToken();
   const response = await fetch(url, {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    credentials: "same-origin",
+    cache: "no-store",
   });
   if (!response.ok) throw new Error("No se pudo descargar el archivo");
 

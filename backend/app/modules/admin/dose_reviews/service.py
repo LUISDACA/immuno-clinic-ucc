@@ -4,6 +4,7 @@ import uuid
 
 from app.common.access import ensure_student_in_admin_scope
 from app.common.enums import AuditAction, DoseStatus, Role
+from app.core.cache import invalidate_student_scheme
 from app.core.exceptions import NotFoundException
 from app.modules.audit.service import AuditService, audit_value
 from app.modules.notifications.service import NotificationService
@@ -31,6 +32,27 @@ class DoseReviewService:
         self.scheme_service = scheme_service
         self.audit = audit
         self.notifications = notifications
+
+    async def update_comment(self, admin: User, dose_id: uuid.UUID, notes: str | None) -> None:
+        # Same row lock and scope as review, but no status/reviewer/date writes.
+        dose = await self.scheme_service.scheme_repo.get_dose_by_id(dose_id)
+        if dose is None:
+            raise NotFoundException("Dose", str(dose_id))
+        student_id = dose.student_vaccine.user_id
+        student = await self.user_repo.get_by_id(student_id)
+        if student is None or student.role != Role.STUDENT:
+            raise NotFoundException("Student", str(student_id))
+        ensure_student_in_admin_scope(admin, student)
+        dose.admin_notes = notes
+        await self.audit.log(
+            actor_id=admin.id,
+            action=AuditAction.DOSE_COMMENT_UPDATED,
+            target_type="student_vaccine_dose",
+            target_id=dose_id,
+            details={"student_id": str(student_id), "comment_removed": notes is None},
+        )
+        await self.db.commit()
+        invalidate_student_scheme(student_id)
 
     async def review_dose(
         self,
@@ -67,6 +89,7 @@ class DoseReviewService:
             )
 
         await self.db.commit()
+        invalidate_student_scheme(student_id)
         return dose
 
     async def _log_review(
@@ -109,6 +132,9 @@ class DoseReviewService:
                 "Dosis aprobada",
                 f"Tu dosis '{dose_label}' de {vaccine_name} ha sido aprobada.",
             )
+
+        if data.status == DoseStatus.IN_REVIEW:
+            return ("Dosis en revisión", "El estado de una dosis se actualizó a en revisión.")
 
         reason = data.admin_notes or "Revisar detalles en el sistema"
         return (

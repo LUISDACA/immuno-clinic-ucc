@@ -23,6 +23,9 @@ class _RecordingAuthNotifier extends StateNotifier<AuthState>
   Future<void> checkSession() async {}
 
   @override
+  void cancelPendingSessionRestore() {}
+
+  @override
   Future<void> login(String email, String password) async {
     loginCalls++;
     lastEmail = email;
@@ -41,8 +44,9 @@ class _RecordingAuthNotifier extends StateNotifier<AuthState>
 }
 
 void main() {
-  testWidgets('Login form validates input and calls AuthNotifier.login',
-      (tester) async {
+  testWidgets('Login form validates input and calls AuthNotifier.login', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
     final fakeAuth = _RecordingAuthNotifier();
@@ -83,6 +87,51 @@ void main() {
     expect(fakeAuth.lastPassword, 'StudentPass123!');
     expect(find.text('Credenciales inválidas'), findsOneWidget);
 
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('Login form advances and submits with keyboard actions', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final fakeAuth = _RecordingAuthNotifier();
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          authStateProvider.overrideWith((ref) => fakeAuth),
+        ],
+        child: const ImmunoClinicApp(),
+      ),
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Correo electrónico').first,
+      'student@test.com',
+    );
+    final passwordInput = tester.widget<EditableText>(
+      find.descendant(
+        of: find.widgetWithText(TextFormField, 'Contraseña').first,
+        matching: find.byType(EditableText),
+      ),
+    );
+    await tester.testTextInput.receiveAction(TextInputAction.next);
+    await tester.pump();
+    expect(passwordInput.focusNode.hasFocus, isTrue);
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Contraseña').first,
+      'StudentPass123!',
+    );
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+
+    expect(fakeAuth.loginCalls, 1);
+    expect(fakeAuth.lastEmail, 'student@test.com');
+    expect(fakeAuth.lastPassword, 'StudentPass123!');
     await tester.pumpWidget(const SizedBox());
   });
 }

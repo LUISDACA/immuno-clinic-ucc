@@ -1,0 +1,36 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "viewport_width": 390,
+  "pixel_equality_claimed": false,
+  "pairs": [
+    {
+      "theme": "light",
+      "scenario": "selected",
+      "flutter": "flutter-light-selected-390.png",
+      "next": "next-light-selected-390.png",
+      "note": "Same local selection and frozen controls. Flutter full-screen390x844, Next full upload card cropped from390x844 viewport. General association/6-byte fixture in Flutter vs synthetic catalog dose/33-byte fixture in Next. No pixel equality or native-device claim."
+    },
+    {
+      "theme": "light",
+      "scenario": "sending",
+      "flutter": "flutter-light-sending-390.png",
+      "next": "next-light-sending-390.png",
+      "note": "Same local selection and frozen controls. Flutter full-screen390x844, Next full upload card cropped from390x844 viewport. General association/6-byte fixture in Flutter vs synthetic catalog dose/33-byte fixture in Next. No pixel equality or native-device claim."
+    },
+    {
+      "theme": "dark",
+      "scenario": "selected",
+      "flutter": "flutter-dark-selected-390.png",
+      "next": "next-dark-selected-390.png",
+      "note": "Same local selection and frozen controls. Flutter full-screen390x844, Next full upload card cropped from390x844 viewport. General association/6-byte fixture in Flutter vs synthetic catalog dose/33-byte fixture in Next. No pixel equality or native-device claim."
+    },
+    {
+      "theme": "dark",
+      "scenario": "sending",
+      "flutter": "flutter-dark-sending-390.png",
+      "next": "next-dark-sending-390.png",
+      "note": "Same local selection and frozen controls. Flutter full-screen390x844, Next full upload card cropped from390x844 viewport. General association/6-byte fixture in Flutter vs synthetic catalog dose/33-byte fixture in Next. No pixel equality or native-device claim."
+    }
+  ]
+}

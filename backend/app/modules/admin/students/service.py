@@ -1,8 +1,10 @@
 """Admin workflows for creating and maintaining student accounts."""
 
 import logging
+import secrets
 import uuid
 
+from app.common.academic import ACADEMIC_SEMESTERS
 from app.common.access import ensure_student_in_admin_scope, is_app_admin, require_admin_scope
 from app.common.enums import AuditAction, Role
 from app.core.email import send_account_created_email
@@ -56,9 +58,11 @@ class StudentAdminService:
             raise ConflictException(f"Ya existe un usuario con el correo {data.email}")
         await self._ensure_unique_student_identifiers(data)
 
+        # Never derive credentials from identity data or return them in API responses.
+        temporary_password = secrets.token_urlsafe(24) + "Aa1!"
         user = User(
             email=data.email,
-            hashed_password=hash_password(data.document_number),
+            hashed_password=hash_password(temporary_password),
             role=Role.STUDENT,
             is_active=True,
             must_change_password=True,
@@ -111,7 +115,7 @@ class StudentAdminService:
         await send_account_created_email(
             user.email,
             full_name=f"{data.first_name} {data.last_name}".strip(),
-            temporary_password=data.document_number,
+            temporary_password=temporary_password,
         )
         return await self.user_repo.get_by_id(user.id)
 
@@ -236,7 +240,17 @@ class StudentAdminService:
     ) -> User:
         student = await self.get_student_detail(admin, student_id)
         old_sex = student.profile.sex if student.profile else None
+        old_program = student.profile.program if student.profile else None
+        old_campus = student.profile.campus if student.profile else None
         update_data = data.model_dump(exclude_unset=True)
+        requested_semester = update_data.get("semester")
+        current_semester = student.profile.semester if student.profile else None
+        if (
+            requested_semester is not None
+            and requested_semester not in ACADEMIC_SEMESTERS
+            and requested_semester != current_semester
+        ):
+            raise BadRequestException("El semestre debe estar entre 1 y 10")
         if not is_app_admin(admin):
             program, campus = require_admin_scope(admin)
             if "program" in update_data and update_data["program"] != program:
@@ -246,6 +260,24 @@ class StudentAdminService:
             update_data["program"] = program
             update_data["campus"] = campus
         await self._ensure_unique_student_identifiers(data, current_user_id=student.id)
+
+        scheme_inputs_changed = bool(
+            student.profile
+            and any(
+                key in update_data and update_data[key] != old_value
+                for key, old_value in (
+                    ("sex", old_sex),
+                    ("program", old_program),
+                    ("campus", old_campus),
+                )
+            )
+        )
+        if scheme_inputs_changed:
+            await self.scheme_service.append_scheme_version(
+                student.id,
+                "profile:reconciliation:before",
+                created_by=admin.id,
+            )
 
         if student.profile and update_data:
             before = {key: getattr(student.profile, key) for key in update_data}
@@ -264,25 +296,45 @@ class StudentAdminService:
                     },
                 )
 
-        if data.sex is not None and old_sex is not None and data.sex != old_sex:
+        if scheme_inputs_changed and student.profile is not None:
             await self.scheme_service.regenerate_scheme_for_sex_change(
                 student.id,
-                data.sex,
+                student.profile.sex,
                 commit=False,
+                before_recorded=True,
+                created_by=admin.id,
+            )
+            await self.scheme_service.append_scheme_version(
+                student.id,
+                "profile:reconciliation:after",
+                created_by=admin.id,
             )
             await self.notifications.create_notification(
                 student.id,
                 "Esquema de vacunación actualizado",
-                "Tu esquema ha sido regenerado debido a un cambio en tu perfil.",
+                "Tu esquema ha sido versionado después de un cambio en tu perfil.",
                 category="scheme",
             )
-            await self.audit.log(
-                actor_id=admin.id,
-                action=AuditAction.SEX_CHANGED,
-                target_type="user",
-                target_id=student.id,
-                details={"old_sex": old_sex.value, "new_sex": data.sex.value},
-            )
+            if data.sex is not None and old_sex is not None and data.sex != old_sex:
+                await self.audit.log(
+                    actor_id=admin.id,
+                    action=AuditAction.SEX_CHANGED,
+                    target_type="user",
+                    target_id=student.id,
+                    details={"old_sex": old_sex.value, "new_sex": data.sex.value},
+                )
+            else:
+                await self.audit.log(
+                    actor_id=admin.id,
+                    action=AuditAction.SCHEME_REGENERATED,
+                    target_type="user",
+                    target_id=student.id,
+                    details={
+                        "reason": "academic_scope_changed",
+                        "program_changed": "program" in update_data,
+                        "campus_changed": "campus" in update_data,
+                    },
+                )
 
         await self.db.commit()
         return await self.user_repo.get_by_id(student_id)

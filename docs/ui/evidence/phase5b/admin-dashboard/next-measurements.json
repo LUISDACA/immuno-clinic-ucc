@@ -1,0 +1,4244 @@
+[
+  {
+    "role": "admin",
+    "state": "data",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 98.140625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 223.609375,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "data",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 185.09375,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 110.03125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 108.921875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 235.375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.46875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.4375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 216.640625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 122.109375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 149.53125,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "data",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "clientWidth": 1265,
+    "bodyWidth": 1265,
+    "containerWidth": 969,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1289,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 95.203125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 434.5,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 591.609375,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 98.140625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 223.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 185.09375,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 110.03125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 108.921875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 235.375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.46875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.4375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 216.640625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 122.109375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "clientWidth": 1265,
+    "bodyWidth": 1265,
+    "containerWidth": 969,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1289,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 95.203125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 199.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 591.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 98.140625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 223.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 185.09375,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 110.03125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 108.921875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 235.375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.46875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.4375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 216.640625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 122.109375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "clientWidth": 1265,
+    "bodyWidth": 1265,
+    "containerWidth": 969,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1289,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 95.203125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 187.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 591.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 223.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 185.09375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.46875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.4375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 216.640625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 122.109375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 240.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 430.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "data",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 98.140625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 223.609375,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "data",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 185.09375,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 110.03125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 108.921875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 235.375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.46875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.4375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 216.640625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 122.109375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 149.53125,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "data",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "clientWidth": 1265,
+    "bodyWidth": 1265,
+    "containerWidth": 969,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1289,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 95.203125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 434.5,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 591.609375,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 98.140625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 223.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 185.09375,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 110.03125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 108.921875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 235.375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.46875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.4375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 216.640625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 122.109375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "clientWidth": 1265,
+    "bodyWidth": 1265,
+    "containerWidth": 969,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1289,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 95.203125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 199.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 591.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 98.140625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 223.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 185.09375,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 110.03125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 108.921875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 148,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 235.375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.46875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.4375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 216.640625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 122.109375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "clientWidth": 1265,
+    "bodyWidth": 1265,
+    "containerWidth": 969,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1289,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 55.015625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 54.46875,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 96.0625,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 95.203125,
+        "clipped": false
+      },
+      {
+        "tag": "SPAN",
+        "width": 77.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.6875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 187.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 591.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 223.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 185.09375,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 117.46875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.4375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 216.640625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 122.109375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 92.546875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 58.734375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 124.0625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 148.953125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.71875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 108.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 61.0625,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 240.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 430.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "data",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 141,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 85,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "data",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 216.8125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 220.609375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "data",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 275.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 275.34375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 398.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 260.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 378,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 85,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 216.8125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 220.609375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "empty",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 275.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 275.34375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 398.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 260.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 302,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 85,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 216.8125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 220.609375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "loading",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 398.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 260.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 658,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 324,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 216.8125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 220.609375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 392,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "error",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 398.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 260.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "data",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 141,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 85,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "data",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 216.8125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 220.609375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "data",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 275.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 275.34375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 398.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 260.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 316,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 378,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 85,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 216.8125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 220.609375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "empty",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 188.484375,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 275.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 275.34375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 398.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 260.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 302,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 85,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 216.8125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 220.609375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "loading",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 398.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 260.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 358,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 414,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 658,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 324,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "bodyWidth": 390,
+    "containerWidth": 326,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 438,
+        "width": 288,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 216.8125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 220.609375,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 392,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "role": "app_admin",
+    "state": "error",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "clientWidth": 1280,
+    "bodyWidth": 1280,
+    "containerWidth": 984,
+    "outsideLayoutBounds": [
+      {
+        "tag": "DIV",
+        "className": "pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20",
+        "right": 1304,
+        "width": 144,
+        "scrollWidth": 112,
+        "clientWidth": 112
+      }
+    ],
+    "labels": [
+      {
+        "tag": "H1",
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 108.40625,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 123.828125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 156.328125,
+        "clipped": false
+      },
+      {
+        "tag": "H3",
+        "width": 125.796875,
+        "clipped": false
+      },
+      {
+        "tag": "H2",
+        "width": 110.3125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 398.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 260.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  }
+]

@@ -1,0 +1,228 @@
+{
+  "stage": "verified-after",
+  "measurements": [
+    {
+      "screen": "catalog-editor",
+      "preference": "light",
+      "os": "dark",
+      "dialog": {
+        "foreground": "rgb(23, 38, 41)",
+        "background": "rgb(255, 255, 255)",
+        "effectiveBackground": "rgb(255, 255, 255)",
+        "contrast": 15.605306997810734
+      },
+      "name": {
+        "foreground": "rgb(23, 38, 41)",
+        "background": "rgb(255, 255, 255)",
+        "effectiveBackground": "rgb(255, 255, 255)",
+        "contrast": 15.605306997810734
+      },
+      "chip": {
+        "foreground": "rgb(0, 101, 117)",
+        "background": "oklab(0.691546 -0.102725 -0.0621852 / 0.1)",
+        "effectiveBackground": "rgb(229, 247, 249)",
+        "contrast": 6.094204143654696
+      },
+      "geometry": [
+        {
+          "requestedWidth": 320,
+          "requestedHeight": 568,
+          "viewport": 320,
+          "root": 320,
+          "left": 16,
+          "right": 304,
+          "width": 286,
+          "scrollWidth": 286,
+          "height": 521,
+          "scrollHeight": 1106,
+          "doseSelectors": {
+            "type_keyboard": true,
+            "applies_to_keyboard": true,
+            "restored_initial_values": true
+          }
+        },
+        {
+          "requestedWidth": 390,
+          "requestedHeight": 844,
+          "viewport": 390,
+          "root": 390,
+          "left": 16,
+          "right": 374,
+          "width": 356,
+          "scrollWidth": 356,
+          "height": 774,
+          "scrollHeight": 1106
+        },
+        {
+          "requestedWidth": 768,
+          "requestedHeight": 1024,
+          "viewport": 768,
+          "root": 768,
+          "left": 96,
+          "right": 672,
+          "width": 574,
+          "scrollWidth": 574,
+          "height": 746,
+          "scrollHeight": 746
+        },
+        {
+          "requestedWidth": 1440,
+          "requestedHeight": 900,
+          "viewport": 1440,
+          "root": 1440,
+          "left": 432,
+          "right": 1008,
+          "width": 574,
+          "scrollWidth": 574,
+          "height": 746,
+          "scrollHeight": 746
+        }
+      ],
+      "keyboard": true,
+      "background_inert": true,
+      "escape": true,
+      "backdrop": true,
+      "return_focus": true
+    },
+    {
+      "screen": "catalog-edit-toggle",
+      "preference": "light",
+      "os": "dark",
+      "warning": {
+        "foreground": "rgb(113, 81, 0)",
+        "background": "rgb(255, 246, 214)",
+        "effectiveBackground": "rgb(255, 246, 214)",
+        "contrast": 6.7400301749035085
+      },
+      "toggle": {
+        "foreground": "rgb(23, 38, 41)",
+        "background": "rgb(255, 255, 255)",
+        "effectiveBackground": "rgb(255, 255, 255)",
+        "contrast": 15.605306997810734
+      },
+      "immutable_code": true,
+      "cancelled": true
+    },
+    {
+      "screen": "catalog-editor",
+      "preference": "dark",
+      "os": "light",
+      "dialog": {
+        "foreground": "rgb(234, 247, 247)",
+        "background": "rgb(14, 32, 35)",
+        "effectiveBackground": "rgb(14, 32, 35)",
+        "contrast": 15.322249432121158
+      },
+      "name": {
+        "foreground": "rgb(234, 247, 247)",
+        "background": "rgb(14, 32, 35)",
+        "effectiveBackground": "rgb(14, 32, 35)",
+        "contrast": 15.322249432121158
+      },
+      "chip": {
+        "foreground": "rgb(69, 210, 223)",
+        "background": "oklab(0.795042 -0.108141 -0.0481881 / 0.1)",
+        "effectiveBackground": "rgb(19, 49, 54)",
+        "contrast": 7.588865184972001
+      },
+      "geometry": [
+        {
+          "requestedWidth": 320,
+          "requestedHeight": 568,
+          "viewport": 320,
+          "root": 320,
+          "left": 16,
+          "right": 304,
+          "width": 286,
+          "scrollWidth": 286,
+          "height": 521,
+          "scrollHeight": 1106,
+          "doseSelectors": {
+            "type_keyboard": true,
+            "applies_to_keyboard": true,
+            "restored_initial_values": true
+          }
+        },
+        {
+          "requestedWidth": 390,
+          "requestedHeight": 844,
+          "viewport": 390,
+          "root": 390,
+          "left": 16,
+          "right": 374,
+          "width": 356,
+          "scrollWidth": 356,
+          "height": 774,
+          "scrollHeight": 1106
+        },
+        {
+          "requestedWidth": 768,
+          "requestedHeight": 1024,
+          "viewport": 768,
+          "root": 768,
+          "left": 96,
+          "right": 672,
+          "width": 574,
+          "scrollWidth": 574,
+          "height": 746,
+          "scrollHeight": 746
+        },
+        {
+          "requestedWidth": 1440,
+          "requestedHeight": 900,
+          "viewport": 1440,
+          "root": 1440,
+          "left": 432,
+          "right": 1008,
+          "width": 574,
+          "scrollWidth": 574,
+          "height": 746,
+          "scrollHeight": 746
+        }
+      ],
+      "keyboard": true,
+      "background_inert": true,
+      "escape": true,
+      "backdrop": true,
+      "return_focus": true
+    },
+    {
+      "screen": "catalog-edit-toggle",
+      "preference": "dark",
+      "os": "light",
+      "warning": {
+        "foreground": "rgb(230, 167, 0)",
+        "background": "rgb(61, 44, 0)",
+        "effectiveBackground": "rgb(61, 44, 0)",
+        "contrast": 6.346398433564398
+      },
+      "toggle": {
+        "foreground": "rgb(234, 247, 247)",
+        "background": "rgb(14, 32, 35)",
+        "effectiveBackground": "rgb(14, 32, 35)",
+        "contrast": 15.322249432121158
+      },
+      "immutable_code": true,
+      "cancelled": true
+    },
+    {
+      "screen": "catalog-save",
+      "controlled_503": true,
+      "real_create_retry": true,
+      "post_count": 2,
+      "error": {
+        "foreground": "rgb(255, 170, 170)",
+        "background": "rgba(0, 0, 0, 0)",
+        "effectiveBackground": "rgb(14, 32, 35)",
+        "contrast": 9.269236025686634
+      },
+      "pending_close_blocked": true
+    },
+    {
+      "screen": "catalog-permissions",
+      "normal_admin": "route redirect + API 403",
+      "student": "API 403",
+      "writer": "app_admin"
+    }
+  ]
+}

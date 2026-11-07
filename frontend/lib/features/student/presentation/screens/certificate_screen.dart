@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/error/api_error_message.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/utils/file_download.dart';
-import '../../data/models/vaccine_model.dart';
 import '../providers/scheme_provider.dart';
 
 /// Certificate download screen — downloads and opens the vaccination PDF certificate.
@@ -57,15 +57,10 @@ class _CertificateScreenState extends ConsumerState<CertificateScreen> {
         _downloadSuccess = true;
       });
     } on DioException catch (e) {
-      final detail = e.response?.data is Map<String, dynamic>
-          ? (e.response!.data as Map<String, dynamic>)['detail']?.toString()
-          : null;
+      final detail = apiErrorMessageFromData(e.response?.data);
       setState(() {
         _isDownloading = false;
-        _error = e.response?.statusCode == 400
-            ? detail ??
-                  'No cumples las condiciones para generar el certificado.'
-            : 'Error al descargar el certificado. Intenta de nuevo.';
+        _error = detail ?? 'No se pudo procesar la solicitud del certificado.';
       });
     } catch (e) {
       setState(() {
@@ -77,6 +72,8 @@ class _CertificateScreenState extends ConsumerState<CertificateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final schemeState = ref.watch(schemeProvider);
+    final eligibility = schemeState.overview?.isCertifiable ?? false;
     return Scaffold(
       appBar: AppBar(title: const Text('Certificado de Vacunación')),
       body: SingleChildScrollView(
@@ -117,7 +114,7 @@ class _CertificateScreenState extends ConsumerState<CertificateScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Descarga tu certificado oficial de seguimiento.\nSe genera si tienes la primera dosis aprobada de cada vacuna y no tienes dosis vencidas.',
+              'La disponibilidad del certificado se determina en el servidor según la evaluación vigente de tu esquema.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.textSecondary,
@@ -125,9 +122,36 @@ class _CertificateScreenState extends ConsumerState<CertificateScreen> {
                 height: 1.5,
               ),
             ),
+            if (_downloadSuccess) ...[
+              const SizedBox(height: 12),
+              const Text(
+                'El PDF incluye un QR para consultar la vigencia y comprobar la integridad del archivo.',
+                textAlign: TextAlign.center,
+              ),
+            ],
             const SizedBox(height: 32),
 
-            // Error & Missing Doses
+            if (schemeState.isOffline)
+              const Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: Text(
+                  'Información no verificada por falta de conexión.',
+                  textAlign: TextAlign.center,
+                ),
+              )
+            else if (!schemeState.isLoading)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(
+                  eligibility
+                      ? 'El servidor permite emitir tu certificado.'
+                      : 'El servidor todavía no permite emitir el certificado.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: AppColors.textSecondary),
+                ),
+              ),
+
+            // Error response from the authoritative certificate endpoint.
             if (_error != null) ...[
               Container(
                 padding: const EdgeInsets.all(16),
@@ -161,16 +185,6 @@ class _CertificateScreenState extends ConsumerState<CertificateScreen> {
                         ),
                       ],
                     ),
-                    if (_error!.contains('primera dosis') ||
-                        _error!.contains('plazo vencido')) ...[
-                      const SizedBox(height: 12),
-                      const Text(
-                        'Pendientes que debes revisar:',
-                        style: TextStyle(color: AppColors.error, fontSize: 13),
-                      ),
-                      const SizedBox(height: 8),
-                      _buildMissingDosesList(),
-                    ],
                   ],
                 ),
               ),
@@ -208,7 +222,9 @@ class _CertificateScreenState extends ConsumerState<CertificateScreen> {
                 width: double.infinity,
                 height: 52,
                 child: ElevatedButton.icon(
-                  onPressed: _downloadCertificate,
+                  onPressed: eligibility && !schemeState.isOffline
+                      ? _downloadCertificate
+                      : null,
                   icon: const Icon(Icons.download_outlined),
                   label: Text(
                     _downloadSuccess
@@ -223,74 +239,5 @@ class _CertificateScreenState extends ConsumerState<CertificateScreen> {
         ),
       ),
     );
-  }
-
-  Widget _buildMissingDosesList() {
-    final schemeState = ref.watch(schemeProvider);
-    if (schemeState.isLoading) {
-      return const SizedBox(
-        height: 20,
-        width: 20,
-        child: CircularProgressIndicator(strokeWidth: 2),
-      );
-    }
-
-    final missing = <String>[];
-    for (final v in schemeState.vaccines) {
-      final vName = v.vaccineName;
-      final firstDose = _firstRequiredDose(v);
-      if (firstDose == null || firstDose.status != 'approved') {
-        final label = firstDose?.doseConfig?.label ?? 'Primera dosis';
-        missing.add('• $vName - $label debe estar aprobada.');
-        continue;
-      }
-
-      for (final dose in v.doses) {
-        final days = dose.daysUntilDue;
-        if (days == null || days >= 0) continue;
-        final label = dose.doseConfig?.label ?? 'Dosis';
-        final dueDate = dose.dueDate ?? 'fecha vencida';
-        missing.add('• $vName - $label venció el $dueDate.');
-      }
-
-      for (final dose in v.doses) {
-        final days = dose.daysUntilDue;
-        if (days == null || days < 0) continue;
-        final label = dose.doseConfig?.label ?? 'Dosis';
-        final dueDate = dose.dueDate ?? '';
-        if (dueDate.isNotEmpty) {
-          missing.add('• $vName - $label debe aplicarse el $dueDate.');
-        }
-      }
-    }
-
-    if (missing.isEmpty) return const SizedBox.shrink();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: missing
-          .map(
-            (m) => Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Text(
-                m,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  DoseModel? _firstRequiredDose(StudentVaccineModel vaccine) {
-    final standardRequired = vaccine.doses.where((dose) {
-      final config = dose.doseConfig;
-      return config != null && config.isRequired && !config.isTiter;
-    }).toList();
-    standardRequired.sort((a, b) => a.doseNumber.compareTo(b.doseNumber));
-    return standardRequired.isEmpty ? null : standardRequired.first;
   }
 }

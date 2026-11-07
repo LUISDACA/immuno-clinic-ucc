@@ -1,0 +1,89 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "results": [
+    {
+      "case": "app_admin_receives_from_admin",
+      "viewer_role": "app_admin",
+      "peer_role": "admin",
+      "list": true,
+      "detail": true,
+      "reload": true,
+      "real_backend": true
+    },
+    {
+      "case": "app_admin_sends_to_admin",
+      "viewer_role": "app_admin",
+      "peer_role": "admin",
+      "list": true,
+      "detail": true,
+      "reload": true,
+      "real_backend": true
+    },
+    {
+      "case": "student_receives_from_admin",
+      "viewer_role": "student",
+      "peer_role": "admin",
+      "list": true,
+      "detail": true,
+      "reload": true,
+      "real_backend": true
+    },
+    {
+      "case": "student_sends_to_admin",
+      "viewer_role": "student",
+      "peer_role": "admin",
+      "list": true,
+      "detail": true,
+      "reload": true,
+      "real_backend": true
+    },
+    {
+      "case": "unrelated_thread_denied",
+      "read_status": 403,
+      "update_status": 403,
+      "real_backend": true
+    },
+    {
+      "case": "login_rate_limit_respected",
+      "http_status": 429,
+      "retry_after_seconds": 55
+    },
+    {
+      "case": "admin_sends_to_student",
+      "viewer_role": "admin",
+      "peer_role": "student",
+      "list": true,
+      "detail": true,
+      "reload": true,
+      "real_backend": true
+    },
+    {
+      "case": "admin_receives_from_student",
+      "viewer_role": "admin",
+      "peer_role": "student",
+      "list": true,
+      "detail": true,
+      "reload": true,
+      "real_backend": true
+    },
+    {
+      "case": "admin_sends_to_app_admin",
+      "viewer_role": "admin",
+      "peer_role": "app_admin",
+      "list": true,
+      "detail": true,
+      "reload": true,
+      "real_backend": true
+    },
+    {
+      "case": "admin_receives_from_app_admin",
+      "viewer_role": "admin",
+      "peer_role": "app_admin",
+      "list": true,
+      "detail": true,
+      "reload": true,
+      "real_backend": true
+    }
+  ]
+}

@@ -12,6 +12,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from app.modules.users.models import User
+    from app.modules.vaccination_scheme.models import StudentVaccineDose
 
 
 class EvidenceBatch(Base, UUIDMixin, TimestampMixin):
@@ -26,18 +27,32 @@ class EvidenceBatch(Base, UUIDMixin, TimestampMixin):
     )
     status: Mapped[EvidenceBatchStatus] = mapped_column(
         Enum(EvidenceBatchStatus, name="evidence_batch_status_enum"),
-        default=EvidenceBatchStatus.UPLOADED,
+        default=EvidenceBatchStatus.IN_REVIEW,
         nullable=False,
     )
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    reviewed_by: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    dose_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("student_vaccine_doses.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
 
     # ── Relationships ─────────────────────────────────────────────────
-    user: Mapped["User"] = relationship(back_populates="evidence_batches")
+    user: Mapped["User"] = relationship(
+        back_populates="evidence_batches",
+        foreign_keys=[user_id],
+    )
     files: Mapped[list["EvidenceFile"]] = relationship(
         back_populates="batch",
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+    dose: Mapped["StudentVaccineDose | None"] = relationship(lazy="selectin")
 
 
 class EvidenceFile(Base, UUIDMixin):

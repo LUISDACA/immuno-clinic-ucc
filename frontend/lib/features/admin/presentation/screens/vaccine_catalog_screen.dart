@@ -34,28 +34,42 @@ class _VaccineCatalogScreenState extends ConsumerState<VaccineCatalogScreen> {
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.error != null
-              ? _ErrorState(
-                  message: state.error!,
-                  onRetry: () =>
-                      ref.read(vaccineCatalogProvider.notifier).load(),
-                )
-              : RefreshIndicator(
-                  onRefresh: () =>
-                      ref.read(vaccineCatalogProvider.notifier).load(),
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    itemCount: state.vaccines.length,
-                    separatorBuilder: (_, _) => const Divider(height: 1),
-                    itemBuilder: (context, index) {
-                      final v = state.vaccines[index];
-                      return _VaccineRow(
-                        vaccine: v,
-                        onEdit: () => _openEditor(v),
-                        onToggleActive: () => _toggleActive(v),
-                      );
-                    },
-                  ),
-                ),
+          ? _ErrorState(
+              message: state.error!,
+              confirmedChange: state.confirmedChange,
+              onRetry: () => ref.read(vaccineCatalogProvider.notifier).load(),
+            )
+          : RefreshIndicator(
+              onRefresh: () => ref.read(vaccineCatalogProvider.notifier).load(),
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: state.vaccines.isEmpty ? 1 : state.vaccines.length,
+                separatorBuilder: (_, _) => const Divider(height: 1),
+                itemBuilder: (context, index) {
+                  if (state.vaccines.isEmpty) {
+                    return SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.5,
+                      child: const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(24),
+                          child: Text(
+                            'Aún no hay vacunas en el catálogo.',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  final v = state.vaccines[index];
+                  return _VaccineRow(
+                    vaccine: v,
+                    onEdit: () => _openEditor(v),
+                    onToggleActive: () => _toggleActive(v),
+                  );
+                },
+              ),
+            ),
     );
   }
 
@@ -67,9 +81,9 @@ class _VaccineCatalogScreenState extends ConsumerState<VaccineCatalogScreen> {
         content: Text(
           v.isActive
               ? 'Al desactivar "${v.name}" se eliminará del esquema de los '
-                  'estudiantes activos. ¿Continuar?'
+                    'estudiantes activos. ¿Continuar?'
               : 'Al reactivar "${v.name}" se asignará al esquema de los '
-                  'estudiantes activos. ¿Continuar?',
+                    'estudiantes activos. ¿Continuar?',
         ),
         actions: [
           TextButton(
@@ -84,18 +98,26 @@ class _VaccineCatalogScreenState extends ConsumerState<VaccineCatalogScreen> {
       ),
     );
     if (confirmed != true || !mounted) return;
-    await ref
+    final updated = await ref
         .read(vaccineCatalogProvider.notifier)
         .setActive(v.id, !v.isActive);
+    if (!updated && mounted) {
+      final message = ref.read(vaccineCatalogProvider).writeError;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message ?? 'No se pudo actualizar la vacuna.')),
+      );
+    }
   }
 
   Future<void> _openEditor(VaccineCatalogItem? existing) async {
+    final viewport = MediaQuery.sizeOf(context);
     await showDialog<void>(
       context: context,
       builder: (_) => Dialog(
         insetPadding: const EdgeInsets.all(16),
         child: SizedBox(
-          width: 600,
+          width: viewport.width > 632 ? 600 : viewport.width - 32,
+          height: viewport.height * 0.9,
           child: _VaccineEditor(existing: existing),
         ),
       ),
@@ -118,8 +140,9 @@ class _VaccineRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor:
-            vaccine.isActive ? AppColors.successLight : AppColors.errorLight,
+        backgroundColor: vaccine.isActive
+            ? AppColors.successLight
+            : AppColors.errorLight,
         child: Icon(
           Icons.vaccines,
           color: vaccine.isActive ? AppColors.success : AppColors.error,
@@ -143,8 +166,9 @@ class _VaccineRow extends StatelessWidget {
             tooltip: vaccine.isActive ? 'Desactivar' : 'Reactivar',
             icon: Icon(
               vaccine.isActive ? Icons.toggle_on : Icons.toggle_off,
-              color:
-                  vaccine.isActive ? AppColors.success : AppColors.textSecondary,
+              color: vaccine.isActive
+                  ? AppColors.success
+                  : AppColors.textSecondary,
             ),
             onPressed: onToggleActive,
           ),
@@ -281,8 +305,9 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
                     child: TextFormField(
                       controller: _baseDoses,
                       keyboardType: TextInputType.number,
-                      decoration:
-                          const InputDecoration(labelText: 'Dosis base'),
+                      decoration: const InputDecoration(
+                        labelText: 'Dosis base',
+                      ),
                       validator: _intValidator,
                     ),
                   ),
@@ -291,8 +316,9 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
                     child: TextFormField(
                       controller: _displayOrder,
                       keyboardType: TextInputType.number,
-                      decoration:
-                          const InputDecoration(labelText: 'Orden visual'),
+                      decoration: const InputDecoration(
+                        labelText: 'Orden visual',
+                      ),
                       validator: _intValidator,
                     ),
                   ),
@@ -361,23 +387,25 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
                     style: const TextStyle(color: AppColors.error),
                   ),
                 ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              OverflowBar(
+                alignment: MainAxisAlignment.end,
+                overflowAlignment: OverflowBarAlignment.end,
+                spacing: 8,
+                overflowSpacing: 4,
                 children: [
                   TextButton(
-                    onPressed:
-                        _saving ? null : () => Navigator.of(context).pop(),
+                    onPressed: _saving
+                        ? null
+                        : () => Navigator.of(context).pop(),
                     child: const Text('Cancelar'),
                   ),
-                  const SizedBox(width: 8),
                   FilledButton(
                     onPressed: _saving ? null : _save,
                     child: _saving
                         ? const SizedBox(
                             width: 16,
                             height: 16,
-                            child:
-                                CircularProgressIndicator(strokeWidth: 2),
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Text(isEdit ? 'Guardar' : 'Crear'),
                   ),
@@ -416,8 +444,7 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
                       final num_ = int.tryParse(v);
                       if (num_ != null) {
                         setState(() {
-                          _configs[index] =
-                              config.copyWith(doseNumber: num_);
+                          _configs[index] = config.copyWith(doseNumber: num_);
                         });
                       }
                     },
@@ -435,10 +462,11 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
                 ),
                 IconButton(
                   tooltip: 'Quitar',
-                  icon:
-                      const Icon(Icons.delete_outline, color: AppColors.error),
-                  onPressed: () =>
-                      setState(() => _configs.removeAt(index)),
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: AppColors.error,
+                  ),
+                  onPressed: () => setState(() => _configs.removeAt(index)),
                 ),
               ],
             ),
@@ -447,18 +475,26 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     initialValue: config.doseType,
+                    isExpanded: true,
                     decoration: const InputDecoration(labelText: 'Tipo'),
                     items: const [
                       DropdownMenuItem(
-                          value: 'standard', child: Text('Estándar')),
+                        value: 'standard',
+                        child: Text('Estándar'),
+                      ),
                       DropdownMenuItem(
-                          value: 'booster', child: Text('Refuerzo')),
+                        value: 'booster',
+                        child: Text('Refuerzo'),
+                      ),
                       DropdownMenuItem(
-                          value: 'titer', child: Text('Titulación')),
+                        value: 'titer',
+                        child: Text('Titulación'),
+                      ),
                     ],
                     onChanged: (v) => setState(() {
-                      _configs[index] =
-                          config.copyWith(doseType: v ?? 'standard');
+                      _configs[index] = config.copyWith(
+                        doseType: v ?? 'standard',
+                      );
                     }),
                   ),
                 ),
@@ -466,16 +502,15 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     initialValue: config.appliesTo,
+                    isExpanded: true,
                     decoration: const InputDecoration(labelText: 'Aplica a'),
                     items: const [
                       DropdownMenuItem(value: 'all', child: Text('Ambos')),
                       DropdownMenuItem(value: 'male', child: Text('Hombres')),
-                      DropdownMenuItem(
-                          value: 'female', child: Text('Mujeres')),
+                      DropdownMenuItem(value: 'female', child: Text('Mujeres')),
                     ],
                     onChanged: (v) => setState(() {
-                      _configs[index] =
-                          config.copyWith(appliesTo: v ?? 'all');
+                      _configs[index] = config.copyWith(appliesTo: v ?? 'all');
                     }),
                   ),
                 ),
@@ -500,7 +535,7 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
     final next = _configs.isEmpty
         ? 1
         : (_configs.map((c) => c.doseNumber).reduce((a, b) => a > b ? a : b) +
-            1);
+              1);
     setState(() {
       _configs.add(
         VaccineDoseConfigDTO(doseNumber: next, label: 'Dosis $next'),
@@ -559,7 +594,8 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
     } else {
       setState(() {
         _saving = false;
-        _error = ref.read(vaccineCatalogProvider).error ??
+        _error =
+            ref.read(vaccineCatalogProvider).writeError ??
             'No se pudo guardar la vacuna';
       });
     }
@@ -568,9 +604,14 @@ class _VaccineEditorState extends ConsumerState<_VaccineEditor> {
 
 class _ErrorState extends StatelessWidget {
   final String message;
+  final String? confirmedChange;
   final VoidCallback onRetry;
 
-  const _ErrorState({required this.message, required this.onRetry});
+  const _ErrorState({
+    required this.message,
+    this.confirmedChange,
+    required this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -580,8 +621,14 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline,
-                size: 48, color: AppColors.error),
+            if (confirmedChange != null) ...[
+              Semantics(
+                liveRegion: true,
+                child: Text(confirmedChange!, textAlign: TextAlign.center),
+              ),
+              const SizedBox(height: 12),
+            ],
+            const Icon(Icons.error_outline, size: 48, color: AppColors.error),
             const SizedBox(height: 12),
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 12),

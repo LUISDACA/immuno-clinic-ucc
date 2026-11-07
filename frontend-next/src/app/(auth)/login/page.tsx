@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { LogIn } from "lucide-react";
 import { useAuthStore } from "@/lib/auth/store";
 import { isAdminRole } from "@/lib/config";
+import { UccLogo } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { EmailInput } from "@/components/ui/email-input";
 import { PasswordInput } from "@/components/ui/password-input";
@@ -16,7 +17,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 
 interface FieldErrors {
@@ -69,42 +69,77 @@ export default function LoginPage() {
   }
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-extrabold">Bienvenido</CardTitle>
+    <Card className="auth-login-card rounded-3xl shadow-lg">
+      <CardHeader className="auth-login-card-header px-7 pb-0 pt-7">
+        <UccLogo size={118} className="mb-6 self-center" />
+        <h1 className="self-stretch text-left text-2xl font-extrabold leading-tight tracking-tight">
+          Bienvenido
+        </h1>
         <CardDescription>
           Ingresa con tu cuenta institucional.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-7 pb-7 pt-7">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="email">Correo electrónico</Label>
-            <EmailInput
-              id="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              aria-invalid={!!errors.email}
-            />
+          <div className="auth-login-field flex flex-col gap-1.5">
+            <div
+              className="auth-floating-field relative"
+              data-filled={email.length > 0}
+            >
+              <EmailInput
+                id="email"
+                autoComplete="email"
+                className="h-[52px]"
+                placeholder=" "
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                aria-invalid={!!errors.email}
+                aria-describedby={
+                  errors.email ? "login-email-error" : undefined
+                }
+              />
+              <Label htmlFor="email" className="auth-floating-label">
+                Correo electrónico
+              </Label>
+            </div>
             {errors.email && (
-              <p className="text-xs text-[color:var(--destructive)]">
+              <p
+                id="login-email-error"
+                role="alert"
+                className="text-xs text-[color:var(--destructive)]"
+              >
                 {errors.email}
               </p>
             )}
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="password">Contraseña</Label>
-            <PasswordInput
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              aria-invalid={!!errors.password}
-            />
+          <div className="auth-login-field flex flex-col gap-1.5">
+            <div
+              className="auth-floating-field relative"
+              data-filled={password.length > 0}
+            >
+              <PasswordInput
+                id="password"
+                autoComplete="current-password"
+                className="h-[52px]"
+                placeholder=" "
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                aria-invalid={!!errors.password}
+                aria-describedby={
+                  errors.password ? "login-password-error" : undefined
+                }
+              />
+              <Label htmlFor="password" className="auth-floating-label">
+                Contraseña
+              </Label>
+            </div>
             {errors.password && (
-              <p className="text-xs text-[color:var(--destructive)]">
+              <p
+                id="login-password-error"
+                role="alert"
+                className="text-xs text-[color:var(--destructive)]"
+              >
                 {errors.password}
               </p>
             )}
@@ -125,7 +160,7 @@ export default function LoginPage() {
             type="submit"
             disabled={isLoading}
             size="lg"
-            className="w-full"
+            className="h-auto min-h-[52px] w-full text-lg"
           >
             {isLoading ? (
               <>

@@ -9,9 +9,21 @@ class AdminRemoteDataSource {
   final ApiClient _api;
   AdminRemoteDataSource(this._api);
 
+  Future<void> updateDoseComment(String doseId, String? notes) async {
+    await _api.dio.patch(
+      '/admin/doses/$doseId/comment',
+      data: {'admin_notes': notes},
+    );
+  }
+
   Future<Map<String, dynamic>> createStudent(Map<String, dynamic> data) async {
     final r = await _api.dio.post('/admin/students', data: data);
     return r.data;
+  }
+
+  Future<AcademicOptions> getAcademicOptions() async {
+    final r = await _api.dio.get('/admin/academic-options');
+    return AcademicOptions.fromJson(Map<String, dynamic>.from(r.data as Map));
   }
 
   Future<List<dynamic>> listAdmins() async {
@@ -92,7 +104,7 @@ class AdminRemoteDataSource {
     int page = 1,
     int pageSize = 50,
   }) async {
-    final params = <String, dynamic>{'page': page, 'page_size': pageSize};
+    final params = <String, dynamic>{'page': page, 'size': pageSize};
     if (search != null) params['search'] = search;
     if (isActive != null) params['is_active'] = isActive;
     if (program != null) params['program'] = program;
@@ -102,7 +114,7 @@ class AdminRemoteDataSource {
     if (vaccinationStatus != null) {
       params['vaccination_status'] = vaccinationStatus;
     }
-    final r = await _api.dio.get('/admin/students', queryParameters: params);
+    final r = await _api.dio.post('/admin/students/search', data: params);
     return PaginatedResponse.fromJson(
       r.data as Map<String, dynamic>,
       AdminStudentListItem.fromJson,
@@ -161,6 +173,17 @@ class AdminRemoteDataSource {
     return r.data as List<dynamic>;
   }
 
+  Future<Map<String, dynamic>> getStudentEvidencePage(
+    String studentId, {
+    int page = 1,
+  }) async {
+    final response = await _api.dio.get(
+      '/admin/students/$studentId/evidence/page',
+      queryParameters: {'page': page, 'page_size': 20},
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
   Future<List<dynamic>> getStudentEvidence(String studentId) async {
     final r = await _api.dio.get('/admin/students/$studentId/evidence');
     return r.data as List<dynamic>;
@@ -168,6 +191,20 @@ class AdminRemoteDataSource {
 
   Future<void> deleteStudentEvidence(String studentId, String batchId) async {
     await _api.dio.delete('/admin/students/$studentId/evidence/$batchId');
+  }
+
+  Future<void> reviewEvidenceBatch(
+    String batchId,
+    String status, {
+    String? notes,
+  }) async {
+    await _api.dio.patch(
+      '/evidence/batches/$batchId/review',
+      data: {
+        'status': status,
+        ...?(notes == null ? null : {'notes': notes}),
+      },
+    );
   }
 
   Future<List<int>> downloadEvidenceFile(String fileId) async {

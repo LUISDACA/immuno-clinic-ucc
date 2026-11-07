@@ -6,26 +6,13 @@ import asyncio
 
 import pytest
 import pytest_asyncio
-from app.db.base import Base
-from app.db.session import engine as app_engine
-from app.main import app
-from httpx import ASGITransport, AsyncClient
+from httpx import AsyncClient
 
 
 @pytest_asyncio.fixture
-async def client():
-    """HTTP client wired to the ASGI app with its own in-memory DB."""
-    async with app_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-
-    async with AsyncClient(
-        transport=ASGITransport(app=app),
-        base_url="http://test",
-    ) as c:
-        yield c
-
-    async with app_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+async def client(integration_client):
+    """Use independent request sessions on SQLite file or opt-in PostgreSQL."""
+    yield integration_client
 
 
 # ── Health check ─────────────────────────────────────────────────────────────
@@ -176,16 +163,20 @@ class TestCors:
 class TestConcurrency:
     @pytest.mark.asyncio
     async def test_ten_concurrent_health_requests_all_succeed(self, client: AsyncClient):
-        responses = await asyncio.gather(*[client.get("/") for _ in range(10)])
+        responses = await asyncio.wait_for(
+            asyncio.gather(*[client.get("/") for _ in range(10)]), 10
+        )
         assert all(r.status_code == 200 for r in responses)
 
     @pytest.mark.asyncio
     async def test_concurrent_requests_each_get_unique_request_id(self, client: AsyncClient):
-        responses = await asyncio.gather(*[client.get("/") for _ in range(5)])
+        responses = await asyncio.wait_for(asyncio.gather(*[client.get("/") for _ in range(5)]), 10)
         ids = [r.headers.get("x-request-id") for r in responses]
         assert len(set(ids)) == 5, "Each concurrent request must get a distinct request ID"
 
     @pytest.mark.asyncio
     async def test_concurrent_401_responses_for_missing_auth(self, client: AsyncClient):
-        responses = await asyncio.gather(*[client.get("/api/v1/admin/students") for _ in range(8)])
+        responses = await asyncio.wait_for(
+            asyncio.gather(*[client.get("/api/v1/admin/students") for _ in range(8)]), 10
+        )
         assert all(r.status_code == 401 for r in responses)

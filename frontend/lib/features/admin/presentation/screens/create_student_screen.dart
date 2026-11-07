@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/constants/academic_options.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/role_utils.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../shared/presentation/widgets/local_paged_list.dart';
 import '../../data/datasources/admin_remote_ds.dart';
 import '../providers/admin_provider.dart';
 
@@ -38,6 +38,8 @@ class _State extends ConsumerState<CreateStudentScreen> {
   bool _isImporting = false;
   String? _err;
 
+  bool get _busy => _loading || _isImporting;
+
   void _invalidateAdminStatistics() {
     ref.invalidate(adminStatisticsProvider(null));
     for (var semester = 1; semester <= 10; semester++) {
@@ -66,6 +68,7 @@ class _State extends ConsumerState<CreateStudentScreen> {
   }
 
   Future<void> _pickBirthDate() async {
+    if (_busy) return;
     final initialDate =
         DateTime.tryParse(_birthDate.text) ?? DateTime(2000, 1, 1);
     final picked = await showDatePicker(
@@ -74,13 +77,13 @@ class _State extends ConsumerState<CreateStudentScreen> {
       firstDate: DateTime(1950, 1, 1),
       lastDate: DateTime.now(),
     );
-    if (picked != null) {
+    if (mounted && !_busy && picked != null) {
       _birthDate.text = DateFormat('yyyy-MM-dd').format(picked);
     }
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (_busy || !_formKey.currentState!.validate()) return;
     final canChooseScope = isAppAdminRole(ref.read(authStateProvider).role);
     setState(() {
       _loading = true;
@@ -118,39 +121,47 @@ class _State extends ConsumerState<CreateStudentScreen> {
         _invalidateAdminStatistics();
         Navigator.pop(context, true);
       }
-    } on DioException catch (e) {
-      setState(() {
-        _loading = false;
-        _err = e.response?.data?['detail'] ?? 'Error';
-      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() => _err = _safeError(error));
+    } finally {
+      if (mounted) setState(() => _loading = false);
     }
   }
 
+  String _safeError(Object error) {
+    final status = error is DioException ? error.response?.statusCode : null;
+    return switch (status) {
+      401 => 'Tu sesión expiró. Vuelve a iniciar sesión.',
+      403 => 'No tienes permiso para esta operación.',
+      409 =>
+        'Hay un conflicto con los datos. Revisa la lista antes de reintentar.',
+      422 => 'Revisa los datos o el formato del archivo.',
+      429 => 'Demasiados intentos. Espera antes de reintentar.',
+      _ =>
+        'No se pudo confirmar la operación. Revisa la lista antes de reintentar.',
+    };
+  }
+
   Future<void> _importExcel() async {
-    final picked = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['xlsx', 'csv'],
-      withData: true,
-    );
-    if (picked == null || picked.files.isEmpty) return;
-
-    final file = picked.files.single;
-    final bytes = file.bytes;
-    if (bytes == null) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No se pudo leer el archivo seleccionado'),
-        ),
-      );
-      return;
-    }
-
+    if (_busy) return;
     setState(() {
       _isImporting = true;
       _err = null;
     });
     try {
+      final picked = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['xlsx', 'csv'],
+        withData: true,
+      );
+      if (!mounted || picked == null || picked.files.isEmpty) return;
+      final file = picked.files.single;
+      final bytes = file.bytes;
+      if (bytes == null) {
+        _showImportError('No se pudo leer el archivo seleccionado');
+        return;
+      }
       // Step 1: preview
       final preview = await ref
           .read(adminRemoteDataSourceProvider)
@@ -169,21 +180,26 @@ class _State extends ConsumerState<CreateStudentScreen> {
         _invalidateAdminStatistics();
       }
       await _showImportResult(result);
-    } catch (e) {
+    } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error importando estudiantes: $e')),
-      );
+      _showImportError(_safeError(error));
     } finally {
       if (mounted) setState(() => _isImporting = false);
     }
+  }
+
+  void _showImportError(String message) {
+    setState(() => _err = message);
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<bool?> _showImportPreview(Map<String, dynamic> preview) async {
     final willCreate = preview['will_create'] as int? ?? 0;
     final willSkip = preview['will_skip'] as int? ?? 0;
     final errors = preview['errors'] as int? ?? 0;
-    final rows = (preview['rows'] as List<dynamic>? ?? []).take(30).toList();
+    final rows = preview['rows'] as List<dynamic>? ?? [];
 
     return showDialog<bool>(
       context: context,
@@ -222,42 +238,38 @@ class _State extends ConsumerState<CreateStudentScreen> {
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 8),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 260),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: rows.length,
-                    separatorBuilder: (_, _) => const Divider(height: 8),
-                    itemBuilder: (_, index) {
-                      final row = rows[index] as Map<String, dynamic>;
-                      final status = row['predicted_status']?.toString() ?? '';
-                      final color = switch (status) {
-                        'will_create' => AppColors.success,
-                        'will_skip' => AppColors.warning,
-                        _ => AppColors.error,
-                      };
-                      final icon = switch (status) {
-                        'will_create' => Icons.check_circle_outline,
-                        'will_skip' => Icons.info_outline,
-                        _ => Icons.error_outline,
-                      };
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(icon, size: 16, color: color),
-                          const SizedBox(width: 6),
-                          Expanded(
-                            child: Text(
-                              'Fila ${row['row']}: '
-                              '${row['email'] ?? ''}  '
-                              '${row['message'] ?? ''}',
-                              style: TextStyle(fontSize: 12, color: color),
-                            ),
+                LocalPagedList(
+                  maxHeight: 260,
+                  itemCount: rows.length,
+                  itemBuilder: (_, index) {
+                    final row = rows[index] as Map<String, dynamic>;
+                    final status = row['predicted_status']?.toString() ?? '';
+                    final color = switch (status) {
+                      'will_create' => AppColors.success,
+                      'will_skip' => AppColors.warning,
+                      _ => AppColors.error,
+                    };
+                    final icon = switch (status) {
+                      'will_create' => Icons.check_circle_outline,
+                      'will_skip' => Icons.info_outline,
+                      _ => Icons.error_outline,
+                    };
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(icon, size: 16, color: color),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            'Fila ${row['row']}: '
+                            '${row['email'] ?? ''}  '
+                            '${row['message'] ?? ''}',
+                            style: TextStyle(fontSize: 12, color: color),
                           ),
-                        ],
-                      );
-                    },
-                  ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ],
@@ -292,7 +304,6 @@ class _State extends ConsumerState<CreateStudentScreen> {
   Future<void> _showImportResult(Map<String, dynamic> result) async {
     final rows = (result['results'] as List<dynamic>? ?? [])
         .where((row) => row['status'] != 'created')
-        .take(20)
         .toList();
 
     await showDialog<void>(
@@ -315,20 +326,15 @@ class _State extends ConsumerState<CreateStudentScreen> {
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 8),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 240),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: rows.length,
-                    separatorBuilder: (_, _) => const Divider(height: 12),
-                    itemBuilder: (context, index) {
-                      final row = rows[index];
-                      return Text(
-                        'Fila ${row['row']}: ${row['message']}',
-                        style: const TextStyle(fontSize: 12),
-                      );
-                    },
-                  ),
+                LocalPagedList(
+                  itemCount: rows.length,
+                  itemBuilder: (context, index) {
+                    final row = rows[index];
+                    return Text(
+                      'Fila ${row['row']}: ${row['message']}',
+                      style: const TextStyle(fontSize: 12),
+                    );
+                  },
                 ),
               ],
             ],
@@ -346,6 +352,7 @@ class _State extends ConsumerState<CreateStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final academicOptions = ref.watch(academicOptionsProvider);
     final canChooseScope = isAppAdminRole(ref.watch(authStateProvider).role);
 
     return Scaffold(
@@ -378,6 +385,7 @@ class _State extends ConsumerState<CreateStudentScreen> {
               const Divider(),
               const SizedBox(height: 16),
               TextFormField(
+                enabled: !_busy,
                 controller: _email,
                 decoration: const InputDecoration(labelText: 'Correo *'),
                 validator: (v) =>
@@ -385,11 +393,12 @@ class _State extends ConsumerState<CreateStudentScreen> {
               ),
               const SizedBox(height: 12),
               TextFormField(
+                enabled: !_busy,
                 controller: _doc,
                 decoration: const InputDecoration(
                   labelText: 'Documento / cédula *',
                   helperText:
-                      'Será la contraseña temporal; el estudiante deberá cambiarla al ingresar.',
+                      'Las instrucciones de acceso se envían por correo; deberá cambiar la contraseña temporal.',
                 ),
                 validator: (v) =>
                     v == null || v.trim().isEmpty ? 'Requerido' : null,
@@ -399,6 +408,7 @@ class _State extends ConsumerState<CreateStudentScreen> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      enabled: !_busy,
                       controller: _fname,
                       decoration: const InputDecoration(labelText: 'Nombre *'),
                       validator: (v) =>
@@ -408,6 +418,7 @@ class _State extends ConsumerState<CreateStudentScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: TextFormField(
+                      enabled: !_busy,
                       controller: _lname,
                       decoration: const InputDecoration(
                         labelText: 'Apellido *',
@@ -420,11 +431,13 @@ class _State extends ConsumerState<CreateStudentScreen> {
               ),
               const SizedBox(height: 12),
               TextFormField(
+                enabled: !_busy,
                 controller: _studentId,
                 decoration: const InputDecoration(labelText: 'ID estudiantil'),
               ),
               const SizedBox(height: 12),
               TextFormField(
+                enabled: !_busy,
                 controller: _birthDate,
                 readOnly: true,
                 decoration: const InputDecoration(
@@ -441,20 +454,23 @@ class _State extends ConsumerState<CreateStudentScreen> {
                   DropdownMenuItem(value: 'male', child: Text('Masculino')),
                   DropdownMenuItem(value: 'female', child: Text('Femenino')),
                 ],
-                onChanged: (v) => setState(() => _sex = v!),
+                onChanged: _busy ? null : (v) => setState(() => _sex = v!),
               ),
               const SizedBox(height: 12),
               TextFormField(
+                enabled: !_busy,
                 controller: _phone,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
               ),
               const SizedBox(height: 12),
               TextFormField(
+                enabled: !_busy,
                 controller: _eps,
                 decoration: const InputDecoration(labelText: 'EPS afiliado'),
               ),
               const SizedBox(height: 12),
               TextFormField(
+                enabled: !_busy,
                 controller: _emergencyName,
                 decoration: const InputDecoration(
                   labelText: 'Nombre contacto de emergencia',
@@ -462,39 +478,76 @@ class _State extends ConsumerState<CreateStudentScreen> {
               ),
               const SizedBox(height: 12),
               TextFormField(
+                enabled: !_busy,
                 controller: _emergencyPhone,
                 decoration: const InputDecoration(
                   labelText: 'Teléfono contacto de emergencia',
                 ),
               ),
               if (canChooseScope) ...[
+                if (academicOptions.isLoading)
+                  Semantics(
+                    liveRegion: true,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Text('Cargando opciones académicas…'),
+                    ),
+                  ),
+                if (academicOptions.hasError)
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'No se pudieron cargar las opciones académicas.',
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () =>
+                            ref.invalidate(academicOptionsProvider),
+                        child: const Text('Reintentar'),
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   initialValue: _program,
                   decoration: const InputDecoration(labelText: 'Programa'),
-                  items: AcademicOptions.programs
-                      .map(
-                        (value) =>
-                            DropdownMenuItem(value: value, child: Text(value)),
-                      )
-                      .toList(),
-                  onChanged: (value) => setState(() => _program = value),
+                  items:
+                      (academicOptions.valueOrNull?.programs ??
+                              const <String>[])
+                          .map(
+                            (value) => DropdownMenuItem(
+                              value: value,
+                              child: Text(value),
+                            ),
+                          )
+                          .toList(),
+                  onChanged: _busy || !academicOptions.hasValue
+                      ? null
+                      : (value) => setState(() => _program = value),
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   initialValue: _campus,
                   decoration: const InputDecoration(labelText: 'Campus'),
-                  items: AcademicOptions.campuses
-                      .map(
-                        (value) =>
-                            DropdownMenuItem(value: value, child: Text(value)),
-                      )
-                      .toList(),
-                  onChanged: (value) => setState(() => _campus = value),
+                  items:
+                      (academicOptions.valueOrNull?.campuses ??
+                              const <String>[])
+                          .map(
+                            (value) => DropdownMenuItem(
+                              value: value,
+                              child: Text(value),
+                            ),
+                          )
+                          .toList(),
+                  onChanged: _busy || !academicOptions.hasValue
+                      ? null
+                      : (value) => setState(() => _campus = value),
                 ),
               ],
               const SizedBox(height: 12),
               TextFormField(
+                enabled: !_busy,
                 controller: _sem,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(labelText: 'Semestre'),
@@ -504,7 +557,11 @@ class _State extends ConsumerState<CreateStudentScreen> {
                   padding: const EdgeInsets.only(top: 12),
                   child: Text(
                     _err!,
-                    style: const TextStyle(color: AppColors.error),
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.darkTextPrimary
+                          : AppColors.error,
+                    ),
                   ),
                 ),
               const SizedBox(height: 24),
@@ -512,7 +569,7 @@ class _State extends ConsumerState<CreateStudentScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: _loading ? null : _submit,
+                  onPressed: _busy ? null : _submit,
                   child: Text(_loading ? 'Creando...' : 'Crear Estudiante'),
                 ),
               ),

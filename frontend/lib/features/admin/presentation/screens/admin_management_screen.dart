@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/constants/academic_options.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../shared/data/datasources/communication_remote_ds.dart';
 import '../../data/datasources/admin_remote_ds.dart';
+import '../providers/admin_provider.dart';
 
 class AdminManagementScreen extends ConsumerStatefulWidget {
   const AdminManagementScreen({super.key});
@@ -16,7 +16,7 @@ class AdminManagementScreen extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<AdminManagementScreen> {
-  final _formKey = GlobalKey<FormState>();
+  var _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _firstName = TextEditingController();
@@ -26,7 +26,13 @@ class _State extends ConsumerState<AdminManagementScreen> {
   String? _campus;
   bool _loading = true;
   bool _saving = false;
-  String? _error;
+  bool _deleting = false;
+  bool _hasLoaded = false;
+  String? _readError;
+  String? _writeError;
+  String? _confirmedChange;
+  Future<void>? _inFlightLoad;
+  bool get _busy => _loading || _saving || _deleting;
   List<dynamic> _admins = [];
 
   @override
@@ -45,45 +51,73 @@ class _State extends ConsumerState<AdminManagementScreen> {
     super.dispose();
   }
 
-  Future<void> _load() async {
-    setState(() {
-      _loading = true;
-      _error = null;
+  Future<void> _load({bool afterWrite = false}) {
+    if (!mounted || (!afterWrite && (_saving || _deleting))) {
+      return Future.value();
+    }
+    if (_inFlightLoad != null) return _inFlightLoad!;
+    final load = _performLoad();
+    _inFlightLoad = load;
+    load.whenComplete(() {
+      if (identical(_inFlightLoad, load)) _inFlightLoad = null;
     });
+    return load;
+  }
+
+  Future<void> _performLoad() async {
+    setState(() => _loading = true);
     try {
       final admins = await ref.read(adminRemoteDataSourceProvider).listAdmins();
       if (!mounted) return;
       setState(() {
         _admins = admins;
+        _hasLoaded = true;
+        _readError = null;
+        _confirmedChange = null;
         _loading = false;
       });
     } catch (e) {
       if (!mounted) return;
+      final status = e is DioException ? e.response?.statusCode : null;
       setState(() {
-        _error = 'No se pudieron cargar los administradores';
+        _readError = switch (status) {
+          401 => 'Tu sesión expiró. Inicia sesión nuevamente.',
+          403 => 'No tienes permiso para consultar esta información.',
+          404 => 'No se encontró la información solicitada.',
+          429 => 'Demasiadas solicitudes. Espera antes de reintentar.',
+          500 => 'Ocurrió un error en el servidor. Intenta nuevamente.',
+          503 => 'El servicio no está disponible temporalmente.',
+          _ =>
+            'No se pudo cargar la información. Comprueba la conexión y reintenta.',
+        };
         _loading = false;
       });
     }
   }
 
   Future<void> _create() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (_busy ||
+        _readError != null ||
+        _formKey.currentState?.validate() != true) {
+      return;
+    }
+    final payload = <String, dynamic>{
+      'email': _email.text.trim(),
+      'password': _password.text,
+      'first_name': _firstName.text.trim(),
+      'last_name': _lastName.text.trim(),
+      'job_title': _jobTitle.text.trim().isEmpty ? null : _jobTitle.text.trim(),
+      'program': _program,
+      'campus': _campus,
+    };
     setState(() {
       _saving = true;
-      _error = null;
+      _writeError = null;
+      _confirmedChange = null;
     });
     try {
-      await ref.read(adminRemoteDataSourceProvider).createAdmin({
-        'email': _email.text.trim(),
-        'password': _password.text,
-        'first_name': _firstName.text.trim(),
-        'last_name': _lastName.text.trim(),
-        'job_title': _jobTitle.text.trim().isEmpty
-            ? null
-            : _jobTitle.text.trim(),
-        'program': _program,
-        'campus': _campus,
-      });
+      await ref.read(adminRemoteDataSourceProvider).createAdmin(payload);
+      if (!mounted) return;
       _email.clear();
       _password.clear();
       _firstName.clear();
@@ -92,50 +126,65 @@ class _State extends ConsumerState<AdminManagementScreen> {
       setState(() {
         _program = null;
         _campus = null;
+        _formKey = GlobalKey<FormState>();
+        _confirmedChange =
+            'El administrador se creó, pero no se pudo actualizar la lista.';
       });
-      await _load();
-    } on DioException catch (e) {
-      setState(() {
-        _error = e.response?.data?['detail']?.toString() ?? 'Error';
-      });
+      await _load(afterWrite: true);
+    } catch (_) {
+      if (mounted) {
+        setState(() => _writeError = 'No se pudo crear el administrador.');
+      }
     } finally {
       if (mounted) setState(() => _saving = false);
     }
   }
 
   Future<void> _deleteAdmin(String adminId) async {
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Eliminar administrador'),
-        content: const Text('Esta cuenta de administrador sera eliminada.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancelar'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Eliminar'),
-          ),
-        ],
-      ),
-    );
-    if (confirm != true) return;
-
+    if (_busy || _readError != null || adminId.isEmpty) return;
+    setState(() => _deleting = true);
     try {
+      final confirm = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Eliminar administrador'),
+          content: const Text('Esta cuenta de administrador sera eliminada.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancelar'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              style: FilledButton.styleFrom(backgroundColor: AppColors.error),
+              child: const Text('Eliminar'),
+            ),
+          ],
+        ),
+      );
+      if (!mounted || confirm != true) return;
+      setState(() {
+        _writeError = null;
+        _confirmedChange = null;
+      });
       await ref.read(adminRemoteDataSourceProvider).deleteAdmin(adminId);
-      await _load();
-    } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('No se pudo eliminar: $e')));
+      setState(() {
+        _confirmedChange =
+            'El administrador se eliminó, pero no se pudo actualizar la lista.';
+      });
+      await _load(afterWrite: true);
+    } catch (_) {
+      if (mounted) {
+        setState(() => _writeError = 'No se pudo eliminar el administrador.');
+      }
+    } finally {
+      if (mounted) setState(() => _deleting = false);
     }
   }
 
   Future<void> _messageAdmin(String adminId, String adminName) async {
+    if (_busy || _readError != null) return;
     final subject = TextEditingController();
     final message = TextEditingController();
     String? formError;
@@ -246,14 +295,42 @@ class _State extends ConsumerState<AdminManagementScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final academicOptions = ref.watch(academicOptionsProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Administradores')),
-      body: _loading
+      body: _readError != null
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (_confirmedChange != null)
+                      Semantics(
+                        liveRegion: true,
+                        child: Text(_confirmedChange!),
+                      ),
+                    if (_writeError != null)
+                      Semantics(liveRegion: true, child: Text(_writeError!)),
+                    Semantics(liveRegion: true, child: Text(_readError!)),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: colorScheme.onSurface,
+                      ),
+                      onPressed: _loading ? null : () => _load(),
+                      child: const Text('Reintentar'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : _loading && !_hasLoaded
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: _load,
               child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(16),
                 children: [
                   Form(
@@ -271,6 +348,7 @@ class _State extends ConsumerState<AdminManagementScreen> {
                             ),
                             const SizedBox(height: 12),
                             TextFormField(
+                              enabled: !_busy,
                               controller: _email,
                               decoration: const InputDecoration(
                                 labelText: 'Correo',
@@ -279,8 +357,32 @@ class _State extends ConsumerState<AdminManagementScreen> {
                                   ? 'Correo inválido'
                                   : null,
                             ),
+                            if (academicOptions.isLoading)
+                              Semantics(
+                                liveRegion: true,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(top: 8),
+                                  child: Text('Cargando opciones académicas…'),
+                                ),
+                              ),
+                            if (academicOptions.hasError)
+                              Row(
+                                children: [
+                                  const Expanded(
+                                    child: Text(
+                                      'No se pudieron cargar las opciones académicas.',
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        ref.invalidate(academicOptionsProvider),
+                                    child: const Text('Reintentar'),
+                                  ),
+                                ],
+                              ),
                             const SizedBox(height: 12),
                             TextFormField(
+                              enabled: !_busy,
                               controller: _password,
                               obscureText: true,
                               decoration: const InputDecoration(
@@ -295,6 +397,7 @@ class _State extends ConsumerState<AdminManagementScreen> {
                               children: [
                                 Expanded(
                                   child: TextFormField(
+                                    enabled: !_busy,
                                     controller: _firstName,
                                     decoration: const InputDecoration(
                                       labelText: 'Nombre',
@@ -307,6 +410,7 @@ class _State extends ConsumerState<AdminManagementScreen> {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: TextFormField(
+                                    enabled: !_busy,
                                     controller: _lastName,
                                     decoration: const InputDecoration(
                                       labelText: 'Apellido',
@@ -320,6 +424,7 @@ class _State extends ConsumerState<AdminManagementScreen> {
                             ),
                             const SizedBox(height: 12),
                             TextFormField(
+                              enabled: !_busy,
                               controller: _jobTitle,
                               decoration: const InputDecoration(
                                 labelText: 'Cargo',
@@ -331,16 +436,19 @@ class _State extends ConsumerState<AdminManagementScreen> {
                               decoration: const InputDecoration(
                                 labelText: 'Programa',
                               ),
-                              items: AcademicOptions.programs
-                                  .map(
-                                    (value) => DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) =>
-                                  setState(() => _program = value),
+                              items:
+                                  (academicOptions.valueOrNull?.programs ??
+                                          const <String>[])
+                                      .map(
+                                        (value) => DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        ),
+                                      )
+                                      .toList(),
+                              onChanged: _busy || !academicOptions.hasValue
+                                  ? null
+                                  : (value) => setState(() => _program = value),
                               validator: (v) =>
                                   v == null ? 'Selecciona un programa' : null,
                             ),
@@ -350,29 +458,32 @@ class _State extends ConsumerState<AdminManagementScreen> {
                               decoration: const InputDecoration(
                                 labelText: 'Campus',
                               ),
-                              items: AcademicOptions.campuses
-                                  .map(
-                                    (value) => DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (value) =>
-                                  setState(() => _campus = value),
+                              items:
+                                  (academicOptions.valueOrNull?.campuses ??
+                                          const <String>[])
+                                      .map(
+                                        (value) => DropdownMenuItem(
+                                          value: value,
+                                          child: Text(value),
+                                        ),
+                                      )
+                                      .toList(),
+                              onChanged: _busy || !academicOptions.hasValue
+                                  ? null
+                                  : (value) => setState(() => _campus = value),
                               validator: (v) =>
                                   v == null ? 'Selecciona un campus' : null,
                             ),
-                            if (_error != null) ...[
+                            if (_writeError != null) ...[
                               const SizedBox(height: 12),
                               Text(
-                                _error!,
+                                _writeError!,
                                 style: const TextStyle(color: AppColors.error),
                               ),
                             ],
                             const SizedBox(height: 16),
                             FilledButton.icon(
-                              onPressed: _saving ? null : _create,
+                              onPressed: _busy ? null : _create,
                               icon: _saving
                                   ? const SizedBox(
                                       width: 18,
@@ -444,7 +555,7 @@ class _State extends ConsumerState<AdminManagementScreen> {
                               IconButton(
                                 icon: const Icon(Icons.forum_outlined),
                                 tooltip: 'Enviar mensaje',
-                                onPressed: adminId.isEmpty
+                                onPressed: _busy || adminId.isEmpty
                                     ? null
                                     : () => _messageAdmin(adminId, name),
                               ),
@@ -454,7 +565,7 @@ class _State extends ConsumerState<AdminManagementScreen> {
                                   color: AppColors.error,
                                 ),
                                 tooltip: 'Eliminar',
-                                onPressed: adminId.isEmpty
+                                onPressed: _busy || adminId.isEmpty
                                     ? null
                                     : () => _deleteAdmin(adminId),
                               ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/models/domain_enums.dart';
 import '../../../../core/widgets/skeleton.dart';
 import '../../../../core/widgets/ucc_brand.dart';
 import '../../data/models/vaccine_model.dart';
@@ -45,7 +46,7 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
       case 'in_review':
         return 'En Revisión';
       default:
-        return 'Pendiente';
+        return 'Estado no reconocido';
     }
   }
 
@@ -277,9 +278,23 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
               )
             : state.error != null && state.overview == null
             ? Center(
-                child: Text(
-                  state.error!,
-                  style: const TextStyle(color: AppColors.error),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      state.error!,
+                      style: const TextStyle(color: AppColors.error),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 12),
+                    OutlinedButton.icon(
+                      onPressed: () => ref
+                          .read(schemeProvider.notifier)
+                          .loadScheme(forceRefresh: true),
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Reintentar'),
+                    ),
+                  ],
                 ),
               )
             : _buildScheme(state),
@@ -293,6 +308,7 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
       onRefresh: () =>
           ref.read(schemeProvider.notifier).loadScheme(forceRefresh: true),
       child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(16),
         children: [
           if (state.isOffline)
@@ -312,7 +328,7 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
                   const SizedBox(width: 8),
                   const Expanded(
                     child: Text(
-                      'Modo sin conexión: mostrando datos guardados. Conéctate a internet para editar tus dosis.',
+                      'Información no verificada por falta de conexión.',
                       style: TextStyle(color: AppColors.warning),
                     ),
                   ),
@@ -323,7 +339,32 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
           if (overview != null) _buildOverviewCard(overview),
           const SizedBox(height: 16),
           // Vaccines list
-          ...state.vaccines.map((v) => _buildVaccineCard(v, state.isOffline)),
+          if (state.vaccines.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 28),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.vaccines_outlined,
+                    size: 40,
+                    color: AppColors.textSecondary,
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'Sin vacunas asignadas',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Tu esquema aún no tiene vacunas.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.textSecondary),
+                  ),
+                ],
+              ),
+            )
+          else
+            ...state.vaccines.map((v) => _buildVaccineCard(v, state.isOffline)),
         ],
       ),
     );
@@ -420,7 +461,7 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
 
   Widget _buildVaccineCard(StudentVaccineModel vaccine, bool isOffline) {
     final name = vaccine.vaccineName;
-    final status = vaccine.certificateStatus;
+    final status = vaccine.status.wireValue;
     final doses = vaccine.doses;
 
     return Card(
@@ -435,7 +476,10 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
           ),
         ),
         title: Text(name, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Row(
+        subtitle: Wrap(
+          spacing: 8,
+          runSpacing: 4,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -452,7 +496,6 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
             Text(
               '${doses.length} dosis',
               style: const TextStyle(
@@ -469,7 +512,7 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
 
   Widget _buildDoseTile(DoseModel dose, bool isOffline) {
     final label = dose.doseConfig?.label ?? 'Dosis ${dose.doseNumber}';
-    final status = dose.status;
+    final status = dose.status.wireValue;
     final appliedDate = dose.appliedDate;
     final dueDate = dose.dueDate;
     final daysUntilDue = dose.daysUntilDue;
@@ -524,7 +567,12 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
                 ),
               ],
               if (dueDate != null && daysUntilDue != null)
-                _dueDateChip(dueDate, daysUntilDue),
+                _dueDateChip(
+                  dueDate,
+                  daysUntilDue,
+                  isOverdue: dose.isOverdue,
+                  isDueToday: dose.isDueToday,
+                ),
             ],
           ),
           if (adminNotes.isNotEmpty) ...[
@@ -534,15 +582,15 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
         ],
       ),
 
-      trailing: _canEditDoseDate(status, isOffline)
+      trailing: _canEditDoseDate(dose.status, isOffline)
           ? _buildDoseActions(dose, appliedDate, isTiterDose)
           : null,
     );
   }
 
-  bool _canEditDoseDate(String status, bool isOffline) {
+  bool _canEditDoseDate(DoseStatus status, bool isOffline) {
     if (isOffline) return false;
-    return status == 'pending' || status == 'denied' || status == 'in_review';
+    return status == DoseStatus.denied || status == DoseStatus.inReview;
   }
 
   Widget _buildDoseActions(
@@ -607,17 +655,24 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
     );
   }
 
-  Widget _dueDateChip(String dueDate, int daysUntilDue) {
-    final color = daysUntilDue < 0
+  Widget _dueDateChip(
+    String dueDate,
+    int daysUntilDue, {
+    required bool? isOverdue,
+    required bool? isDueToday,
+  }) {
+    final color = isOverdue == true
         ? AppColors.error
-        : daysUntilDue <= 7
+        : daysUntilDue >= 0 && daysUntilDue <= 7
         ? AppColors.warning
         : AppColors.info;
-    final text = daysUntilDue == 0
+    final text = isDueToday == true
         ? 'Vence hoy'
+        : isOverdue == true
+        ? 'Vencio hace ${daysUntilDue.abs()} dias'
         : daysUntilDue > 0
         ? 'Vence en $daysUntilDue dias'
-        : 'Vencio hace ${daysUntilDue.abs()} dias';
+        : 'Vence $dueDate';
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -651,10 +706,12 @@ class _SchemeDetailScreenState extends ConsumerState<SchemeDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          const Wrap(
+            spacing: 6,
+            runSpacing: 4,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Icon(Icons.comment_outlined, size: 16, color: AppColors.info),
-              SizedBox(width: 6),
               Text(
                 'Comentario del administrador',
                 style: TextStyle(

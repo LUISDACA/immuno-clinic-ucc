@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { accountFormError } from "@/lib/ui/account-form-error";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, KeyRound } from "lucide-react";
@@ -28,6 +29,12 @@ function ResetPasswordForm() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const inFlight = useRef(false);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
@@ -52,6 +59,7 @@ function ResetPasswordForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (inFlight.current) return;
     const pErr = validateStrongPassword(password);
     const cErr = confirm !== password ? "Las contraseñas no coinciden" : null;
     setPasswordError(pErr);
@@ -59,14 +67,16 @@ function ResetPasswordForm() {
     setError(null);
     if (pErr || cErr) return;
 
+    inFlight.current = true;
     setSubmitting(true);
     try {
       await resetPassword(token, password.trim());
-      setSuccess(true);
-    } catch {
-      setError("Token inválido o expirado.");
+      if (mounted.current) setSuccess(true);
+    } catch (err) {
+      if (mounted.current) setError(accountFormError(err, "reset"));
     } finally {
-      setSubmitting(false);
+      inFlight.current = false;
+      if (mounted.current) setSubmitting(false);
     }
   }
 
@@ -107,7 +117,8 @@ function ResetPasswordForm() {
             <Alert tone="error">{error}</Alert>
           </div>
         )}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+        <form onSubmit={handleSubmit} aria-busy={submitting} noValidate>
+          <fieldset disabled={submitting} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="password">Nueva contraseña</Label>
             <PasswordInput
@@ -116,12 +127,13 @@ function ResetPasswordForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-invalid={!!passwordError}
+              aria-describedby={passwordError ? "password-error" : undefined}
             />
             <p className="text-xs text-muted-foreground">
               {passwordRequirementsText}
             </p>
             {passwordError && (
-              <p className="text-xs text-[color:var(--destructive)]">
+              <p id="password-error" className="text-xs text-[color:var(--destructive)]">
                 {passwordError}
               </p>
             )}
@@ -135,9 +147,10 @@ function ResetPasswordForm() {
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               aria-invalid={!!confirmError}
+              aria-describedby={confirmError ? "confirm-error" : undefined}
             />
             {confirmError && (
-              <p className="text-xs text-[color:var(--destructive)]">
+              <p id="confirm-error" className="text-xs text-[color:var(--destructive)]">
                 {confirmError}
               </p>
             )}
@@ -153,6 +166,7 @@ function ResetPasswordForm() {
               "Cambiar contraseña"
             )}
           </Button>
+          </fieldset>
         </form>
       </CardContent>
     </Card>

@@ -1,0 +1,165 @@
+{
+  "scope": "notification presentation reflow only",
+  "institutional_data": false,
+  "renderer": "Chrome 155, Next 16.3.6 production webpack, DPR 1",
+  "source": "synthetic PostgreSQL ordinary fixture plus controlled CDP responses and long copy",
+  "css_zoom_is_not_native_zoom": true,
+  "native_zoom": "UNKNOWN",
+  "clinical_auth_contracts_changed": false,
+  "narrow_text_test": "DOM text fragments within bounds, no ellipsis or clamp; vertical scrolling allowed",
+  "wide_message_summary": "two-line clamp preserved",
+  "header_test": "scroll target below measured sticky header",
+  "keyboard_test": "Tab reaches separate native mark-read button at narrow widths",
+  "paint_test": "three upper-padding RGB samples equal opaque unread badge background at desktop",
+  "flutter_comparison": "existing local Flutter references; TextScaler is not CSS zoom; no pixel equality",
+  "references": [
+    {
+      "file": "long-copy-admin-dark-1280-csszoom1.png",
+      "sha256": "8fa59c05bbcd3b9a8616caa61e1a6b0a4a7c358da0fafdcabbdf805a51d616e5"
+    },
+    {
+      "file": "long-copy-admin-dark-320-csszoom1.png",
+      "sha256": "7ab41f8e0c5b6ab03e32b272307fea3da46b08582f0ace153d93219a6e019357"
+    },
+    {
+      "file": "long-copy-admin-dark-390-csszoom2.png",
+      "sha256": "12072e06de8ed243ffa8e1a548ab2a840810456377a0a6f7d6740e89cbd7a44e"
+    },
+    {
+      "file": "long-copy-admin-light-1280-csszoom1.png",
+      "sha256": "fcc2985580ec0f2e855a12b7ae703f50d7598fdd6844563003e3c80880aecf8d"
+    },
+    {
+      "file": "long-copy-admin-light-320-csszoom1.png",
+      "sha256": "d48056652271b2f4ca0fea287e0f25578e03b16b1dfc2240524ce1aad4fb6879"
+    },
+    {
+      "file": "long-copy-admin-light-390-csszoom2.png",
+      "sha256": "f95fb611fe48d484540fe93d1fdc5ef94a47350a50333e795edac858155395a7"
+    },
+    {
+      "file": "long-copy-student-dark-1280-csszoom1.png",
+      "sha256": "e33376fbb00f32bbba509cfac8d5d3d97ab0b553b6a89f7a0eaa5bab88554eda"
+    },
+    {
+      "file": "long-copy-student-dark-320-csszoom1.png",
+      "sha256": "f5de45e3062e17cb44666af51b6bce8056d780595d662d3adaa61f6b9be2a74d"
+    },
+    {
+      "file": "long-copy-student-dark-390-csszoom2.png",
+      "sha256": "1ba106220087c6fff78fb2605dfe5ac88f82ae3b99c6b11d126fcc0fc21edbb3"
+    },
+    {
+      "file": "long-copy-student-light-1280-csszoom1.png",
+      "sha256": "abfcf7a577b5ae8f455a2b9cac172a6f13d1b69e77a625edf71ff4ea80c454db"
+    },
+    {
+      "file": "long-copy-student-light-320-csszoom1.png",
+      "sha256": "80157e92c0842e4ae5345b5bf898e24d773940755451252ffcf123e6c4361d89"
+    },
+    {
+      "file": "long-copy-student-light-390-csszoom2.png",
+      "sha256": "da3c9a192e7a9ff8090beeeb821fc29e36c06d468256602ea01d372030b8930a"
+    },
+    {
+      "file": "retained-admin-dark-1280-csszoom1.png",
+      "sha256": "cc887041a5271e06f150585a4db56eb7a62e8b26d41492ec37c36b64e07f786f"
+    },
+    {
+      "file": "retained-admin-dark-320-csszoom1.png",
+      "sha256": "77a534ae1bbf8b24683f175b0729b3b761f903c9be12aa39952f8c7de3112b87"
+    },
+    {
+      "file": "retained-admin-dark-390-csszoom2.png",
+      "sha256": "bb9d0f94cfbf413c51f237f4397af2bd35e8bf6cdb62fd0e003b04daa3cddb8a"
+    },
+    {
+      "file": "retained-admin-light-1280-csszoom1.png",
+      "sha256": "4c74f0aa8b17b5f472c04629dfac3209b0d212da5883bf04e944c9a9d7219723"
+    },
+    {
+      "file": "retained-admin-light-320-csszoom1.png",
+      "sha256": "e87fea7ce2096ab26d1a4172966933bf257b7546d3dc1be090ae955723a6ef31"
+    },
+    {
+      "file": "retained-admin-light-390-csszoom2.png",
+      "sha256": "9e2246014aebf88a2381fb2ef5d3a1948659f741034b1db9b1c63bff3c73bc6a"
+    },
+    {
+      "file": "retained-student-dark-1280-csszoom1.png",
+      "sha256": "39f719e23c8a500e156cc0cfe75197e0f804f329b6b9dac4e9b7da650361a2e6"
+    },
+    {
+      "file": "retained-student-dark-320-csszoom1.png",
+      "sha256": "dae5725c3f3845abb939f65a632d49d89745bb79e0c284b08c74cb2c7f07a507"
+    },
+    {
+      "file": "retained-student-dark-390-csszoom2.png",
+      "sha256": "4356cf861adff3004cac6e1c4bd698ea912b103ae3acb1c76c64f7a8b361868f"
+    },
+    {
+      "file": "retained-student-light-1280-csszoom1.png",
+      "sha256": "1b744f11b7775887ff83164cbd080db16f18b05498e0aa5b90edc10ac9636590"
+    },
+    {
+      "file": "retained-student-light-320-csszoom1.png",
+      "sha256": "4ea3c8681c1fe6742e7c93e400199b2803d22f3d0b17cf5f6d6ab34773684689"
+    },
+    {
+      "file": "retained-student-light-390-csszoom2.png",
+      "sha256": "62bd3c367f0d1756c119af2624ea5cd631d0d347f651572c39ad43e5fdc7069b"
+    },
+    {
+      "file": "unread-admin-dark-1280-csszoom1.png",
+      "sha256": "5461dc245f19aaf2a9d664dfa1c1e3f289bf4b036799a7cb6134eec5385b630b"
+    },
+    {
+      "file": "unread-admin-dark-320-csszoom1.png",
+      "sha256": "775cc43729c76eb698190133d7f984f5d128522b6203be578883f3700386c1b1"
+    },
+    {
+      "file": "unread-admin-dark-390-csszoom2.png",
+      "sha256": "7df3f029ed977aa09fd8eb63e1089974c7c85428c9e4a5647419a687519dafc0"
+    },
+    {
+      "file": "unread-admin-light-1280-csszoom1.png",
+      "sha256": "bf12df3d10f8340d42039f2567a11c2bb04a2ffa27389b139129111d40ac9028"
+    },
+    {
+      "file": "unread-admin-light-320-csszoom1.png",
+      "sha256": "d8a0489ccc92a84cad65b9e6e0091511fadf19436ae4c57f18215bb5e73af501"
+    },
+    {
+      "file": "unread-admin-light-390-csszoom2.png",
+      "sha256": "63cda08fd3a0853685db3515f78b52d4f9493ba599d42421d8b11669c342cc0a"
+    },
+    {
+      "file": "unread-student-dark-1280-csszoom1.png",
+      "sha256": "2d6cd96d95d6540ab5491a70cd520a8ff9dd441a37c65a64d25f99ecb06fcf34"
+    },
+    {
+      "file": "unread-student-dark-320-csszoom1.png",
+      "sha256": "14f10699ae58051225e02c3e5c2ec356059684de535d44fe15d158cd0c67587d"
+    },
+    {
+      "file": "unread-student-dark-390-csszoom2.png",
+      "sha256": "e2e333a1bfd16f6d1fa87116b767c3cc30e7942960e8d69855116eed66f42ee5"
+    },
+    {
+      "file": "unread-student-light-1280-csszoom1.png",
+      "sha256": "faa780b3ad5c7941d4274423fafadb685c96d44e3b9edf3698d88ab5ba5fd940"
+    },
+    {
+      "file": "unread-student-light-320-csszoom1.png",
+      "sha256": "8b1355257fb06574c0e78faa3eaa7d6b536bb366ce724c5072daeec0ba5d43c1"
+    },
+    {
+      "file": "unread-student-light-390-csszoom2.png",
+      "sha256": "ac9427cecd264e24d4559b8865c5f53af4a92c4451fa72f85299c14b9971ef4b"
+    }
+  ],
+  "measurements": {
+    "file": "measurements.json",
+    "sha256": "9106e6011c9997b18b7b79de1961e96ef7fbb59c381be4c0921f4891bc10962f"
+  }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -20,6 +20,8 @@ export function UserMenu() {
   const { email, role, logout } = useAuthStore();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
 
   useEffect(() => {
     if (!open) return;
@@ -29,13 +31,21 @@ export function UserMenu() {
       }
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        trigger.current?.focus();
+      }
+    }
+    function onFocus(e: FocusEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
     document.addEventListener("mousedown", onDocClick);
     document.addEventListener("keydown", onKey);
+    document.addEventListener("focusin", onFocus);
     return () => {
       document.removeEventListener("mousedown", onDocClick);
       document.removeEventListener("keydown", onKey);
+      document.removeEventListener("focusin", onFocus);
     };
   }, [open]);
 
@@ -54,10 +64,13 @@ export function UserMenu() {
   return (
     <div ref={ref} className="relative">
       <button
+        ref={trigger}
+        id={`${panelId}-trigger`}
         type="button"
         onClick={() => setOpen((s) => !s)}
         className="flex items-center gap-2 rounded-full border border-[color:var(--divider)] bg-card pl-1 pr-2 py-1 transition-colors hover:border-[color:var(--primary)]"
-        aria-haspopup="menu"
+        aria-label="Opciones de usuario"
+        aria-controls={panelId}
         aria-expanded={open}
       >
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[color:var(--primary)] text-xs font-bold text-white">
@@ -76,7 +89,9 @@ export function UserMenu() {
 
       {open && (
         <div
-          role="menu"
+          id={panelId}
+          role="region"
+          aria-labelledby={`${panelId}-trigger`}
           className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-xl border border-[color:var(--divider)] bg-card shadow-lg"
         >
           <div className="flex items-center gap-3 border-b border-[color:var(--divider)] p-3">

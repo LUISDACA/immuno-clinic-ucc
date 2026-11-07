@@ -1,0 +1,50 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "width": 390,
+  "pixel_equality_claimed": false,
+  "pairs": [
+    {
+      "theme": "light",
+      "scenario": "saved-get403",
+      "flutter": "flutter-saved-get403-light-390.png",
+      "next": "next-saved-get403-light-390.png",
+      "note": "Same received-write outcome and safe query error, not pixel equality. Flutter Dio controlled; Next PUT confirmed on real local PostgreSQL except explicitly controlled failed PUT."
+    },
+    {
+      "theme": "light",
+      "scenario": "saved-get503",
+      "flutter": "flutter-saved-get503-light-390.png",
+      "next": "next-saved-get503-light-390.png",
+      "note": "Same received-write outcome and safe query error, not pixel equality. Flutter Dio controlled; Next PUT confirmed on real local PostgreSQL except explicitly controlled failed PUT."
+    },
+    {
+      "theme": "light",
+      "scenario": "failed-put-get403",
+      "flutter": "flutter-failed-put-get403-light-390.png",
+      "next": "next-failed-put-get403-light-390.png",
+      "note": "Same received-write outcome and safe query error, not pixel equality. Flutter Dio controlled; Next PUT confirmed on real local PostgreSQL except explicitly controlled failed PUT."
+    },
+    {
+      "theme": "dark",
+      "scenario": "saved-get403",
+      "flutter": "flutter-saved-get403-dark-390.png",
+      "next": "next-saved-get403-dark-390.png",
+      "note": "Same received-write outcome and safe query error, not pixel equality. Flutter Dio controlled; Next PUT confirmed on real local PostgreSQL except explicitly controlled failed PUT."
+    },
+    {
+      "theme": "dark",
+      "scenario": "saved-get503",
+      "flutter": "flutter-saved-get503-dark-390.png",
+      "next": "next-saved-get503-dark-390.png",
+      "note": "Same received-write outcome and safe query error, not pixel equality. Flutter Dio controlled; Next PUT confirmed on real local PostgreSQL except explicitly controlled failed PUT."
+    },
+    {
+      "theme": "dark",
+      "scenario": "failed-put-get403",
+      "flutter": "flutter-failed-put-get403-dark-390.png",
+      "next": "next-failed-put-get403-dark-390.png",
+      "note": "Same received-write outcome and safe query error, not pixel equality. Flutter Dio controlled; Next PUT confirmed on real local PostgreSQL except explicitly controlled failed PUT."
+    }
+  ]
+}

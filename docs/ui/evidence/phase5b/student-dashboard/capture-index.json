@@ -1,0 +1,541 @@
+{
+  "scope": "student dashboard presentation only",
+  "institutional_data": false,
+  "clinical_or_auth_rules_changed": false,
+  "flutter_renderer": "Flutter 3.41.6 widget-test, local Inter and MaterialIcons, DPR 1",
+  "next_renderer": "Chrome 155, Next 16.3.6 production webpack, DPR 1",
+  "comparison": "shared synthetic aggregate DTO and states, not cross-renderer pixel equality",
+  "flutter_text_scaler_is_not_css_or_native_zoom": true,
+  "native_zoom": "UNKNOWN",
+  "screen_reader_and_device": "UNKNOWN",
+  "before_is_diagnostic_not_pass": true,
+  "golden_creation": "Only 40 new dashboard references initialized; existing Flutter goldens unchanged",
+  "references": [
+    {
+      "file": "after-flutter-dashboard-data-dark-390-text1-actions.png",
+      "sha256": "b163702fa30f20d2d5ace558a3f62d3f2760386918d2fce171989ef82e9f4297"
+    },
+    {
+      "file": "after-flutter-dashboard-data-dark-390-text1-top.png",
+      "sha256": "ffb9a273d69202eed868b9674aeda7a20bbfe321b19e6daab0197e591e2cfa91"
+    },
+    {
+      "file": "after-flutter-dashboard-data-dark-390-text2-actions.png",
+      "sha256": "f0f4f6e63e49523527d69452917e4af0629e6bdd6069d70f2bd461d2a5235385"
+    },
+    {
+      "file": "after-flutter-dashboard-data-dark-390-text2-top.png",
+      "sha256": "b45a37b174c1314b93061dbb39420f7f061ebf52ac1fe0a3cb001da9ec3bd5db"
+    },
+    {
+      "file": "after-flutter-dashboard-data-light-390-text1-actions.png",
+      "sha256": "391a7ac88c7bac727df4c99d0f6b44077c69e891dbfa0f6d50b0bf5dfb1f507e"
+    },
+    {
+      "file": "after-flutter-dashboard-data-light-390-text1-top.png",
+      "sha256": "aa999652e3f2d051361836ac7b8e834b72dfa35002ad83b179154bca14b5798c"
+    },
+    {
+      "file": "after-flutter-dashboard-data-light-390-text2-actions.png",
+      "sha256": "73b540c269ebd3fb9c22804b02d4cbe45144cf06dfa3c24ef37afb77fe059066"
+    },
+    {
+      "file": "after-flutter-dashboard-data-light-390-text2-top.png",
+      "sha256": "f5dd6d3a9e947881d47bb689803029d9f85a8004c5addd1f9859cfe433167268"
+    },
+    {
+      "file": "after-flutter-dashboard-empty-dark-390-text1-actions.png",
+      "sha256": "e61c1efce2c2eac0fef65336e8796f128c15f9205a64ec06d7b0a9857b5dcf38"
+    },
+    {
+      "file": "after-flutter-dashboard-empty-dark-390-text1-top.png",
+      "sha256": "b68f3b052c39983fa1d656d9970c9be39918e84ebe873a25d546faf5e70a9503"
+    },
+    {
+      "file": "after-flutter-dashboard-empty-dark-390-text2-actions.png",
+      "sha256": "f0f4f6e63e49523527d69452917e4af0629e6bdd6069d70f2bd461d2a5235385"
+    },
+    {
+      "file": "after-flutter-dashboard-empty-dark-390-text2-top.png",
+      "sha256": "f29b2c44a16532cd7b9d3c8ca231cd7326fa0328a19300eef65d792eb59a77cb"
+    },
+    {
+      "file": "after-flutter-dashboard-empty-light-390-text1-actions.png",
+      "sha256": "7bbaa2184c70f9da61733d107dfc78ab8c1369848f899858b597f8d95b33bf48"
+    },
+    {
+      "file": "after-flutter-dashboard-empty-light-390-text1-top.png",
+      "sha256": "75e10659a2dddad746db985af1d365c2911ca718e00ae50e682d6bafd481ef09"
+    },
+    {
+      "file": "after-flutter-dashboard-empty-light-390-text2-actions.png",
+      "sha256": "73b540c269ebd3fb9c22804b02d4cbe45144cf06dfa3c24ef37afb77fe059066"
+    },
+    {
+      "file": "after-flutter-dashboard-empty-light-390-text2-top.png",
+      "sha256": "751fcb8e9ac55fc46588c6fd4d63ce74633fd8576aa9287b31d6ae36cad9db35"
+    },
+    {
+      "file": "after-flutter-dashboard-error-dark-390-text1-actions.png",
+      "sha256": "a1b26da57b849de3ecd7f4d07ea09f8c80203b86ee0e6181391f8ce81a8fc305"
+    },
+    {
+      "file": "after-flutter-dashboard-error-dark-390-text1-top.png",
+      "sha256": "9638a0146a13d5732bd4b655fd8e287c7e950aef999b8c86c503312fcc419739"
+    },
+    {
+      "file": "after-flutter-dashboard-error-dark-390-text2-actions.png",
+      "sha256": "1819e9ffa715aca10ae3a3c5a00be6bb403ce496ae7fb2aaf4ab7da9d12bce53"
+    },
+    {
+      "file": "after-flutter-dashboard-error-dark-390-text2-top.png",
+      "sha256": "d380ce2972dbafc40cf961b4970ddd407c5a0b85c184028690de6437eb156a44"
+    },
+    {
+      "file": "after-flutter-dashboard-error-light-390-text1-actions.png",
+      "sha256": "727c2eba359b3a709616da6f1d8eb1fc756117fbed56376df74f2250dc5830e5"
+    },
+    {
+      "file": "after-flutter-dashboard-error-light-390-text1-top.png",
+      "sha256": "e3da133f8a5734b7ac9c995fe42b9aa4753a5a4172a3425f0422f1d0f2e62644"
+    },
+    {
+      "file": "after-flutter-dashboard-error-light-390-text2-actions.png",
+      "sha256": "e4510ff4f36fc98b517d77e64e2457345c5c9c75927d33ce3d5b2aacabba5015"
+    },
+    {
+      "file": "after-flutter-dashboard-error-light-390-text2-top.png",
+      "sha256": "2a3338ba82177b4735569c2b98cbd65371e2b969cb9a10c5fa3dd5ba4588d44b"
+    },
+    {
+      "file": "after-flutter-dashboard-loading-dark-390-text1-actions.png",
+      "sha256": "35f73191e9b7955f8c4b253f55516c5a9eea88dd4f6116dca0fff4f6e523e4af"
+    },
+    {
+      "file": "after-flutter-dashboard-loading-dark-390-text1-top.png",
+      "sha256": "ab8965fb055309048b4daa87990b298251dfb81b74a740f0fb2fe7c9a9d4aafb"
+    },
+    {
+      "file": "after-flutter-dashboard-loading-dark-390-text2-actions.png",
+      "sha256": "d438f00f33681c3b8b658e8a7ca2babb36654ba880b52bbc18fa4ea3f7e54bbc"
+    },
+    {
+      "file": "after-flutter-dashboard-loading-dark-390-text2-top.png",
+      "sha256": "43043384da5221fe91073d0ed8f0c1279031474e67a45f3919b746c83c6aece2"
+    },
+    {
+      "file": "after-flutter-dashboard-loading-light-390-text1-actions.png",
+      "sha256": "2d1726c99e5e7ef06d384e97aed90eeb35e9bdfb7e010866bab817b31a1d73f9"
+    },
+    {
+      "file": "after-flutter-dashboard-loading-light-390-text1-top.png",
+      "sha256": "203dcb4a8b0470e4c79795b369537606ca5a6aca732a8e94e4cbefd90c6d73b0"
+    },
+    {
+      "file": "after-flutter-dashboard-loading-light-390-text2-actions.png",
+      "sha256": "ac908de496f6d1f56d8fa37ec3525a8907a19ed2c6917ffc5edd3e9da7abb8dc"
+    },
+    {
+      "file": "after-flutter-dashboard-loading-light-390-text2-top.png",
+      "sha256": "0cc4030f7d764843803d34b26cc867a459d840e0f2b967a1254ff5a98e3069e0"
+    },
+    {
+      "file": "after-flutter-dashboard-offline-dark-390-text1-actions.png",
+      "sha256": "b163702fa30f20d2d5ace558a3f62d3f2760386918d2fce171989ef82e9f4297"
+    },
+    {
+      "file": "after-flutter-dashboard-offline-dark-390-text1-top.png",
+      "sha256": "15d8b33a721da9a1bd67fa38b713df0f2ad6d89c3f95d00fd1b3b0e4e2945a15"
+    },
+    {
+      "file": "after-flutter-dashboard-offline-dark-390-text2-actions.png",
+      "sha256": "f0f4f6e63e49523527d69452917e4af0629e6bdd6069d70f2bd461d2a5235385"
+    },
+    {
+      "file": "after-flutter-dashboard-offline-dark-390-text2-top.png",
+      "sha256": "2ebb645671a8d7e8bb63c9cf478d1565475bf091353886b72082f4b1a4274aec"
+    },
+    {
+      "file": "after-flutter-dashboard-offline-light-390-text1-actions.png",
+      "sha256": "391a7ac88c7bac727df4c99d0f6b44077c69e891dbfa0f6d50b0bf5dfb1f507e"
+    },
+    {
+      "file": "after-flutter-dashboard-offline-light-390-text1-top.png",
+      "sha256": "908df45eb408faa863578755f1b97394009b1423021459a366156ff4a4daa6b4"
+    },
+    {
+      "file": "after-flutter-dashboard-offline-light-390-text2-actions.png",
+      "sha256": "73b540c269ebd3fb9c22804b02d4cbe45144cf06dfa3c24ef37afb77fe059066"
+    },
+    {
+      "file": "after-flutter-dashboard-offline-light-390-text2-top.png",
+      "sha256": "12d2c37527baeed5f2d76b3da43b8a58c454e4050a0f10e3a60c43a898796276"
+    },
+    {
+      "file": "after-next-dashboard-data-dark-1280-csszoom1-actions.png",
+      "sha256": "72915f22db9daea515a467f5b1f96cd66d86ae1f7e1ee6e2eb389d614dacee93"
+    },
+    {
+      "file": "after-next-dashboard-data-dark-1280-csszoom1-stats.png",
+      "sha256": "72915f22db9daea515a467f5b1f96cd66d86ae1f7e1ee6e2eb389d614dacee93"
+    },
+    {
+      "file": "after-next-dashboard-data-dark-390-csszoom1-actions.png",
+      "sha256": "a98d46362fcd0efcec5a3feebd866fc2d60c3ecdf05ac4ab1df6cc06001c9125"
+    },
+    {
+      "file": "after-next-dashboard-data-dark-390-csszoom1-stats.png",
+      "sha256": "6863b6c914e648a413333664ac72ec2366661194646903bc2abc3d8e24fbb5ab"
+    },
+    {
+      "file": "after-next-dashboard-data-dark-390-csszoom2-actions.png",
+      "sha256": "8fb1309cdb7c4f36ff2bf8f0c4931e2f243d7c3a7346e727d1412f861babb53f"
+    },
+    {
+      "file": "after-next-dashboard-data-dark-390-csszoom2-stats.png",
+      "sha256": "bdeb7b722fc013b2bda8154888882f78926507755be13aed2c738a55d8947bc9"
+    },
+    {
+      "file": "after-next-dashboard-data-light-1280-csszoom1-actions.png",
+      "sha256": "fdf918b05bf94f589341615d97dce937860c9dc24a908e566b0e1cc1d9778670"
+    },
+    {
+      "file": "after-next-dashboard-data-light-1280-csszoom1-stats.png",
+      "sha256": "fdf918b05bf94f589341615d97dce937860c9dc24a908e566b0e1cc1d9778670"
+    },
+    {
+      "file": "after-next-dashboard-data-light-390-csszoom1-actions.png",
+      "sha256": "20eba4264a944c1ce21140044c899ec0558eee53c2b28491e2e1b67514583b52"
+    },
+    {
+      "file": "after-next-dashboard-data-light-390-csszoom1-stats.png",
+      "sha256": "a5433a8941289dd0c810abe74e02c1555d5dc22a7a29af54dda79b1cb81bc533"
+    },
+    {
+      "file": "after-next-dashboard-data-light-390-csszoom2-actions.png",
+      "sha256": "5cdf7e0f27e150cb1c529d31ef582a35356f1b83d6f0c136af903fbee34acace"
+    },
+    {
+      "file": "after-next-dashboard-data-light-390-csszoom2-stats.png",
+      "sha256": "ff238aed25f298234486e9c8c918c85c9e173977409d625f255888b0cdefd4cf"
+    },
+    {
+      "file": "after-next-dashboard-empty-dark-1280-csszoom1-actions.png",
+      "sha256": "0b347e46da97a7d10a8835abbcceb793e94d1f67d3c8b2579e0243e7f03fecb8"
+    },
+    {
+      "file": "after-next-dashboard-empty-dark-1280-csszoom1-stats.png",
+      "sha256": "0b347e46da97a7d10a8835abbcceb793e94d1f67d3c8b2579e0243e7f03fecb8"
+    },
+    {
+      "file": "after-next-dashboard-empty-dark-390-csszoom1-actions.png",
+      "sha256": "0b52b113a54a3353a621a2fe5656e6fa3ef50f7c8a882057eaa7af6e83b8f181"
+    },
+    {
+      "file": "after-next-dashboard-empty-dark-390-csszoom1-stats.png",
+      "sha256": "9d6f2abdefdb86eeb3e2e410563840f0bdcd4983a55552c88f32dc4742e7854d"
+    },
+    {
+      "file": "after-next-dashboard-empty-dark-390-csszoom2-actions.png",
+      "sha256": "a344c40cf11f408eba8a61712900dde5ffaba2286cc425c713f10fc344e5eb07"
+    },
+    {
+      "file": "after-next-dashboard-empty-dark-390-csszoom2-stats.png",
+      "sha256": "8b60954696804b4c898b0857494c7391b729016db312feb4bf5e413009a87e6d"
+    },
+    {
+      "file": "after-next-dashboard-empty-light-1280-csszoom1-actions.png",
+      "sha256": "a15072ec5ec19b22d00c7b5e0018c90e77b980d33d5d44d0975c2f4915278e21"
+    },
+    {
+      "file": "after-next-dashboard-empty-light-1280-csszoom1-stats.png",
+      "sha256": "a15072ec5ec19b22d00c7b5e0018c90e77b980d33d5d44d0975c2f4915278e21"
+    },
+    {
+      "file": "after-next-dashboard-empty-light-390-csszoom1-actions.png",
+      "sha256": "a370d3383c761f7fddc6170d607305afc4cf7c794de17ff1048224aa1b8f0468"
+    },
+    {
+      "file": "after-next-dashboard-empty-light-390-csszoom1-stats.png",
+      "sha256": "adc64eca5ff6efc2b2a1f4c737d8f455d11f5ebaacfd90a02fa77ba31bbe3628"
+    },
+    {
+      "file": "after-next-dashboard-empty-light-390-csszoom2-actions.png",
+      "sha256": "78dfd2c81f135beb8fdd607f1ec02f38542d7f581301c2bae0a6cbaf87d090e2"
+    },
+    {
+      "file": "after-next-dashboard-empty-light-390-csszoom2-stats.png",
+      "sha256": "a1aa9ed0405f015312433a08592e7a146d49f34559b8b9c0ffdb6f2c90464fe3"
+    },
+    {
+      "file": "after-next-dashboard-error-dark-1280-csszoom1-actions.png",
+      "sha256": "0c663933cd72621742763feb89a37a8cbfcf67014a8aeb196b8fec96f75a4e7b"
+    },
+    {
+      "file": "after-next-dashboard-error-dark-1280-csszoom1-stats.png",
+      "sha256": "0c663933cd72621742763feb89a37a8cbfcf67014a8aeb196b8fec96f75a4e7b"
+    },
+    {
+      "file": "after-next-dashboard-error-dark-390-csszoom1-actions.png",
+      "sha256": "a560735146d39ff016033f7d7b48a7b23f5c208d77ae2015e6d4fcd3f0bf7ce0"
+    },
+    {
+      "file": "after-next-dashboard-error-dark-390-csszoom1-stats.png",
+      "sha256": "1ddbd5f5719c32d1a714b14610ff55b2d2804512acc7e202d495deb7fcf6e023"
+    },
+    {
+      "file": "after-next-dashboard-error-dark-390-csszoom2-actions.png",
+      "sha256": "e2c1cc98193b5b609bd49edd5bdb44a070a628b12a9fb88c822819a0e5c079c8"
+    },
+    {
+      "file": "after-next-dashboard-error-dark-390-csszoom2-stats.png",
+      "sha256": "4ed9d082468a54c822699db5f3fde6b7fb85aeeaf264384f811e9b0aedfc541a"
+    },
+    {
+      "file": "after-next-dashboard-error-light-1280-csszoom1-actions.png",
+      "sha256": "6fdada71823242fb62a2326b2b0b8e09c19c5d06bc82f076731756c67514ab61"
+    },
+    {
+      "file": "after-next-dashboard-error-light-1280-csszoom1-stats.png",
+      "sha256": "6fdada71823242fb62a2326b2b0b8e09c19c5d06bc82f076731756c67514ab61"
+    },
+    {
+      "file": "after-next-dashboard-error-light-390-csszoom1-actions.png",
+      "sha256": "6f66b9a0d8c72ba4cb57d621b6c39dccfa4cb2fd8d33185523f0a24cd86a1c6c"
+    },
+    {
+      "file": "after-next-dashboard-error-light-390-csszoom1-stats.png",
+      "sha256": "6efebd59635077d660b2bb5ff470afe7c9e70d586545b06b3ac424ed4d2a88aa"
+    },
+    {
+      "file": "after-next-dashboard-error-light-390-csszoom2-actions.png",
+      "sha256": "05ba05b40f01a7798075b0ac9e8ba33adb8169af1823c2965124a5131c0a99a6"
+    },
+    {
+      "file": "after-next-dashboard-error-light-390-csszoom2-stats.png",
+      "sha256": "55900dde7a96904a6eb85757f3d3addd07b194d7d9baf2e4c2bc3c64ca35928a"
+    },
+    {
+      "file": "after-next-dashboard-loading-dark-1280-csszoom1-actions.png",
+      "sha256": "39c7969bceb367eabe5c9b9d5a743629b1698c9165cc9f25a234d25393c618b0"
+    },
+    {
+      "file": "after-next-dashboard-loading-dark-1280-csszoom1-stats.png",
+      "sha256": "39c7969bceb367eabe5c9b9d5a743629b1698c9165cc9f25a234d25393c618b0"
+    },
+    {
+      "file": "after-next-dashboard-loading-dark-390-csszoom1-actions.png",
+      "sha256": "f3a78e49085d87717848dbd1d31a4fa0682c5b0ec62bdf2eab5dfb935256c0d5"
+    },
+    {
+      "file": "after-next-dashboard-loading-dark-390-csszoom1-stats.png",
+      "sha256": "85adc5179570f92ed83a7502a8fab80be5e407da40c1500d12dd3e8dbcb79eb7"
+    },
+    {
+      "file": "after-next-dashboard-loading-dark-390-csszoom2-actions.png",
+      "sha256": "8d81ac7fa785b90019f3f857b080b8cbd443900d66a49ec7d292bb8797998d09"
+    },
+    {
+      "file": "after-next-dashboard-loading-dark-390-csszoom2-stats.png",
+      "sha256": "ce20339ec3fc4180edd86668833e388844efec3551a68b8341a6b4df2dd2a666"
+    },
+    {
+      "file": "after-next-dashboard-loading-light-1280-csszoom1-actions.png",
+      "sha256": "78a64213434ad7c3356bfd0191a3d7ffd0fc2dc7ee447c845918d2b70b52e93e"
+    },
+    {
+      "file": "after-next-dashboard-loading-light-1280-csszoom1-stats.png",
+      "sha256": "78a64213434ad7c3356bfd0191a3d7ffd0fc2dc7ee447c845918d2b70b52e93e"
+    },
+    {
+      "file": "after-next-dashboard-loading-light-390-csszoom1-actions.png",
+      "sha256": "d50d93717cd3fd1d662a78de19f1b1ece9a8dff3aa57c1add079cf692f510170"
+    },
+    {
+      "file": "after-next-dashboard-loading-light-390-csszoom1-stats.png",
+      "sha256": "f97e113daeb416f7ca9f79794cde96dfba346a6da6024961e3df1d98ce395f30"
+    },
+    {
+      "file": "after-next-dashboard-loading-light-390-csszoom2-actions.png",
+      "sha256": "a0a149c077332925b41cf32514fa1723b2de9896b32320c72b3eb081c466b1b1"
+    },
+    {
+      "file": "after-next-dashboard-loading-light-390-csszoom2-stats.png",
+      "sha256": "356db6fbc828ffb8e1cccff23b56288f8df30bb06e95f3b42abb1dc16c146c26"
+    },
+    {
+      "file": "before-flutter-dashboard-data-dark-390-text1-actions.png",
+      "sha256": "7926e9bc71e24ff069913cf288f4ae1e984cb0c695a7e56eddc4602f077bd386"
+    },
+    {
+      "file": "before-flutter-dashboard-data-dark-390-text1-top.png",
+      "sha256": "ff62bdfd8993068d265891a02f65001e9a749a14b4596bb7c32fefa44aaeea4b"
+    },
+    {
+      "file": "before-flutter-dashboard-data-dark-390-text2-actions.png",
+      "sha256": "627eaca435a00c562948490311263d81345019be8d56d27d67923930d626f956"
+    },
+    {
+      "file": "before-flutter-dashboard-data-dark-390-text2-top.png",
+      "sha256": "1f548f16252b05c6f374bec3943d931d16e14662fc1c252795abfe806051b58e"
+    },
+    {
+      "file": "before-flutter-dashboard-data-light-390-text1-actions.png",
+      "sha256": "f0a9d61c5db9e60b14f03980ad3150e3ba22a3c33e8fa6f7cbb92a1b59aee5e0"
+    },
+    {
+      "file": "before-flutter-dashboard-data-light-390-text1-top.png",
+      "sha256": "982403a14e256c80d3c7fe5aa6d2027637b36a62dc0f978068a8bfeec6bd2784"
+    },
+    {
+      "file": "before-flutter-dashboard-data-light-390-text2-actions.png",
+      "sha256": "f7542046e0afdedff35f557db63986f4b0714d5ba11ed8185300166a859bae7d"
+    },
+    {
+      "file": "before-flutter-dashboard-data-light-390-text2-top.png",
+      "sha256": "c8453b5533bac3dde609f4e5746f3ffad8c5bd5bd2828e1edc3562ce0a502e14"
+    },
+    {
+      "file": "before-flutter-dashboard-empty-dark-390-text1-actions.png",
+      "sha256": "f0f1b9fb99bd5c66a6c22607c14671e7d9858b5eca2af123d41755a701c73566"
+    },
+    {
+      "file": "before-flutter-dashboard-empty-dark-390-text1-top.png",
+      "sha256": "8d359456a83549350668887094041c1fa7f48c79d3f5bd785da219543f9319c9"
+    },
+    {
+      "file": "before-flutter-dashboard-empty-dark-390-text2-actions.png",
+      "sha256": "627eaca435a00c562948490311263d81345019be8d56d27d67923930d626f956"
+    },
+    {
+      "file": "before-flutter-dashboard-empty-dark-390-text2-top.png",
+      "sha256": "435d2d6e9a4ee59e425af7b19a0c3a62610819dd6a466cd560f35f6266ab06a9"
+    },
+    {
+      "file": "before-flutter-dashboard-empty-light-390-text1-actions.png",
+      "sha256": "4394672e653fc91ef83f448c68ead454265cbc3d4dda5359121134b18236e281"
+    },
+    {
+      "file": "before-flutter-dashboard-empty-light-390-text1-top.png",
+      "sha256": "f4732a36709ff0a55b8ffc283ff5924b84da0ef4ad704bb65a890e20dd70caac"
+    },
+    {
+      "file": "before-flutter-dashboard-empty-light-390-text2-actions.png",
+      "sha256": "f7542046e0afdedff35f557db63986f4b0714d5ba11ed8185300166a859bae7d"
+    },
+    {
+      "file": "before-flutter-dashboard-empty-light-390-text2-top.png",
+      "sha256": "64aa86d0722d8a0b9af1a4acb2c87460b3cede13ed81cda81eee91130e102395"
+    },
+    {
+      "file": "before-flutter-dashboard-error-dark-390-text1-actions.png",
+      "sha256": "ece1997faca3debae13a0fb57f90052c223a031801a97348f370a8637c3677ea"
+    },
+    {
+      "file": "before-flutter-dashboard-error-dark-390-text1-top.png",
+      "sha256": "25cfac2c727e5e6fb90848c47a136c9b194ba543caf30415355bb99079f6a130"
+    },
+    {
+      "file": "before-flutter-dashboard-error-dark-390-text2-actions.png",
+      "sha256": "a6ec2cee8f4d0be6bf112a718d216b991c522b65155e9a00e507fa5cde9e11a4"
+    },
+    {
+      "file": "before-flutter-dashboard-error-dark-390-text2-top.png",
+      "sha256": "d380ce2972dbafc40cf961b4970ddd407c5a0b85c184028690de6437eb156a44"
+    },
+    {
+      "file": "before-flutter-dashboard-error-light-390-text1-actions.png",
+      "sha256": "9cec6268947ad1a6bd41d4d9e7399a693ff57c94a0fef3b9b79e7c42d64a103f"
+    },
+    {
+      "file": "before-flutter-dashboard-error-light-390-text1-top.png",
+      "sha256": "c4194a725d04a3ebc80c03801655a90089e3cf4d54ea0dcbc8735eab32006cba"
+    },
+    {
+      "file": "before-flutter-dashboard-error-light-390-text2-actions.png",
+      "sha256": "c0af75e74cd9dc4e06dad6799b695628c5fa82dc5b076f06054c19849e379ace"
+    },
+    {
+      "file": "before-flutter-dashboard-error-light-390-text2-top.png",
+      "sha256": "2a3338ba82177b4735569c2b98cbd65371e2b969cb9a10c5fa3dd5ba4588d44b"
+    },
+    {
+      "file": "before-flutter-dashboard-loading-dark-390-text1-actions.png",
+      "sha256": "2a6c1878c668e6518c0104ab9ed262ee8688ed64c020fec2106c360277b1039e"
+    },
+    {
+      "file": "before-flutter-dashboard-loading-dark-390-text1-top.png",
+      "sha256": "6d58da11b20d2249c616c38ccca78e2ea8f4da2c265b45b4afcb13b2f86fa7f2"
+    },
+    {
+      "file": "before-flutter-dashboard-loading-dark-390-text2-actions.png",
+      "sha256": "7e53ad99bf86f6bc593a3a02631ea593afde94eed0a03ed80d0f005efb21104d"
+    },
+    {
+      "file": "before-flutter-dashboard-loading-dark-390-text2-top.png",
+      "sha256": "43043384da5221fe91073d0ed8f0c1279031474e67a45f3919b746c83c6aece2"
+    },
+    {
+      "file": "before-flutter-dashboard-loading-light-390-text1-actions.png",
+      "sha256": "ba8d4e857f1bca62593159c6f8d95d22bd08c35c2ebdee11099c8c03add8890f"
+    },
+    {
+      "file": "before-flutter-dashboard-loading-light-390-text1-top.png",
+      "sha256": "f8bb6324565de98e4f31313d0b230a364c41fa7b9b1ee60298c28378a461668f"
+    },
+    {
+      "file": "before-flutter-dashboard-loading-light-390-text2-actions.png",
+      "sha256": "53f5ca20a1aab35003975831a62b8051766aa52ee03ea1e33db6188b64d0fc20"
+    },
+    {
+      "file": "before-flutter-dashboard-loading-light-390-text2-top.png",
+      "sha256": "0cc4030f7d764843803d34b26cc867a459d840e0f2b967a1254ff5a98e3069e0"
+    },
+    {
+      "file": "before-flutter-dashboard-offline-dark-390-text1-actions.png",
+      "sha256": "7926e9bc71e24ff069913cf288f4ae1e984cb0c695a7e56eddc4602f077bd386"
+    },
+    {
+      "file": "before-flutter-dashboard-offline-dark-390-text1-top.png",
+      "sha256": "bb93fb26c7679f820ad780de8d90631dbe7e6773d7a00d8afdea7eed89f5fb07"
+    },
+    {
+      "file": "before-flutter-dashboard-offline-dark-390-text2-actions.png",
+      "sha256": "627eaca435a00c562948490311263d81345019be8d56d27d67923930d626f956"
+    },
+    {
+      "file": "before-flutter-dashboard-offline-dark-390-text2-top.png",
+      "sha256": "53a0c146cd1d9c425f8739fce5d574006757edf9f6288e33351faafbf2966799"
+    },
+    {
+      "file": "before-flutter-dashboard-offline-light-390-text1-actions.png",
+      "sha256": "f0a9d61c5db9e60b14f03980ad3150e3ba22a3c33e8fa6f7cbb92a1b59aee5e0"
+    },
+    {
+      "file": "before-flutter-dashboard-offline-light-390-text1-top.png",
+      "sha256": "b9f8c055837aae14e59ae719bb081b740e1cb027c59ae6eb118f30896f0c6d84"
+    },
+    {
+      "file": "before-flutter-dashboard-offline-light-390-text2-actions.png",
+      "sha256": "f7542046e0afdedff35f557db63986f4b0714d5ba11ed8185300166a859bae7d"
+    },
+    {
+      "file": "before-flutter-dashboard-offline-light-390-text2-top.png",
+      "sha256": "c191d4a54589f944b95ecd6755283ea56f4caecfb1909e51b5db2ab7d636c658"
+    }
+  ],
+  "measurements": [
+    {
+      "file": "after-flutter-measurements.json",
+      "sha256": "7a35a308ffaf1bdfba428c107d4a209913ac83bb0489b09ba8b3c5832d9dc1e3"
+    },
+    {
+      "file": "before-flutter-measurements.json",
+      "sha256": "b9c5aa2abc2cf27aa56743294e73bbc0aafa3657893b6e8298dc7fde0083f4f8"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "fcebbca474a7e5447bf3fd71251597e651127639fb04ea75541a5fbfb2386af8"
+    }
+  ]
+}

@@ -18,6 +18,7 @@ passlib[bcrypt]>=1.7.4
 
 # PDF Generation
 reportlab>=4.2.5
+qrcode[pil]>=8.0
 
 # File handling
 aiofiles>=24.1.0

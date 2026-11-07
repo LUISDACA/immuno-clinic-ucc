@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +18,12 @@ class AuditHistoryScreen extends ConsumerStatefulWidget {
 
 class _AuditHistoryScreenState extends ConsumerState<AuditHistoryScreen> {
   bool _loading = true;
+  int _page = 1;
+  int _request = 0;
+  Map<String, dynamic>? _metadata;
   String? _error;
   List<dynamic> _items = [];
+  Future<void>? _inFlightLoad;
 
   @override
   void initState() {
@@ -26,27 +31,64 @@ class _AuditHistoryScreenState extends ConsumerState<AuditHistoryScreen> {
     Future.microtask(_load);
   }
 
-  Future<void> _load() async {
+  Future<void> _load() {
+    if (!mounted) return Future.value();
+    if (_inFlightLoad != null) return _inFlightLoad!;
+    final load = _performLoad();
+    _inFlightLoad = load;
+    load.whenComplete(() {
+      if (identical(_inFlightLoad, load)) _inFlightLoad = null;
+    });
+    return load;
+  }
+
+  void _goToPage(int page) {
+    if (!mounted || _loading || _error != null) return;
+    _page = page;
+    _load();
+  }
+
+  Future<void> _performLoad() async {
+    final request = ++_request;
     setState(() {
       _loading = true;
-      _error = null;
     });
 
     try {
       final role = ref.read(authStateProvider).role;
       final isAdmin = isAdminRole(role);
-      final path = isAdmin ? '/audit/admin' : '/audit/me';
+      final path = isAdmin ? '/audit/admin/page' : '/audit/me/page';
       final response = await ref
           .read(apiClientProvider)
           .dio
-          .get(path, queryParameters: isAdmin ? null : {'include_self': true});
+          .get(
+            path,
+            queryParameters: {
+              'page': _page,
+              'page_size': 20,
+              'include_self': true,
+            },
+          );
+      if (!mounted || request != _request) return;
       setState(() {
-        _items = (response.data as List<dynamic>?) ?? [];
+        _metadata = response.data as Map<String, dynamic>;
+        _items = _metadata!['items'] as List<dynamic>;
+        _error = null;
         _loading = false;
       });
     } catch (e) {
+      if (!mounted || request != _request) return;
       setState(() {
-        _error = 'No se pudo cargar el historial';
+        final status = e is DioException ? e.response?.statusCode : null;
+        _error = switch (status) {
+          401 => 'Tu sesión expiró. Inicia sesión nuevamente.',
+          403 => 'No tienes permiso para consultar esta información.',
+          404 => 'No se encontró la información solicitada.',
+          429 => 'Demasiadas solicitudes. Espera antes de reintentar.',
+          500 => 'Ocurrió un error en el servidor. Intenta nuevamente.',
+          503 => 'El servicio no está disponible temporalmente.',
+          _ => 'No se pudo cargar el historial',
+        };
         _loading = false;
       });
     }
@@ -60,19 +102,54 @@ class _AuditHistoryScreenState extends ConsumerState<AuditHistoryScreen> {
       appBar: AppBar(
         title: Text(isAdmin ? 'Historial general' : 'Mi historial'),
       ),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator())
-          : _error != null
-          ? Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+      bottomNavigationBar: _error != null || _metadata == null
+          ? null
+          : SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(_error!, style: const TextStyle(color: AppColors.error)),
-                  const SizedBox(height: 8),
-                  TextButton(onPressed: _load, child: const Text('Reintentar')),
+                  TextButton(
+                    onPressed: !_loading && _metadata?['has_previous'] == true
+                        ? () => _goToPage(_page - 1)
+                        : null,
+                    child: const Text('Anterior'),
+                  ),
+                  Text('Página $_page de ${_metadata?['total_pages'] ?? 0}'),
+                  TextButton(
+                    onPressed: !_loading && _metadata?['has_next'] == true
+                        ? () => _goToPage(_page + 1)
+                        : null,
+                    child: const Text('Siguiente'),
+                  ),
                 ],
               ),
+            ),
+      body: _error != null
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Semantics(
+                      liveRegion: true,
+                      child: Text(
+                        _error!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: AppColors.error),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: _loading ? null : _load,
+                      child: const Text('Reintentar'),
+                    ),
+                  ],
+                ),
+              ),
             )
+          : _loading
+          ? const Center(child: CircularProgressIndicator())
           : _items.isEmpty
           ? const Center(
               child: Text(

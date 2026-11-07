@@ -1,0 +1,61 @@
+{
+  "scope": "B5-E02 confirmed upload vs read failure and GET-only recovery",
+  "institutional_data": false,
+  "production_ready": false,
+  "flutter_tests": 15,
+  "next_component_tests": 9,
+  "flutter_golden_references": 2,
+  "next_screenshots": 6,
+  "next_cases": 7,
+  "native_zoom": false,
+  "notes": [
+    "No clinical, API, authorization, storage or session-protocol changes.",
+    "Confirmed upload means successful POST response was received; transport failure does not prove that a write was absent.",
+    "Recovery retries GET only; a new POST requires an explicit upload action.",
+    "Flutter controls data source/plugin; Next uses local synthetic PostgreSQL and controlled read/failed-write HTTP responses.",
+    "Flutter unconfirmed-write + failed-read tests trigger a subsequent GET explicitly; Next existing useSafeMutation also refreshes after failed POST. Same observable result, not identical network sequence.",
+    "No cross-session, cross-account, reload or OS-dialog draft restoration claim."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "91f2797d3cd8ec01d8599c4bd5c54750b2e768df06b1f3966a86f9de536fb3c8"
+    },
+    {
+      "file": "flutter-confirmed-dark-390.png",
+      "sha256": "a6d2f2060f8d41108b91b16a0cb55e60625f9c0b4be518b8acf53233ae7c2eb8"
+    },
+    {
+      "file": "flutter-confirmed-light-390.png",
+      "sha256": "328a39c3a1a00a44f069286719c00166b7e7455407d4b7a91dd08c9a2f963077"
+    },
+    {
+      "file": "next-confirmed-get403-dark-390.png",
+      "sha256": "3fc55959ed724f26f9379812c67db2b1718b118c47397968cd060a9b490b54e2"
+    },
+    {
+      "file": "next-confirmed-get403-light-390.png",
+      "sha256": "006536df36d780f9d20a512b3042802ed0c013920f80fddda1dba49008e3be24"
+    },
+    {
+      "file": "next-confirmed-get503-dark-390.png",
+      "sha256": "9f1c634fb91edee710cfe0bf0b6b8f3f22e175dd379fe9362a5628bf5d88043c"
+    },
+    {
+      "file": "next-confirmed-get503-light-390.png",
+      "sha256": "3be65a83797f09f7163a245901f1c011cf07bde67caa1e7d038206f0d6283de1"
+    },
+    {
+      "file": "next-failed-post-get403-dark-390.png",
+      "sha256": "64ac29b3fedfceb8243d1d56b7857f941abcf942a8654f2aa87a374d55b0befd"
+    },
+    {
+      "file": "next-failed-post-get403-light-390.png",
+      "sha256": "26233c195e9aa75c5e8800337a029e7ebf0f857aeb9bf77dae7cbfc81902909b"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "59d9f2264a7769378d99b15d31a260239b1be02ca48e9abdb797aee64a0ac7ed"
+    }
+  ]
+}

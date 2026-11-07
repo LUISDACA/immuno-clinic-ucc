@@ -1,0 +1,358 @@
+{
+  "synthetic_data_only": true,
+  "production_ready": false,
+  "measurements": [
+    {
+      "scenario": "mobile-320-css-px",
+      "viewport": 320,
+      "documentWidth": 320,
+      "mainWidth": 288,
+      "text": [
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 140,
+          "scrollWidth": 140,
+          "clientHeight": 784,
+          "scrollHeight": 784
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 120,
+          "scrollWidth": 120,
+          "clientHeight": 200,
+          "scrollHeight": 200
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 140,
+          "scrollWidth": 140,
+          "clientHeight": 340,
+          "scrollHeight": 340
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 210,
+          "scrollWidth": 210,
+          "clientHeight": 168,
+          "scrollHeight": 168
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 210,
+          "scrollWidth": 210,
+          "clientHeight": 288,
+          "scrollHeight": 288
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 210,
+          "scrollWidth": 210,
+          "clientHeight": 288,
+          "scrollHeight": 288
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 210,
+          "scrollWidth": 210,
+          "clientHeight": 288,
+          "scrollHeight": 288
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 210,
+          "scrollWidth": 210,
+          "clientHeight": 24,
+          "scrollHeight": 24
+        }
+      ]
+    },
+    {
+      "scenario": "tablet-768-css-px",
+      "viewport": 768,
+      "documentWidth": 753,
+      "mainWidth": 457,
+      "text": [
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 229,
+          "scrollWidth": 229,
+          "clientHeight": 392,
+          "scrollHeight": 392
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 209,
+          "scrollWidth": 209,
+          "clientHeight": 100,
+          "scrollHeight": 100
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 229,
+          "scrollWidth": 229,
+          "clientHeight": 160,
+          "scrollHeight": 160
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 145,
+          "scrollWidth": 145,
+          "clientHeight": 240,
+          "scrollHeight": 240
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 145,
+          "scrollWidth": 145,
+          "clientHeight": 408,
+          "scrollHeight": 408
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 145,
+          "scrollWidth": 145,
+          "clientHeight": 408,
+          "scrollHeight": 408
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 145,
+          "scrollWidth": 145,
+          "clientHeight": 384,
+          "scrollHeight": 384
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 145,
+          "scrollWidth": 145,
+          "clientHeight": 24,
+          "scrollHeight": 24
+        }
+      ]
+    },
+    {
+      "scenario": "desktop-1440-css-px",
+      "viewport": 1440,
+      "documentWidth": 1425,
+      "mainWidth": 984,
+      "text": [
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 756,
+          "scrollWidth": 756,
+          "clientHeight": 112,
+          "scrollHeight": 112
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 736,
+          "scrollWidth": 736,
+          "clientHeight": 40,
+          "scrollHeight": 40
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 756,
+          "scrollWidth": 756,
+          "clientHeight": 60,
+          "scrollHeight": 60
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 408,
+          "scrollWidth": 408,
+          "clientHeight": 72,
+          "scrollHeight": 72
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 408,
+          "scrollWidth": 408,
+          "clientHeight": 144,
+          "scrollHeight": 144
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 408,
+          "scrollWidth": 408,
+          "clientHeight": 120,
+          "scrollHeight": 120
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 408,
+          "scrollWidth": 408,
+          "clientHeight": 120,
+          "scrollHeight": 120
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 408,
+          "scrollWidth": 408,
+          "clientHeight": 24,
+          "scrollHeight": 24
+        }
+      ]
+    },
+    {
+      "scenario": "200-percent-reflow-equivalent-720-css-px",
+      "viewport": 720,
+      "documentWidth": 705,
+      "mainWidth": 673,
+      "text": [
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 445,
+          "scrollWidth": 445,
+          "clientHeight": 224,
+          "scrollHeight": 224
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 425,
+          "scrollWidth": 425,
+          "clientHeight": 60,
+          "scrollHeight": 60
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 445,
+          "scrollWidth": 445,
+          "clientHeight": 100,
+          "scrollHeight": 100
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 253,
+          "scrollWidth": 253,
+          "clientHeight": 120,
+          "scrollHeight": 120
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 253,
+          "scrollWidth": 253,
+          "clientHeight": 288,
+          "scrollHeight": 288
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 253,
+          "scrollWidth": 253,
+          "clientHeight": 192,
+          "scrollHeight": 192
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 253,
+          "scrollWidth": 253,
+          "clientHeight": 192,
+          "scrollHeight": 192
+        },
+        {
+          "visible": true,
+          "whiteSpace": "normal",
+          "textOverflow": "clip",
+          "overflowWrap": "break-word",
+          "clientWidth": 253,
+          "scrollWidth": 253,
+          "clientHeight": 24,
+          "scrollHeight": 24
+        }
+      ]
+    }
+  ]
+}

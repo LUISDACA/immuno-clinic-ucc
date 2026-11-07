@@ -21,3 +21,7 @@ export async function listAdminAudit(
   });
   return data;
 }
+
+export async function auditPage(administrative:boolean,page=1,page_size=20):Promise<import('./types').PageResponse<AuditEntry>> {
+ const {data}=await apiClient.get(`/audit/${administrative?'admin':'me'}/page`,{params:{page,page_size}});return data;
+}

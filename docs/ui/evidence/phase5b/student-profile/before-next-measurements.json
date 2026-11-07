@@ -1,0 +1,18 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "native_zoom": false,
+  "measurements": [
+    {
+      "case": "data_reflow",
+      "theme": "light",
+      "width": 320,
+      "cssZoom": 1,
+      "viewport": 672,
+      "clientWidth": 320,
+      "scrollWidth": 672,
+      "clippedTextCount": 2,
+      "source": "controlled-synthetic-profile"
+    }
+  ]
+}

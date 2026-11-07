@@ -1,0 +1,75 @@
+{
+  "scope": "B5-M02 Next administrator read and write/read recovery; native M03 remains PARTIAL",
+  "institutional_data": false,
+  "production_ready": false,
+  "next_component_tests": 27,
+  "new_flutter_tests": 0,
+  "reused_flutter_golden_references": 2,
+  "next_screenshots": 10,
+  "next_cases": 13,
+  "native_zoom": false,
+  "notes": [
+    "No backend/Flutter runtime, clinical rule, auth protocol, role guard, dependency or migration changes.",
+    "Real POST/DELETE and PostgreSQL persistence, controlled GET errors; explicit retries do not repeat writes.",
+    "Native references demonstrate successful empty only; Flutter source mixes read/write error and may retain old/empty list after failed GET. Not fixed or verified in this block.",
+    "Status401 is controlled in browser and uses existing expiration; other client unit statuses do not validate native token interceptors."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "fcc61f1a9ea437966e071eabf534a2a75198ccb719fe616e9c2aa79f9c1420a6"
+    },
+    {
+      "file": "next-created-read-failed-dark-390.png",
+      "sha256": "34483f5ff611ebe36493dc6bd0c5f3ddb0e67b610b67084071560213adc205e1"
+    },
+    {
+      "file": "next-created-read-failed-light-390.png",
+      "sha256": "7030209f63c1e9e49b7c48c8e843584052138e65e921126e05079ed66452ea56"
+    },
+    {
+      "file": "next-empty-dark-390.png",
+      "sha256": "981e962ed546670dd4d1aac858a43e4c0a472f7b226a8add56543a3c0e830c9b"
+    },
+    {
+      "file": "next-empty-light-390.png",
+      "sha256": "e25edfbc6d778485cfb8ae293a025374054dd691559fc3fac8bd62a020b6c4f0"
+    },
+    {
+      "file": "next-get403-dark-390.png",
+      "sha256": "55b840e6250100204568b50caf1c56ba1e0af8ea7cb9b12a540181b47a8eaf41"
+    },
+    {
+      "file": "next-get403-light-390.png",
+      "sha256": "7e0207dfcc56d391fc006a047c72c89a2d1413c35964ae4f647ec32842b372de"
+    },
+    {
+      "file": "next-get503-dark-390.png",
+      "sha256": "505eedd4fed4b817fe8b6d7e64782fba1f0ff08687ab90e0d2e1ca4d15bb2b00"
+    },
+    {
+      "file": "next-get503-light-390.png",
+      "sha256": "f3753c50debf3d6f6bb746c13bf14ddc4a7cd352c1e0ff4813e14a99aeb33c68"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "02a190b1407e6afbde666d8edc4bf89fe7b343257293f8bde8aa61f9e6f9d3a2"
+    },
+    {
+      "file": "next-removed-read-failed-dark-390.png",
+      "sha256": "9aadf2c548e8af82e5bf7c27919493901ad141d58055d5aa870addaca74a27cf"
+    },
+    {
+      "file": "next-removed-read-failed-light-390.png",
+      "sha256": "7409e7af45cc5d7435a75c430631061157a65b358ee6d0c3f39dc58347955759"
+    },
+    {
+      "file": "../admin-create/flutter-form-light-390.png",
+      "sha256": "82507fc0fe78bc36fc3c89af0eee3ccff1ee129f73d9d53e840a6e15c577d6be"
+    },
+    {
+      "file": "../admin-create/flutter-form-dark-390.png",
+      "sha256": "6cf365da4e7ad545dfd17d6bf5f220d37ea10d73d1853f9efc0ae3520c3c38ca"
+    }
+  ]
+}

@@ -99,7 +99,7 @@ class AdminStudentImportService:
             }
             email = clean_cell(raw.get("email"))
             try:
-                data, temporary_password = student_import_row_to_request(raw)
+                data, _ = student_import_row_to_request(raw)
                 existing = await self.admin_deps.user_repo.get_by_email(data.email)
                 if existing:
                     skipped += 1
@@ -120,7 +120,7 @@ class AdminStudentImportService:
                     values=dose_raw,
                 )
                 created += 1
-                message = f"Estudiante creado; contraseña temporal: {temporary_password}"
+                message = "Estudiante creado; el acceso se gestiona por correo"
                 if dose_updates:
                     message += f"; {dose_updates} dato(s) de vacunas importado(s)"
                 if dose_warnings:

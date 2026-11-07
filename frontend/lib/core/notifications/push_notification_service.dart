@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../firebase_options.dart';
 import '../network/api_client.dart';
+import '../session/session_manager.dart';
+import 'package:dio/dio.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -17,7 +19,10 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 final pushNotificationServiceProvider = Provider<PushNotificationService>((
   ref,
 ) {
-  return PushNotificationService(ref.watch(apiClientProvider));
+  return PushNotificationService(
+    ref.watch(apiClientProvider),
+    session: ref.read(sessionManagerProvider),
+  );
 });
 
 class PushNotificationService {
@@ -34,9 +39,17 @@ class PushNotificationService {
 
   final ApiClient _api;
   final FirebaseMessaging? _messaging;
+  final SessionManager _session;
+  StreamSubscription<String>? _tokenSubscription;
+  int _epoch = 0;
+  static bool _active = false;
 
-  PushNotificationService(this._api, {FirebaseMessaging? messaging})
-    : _messaging = messaging;
+  PushNotificationService(
+    this._api, {
+    FirebaseMessaging? messaging,
+    SessionManager? session,
+  }) : _messaging = messaging,
+       _session = session ?? SessionManager();
 
   static Future<void> initialize() async {
     _initializationFuture ??= _initializeOnce();
@@ -73,6 +86,9 @@ class PushNotificationService {
 
   Future<void> registerDevice() async {
     if (!_isSupportedPlatform) return;
+    final epoch = ++_epoch;
+    final sessionEpoch = _session.generation;
+    await _tokenSubscription?.cancel();
     await initialize();
 
     final messaging = _firebaseMessaging;
@@ -88,22 +104,64 @@ class PushNotificationService {
     final token = await messaging.getToken();
     if (token == null || token.isEmpty) return;
 
+    if (epoch != _epoch || sessionEpoch != _session.generation) return;
     await _sendToken(token);
-
-    messaging.onTokenRefresh.listen((newToken) {
-      unawaited(_sendToken(newToken));
+    if (epoch != _epoch || sessionEpoch != _session.generation) return;
+    _active = true;
+    _tokenSubscription = messaging.onTokenRefresh.listen((newToken) {
+      if (epoch == _epoch && sessionEpoch == _session.generation) {
+        unawaited(_sendToken(newToken).catchError((Object _) {}));
+      }
     });
   }
 
   Future<void> unregisterDevice() async {
     if (!_isSupportedPlatform) return;
-    await initialize();
-    final token = await _firebaseMessaging.getToken();
-    if (token == null || token.isEmpty) return;
-    await _api.dio.delete(
-      '/notifications/device-token',
-      data: {'token': token},
-    );
+    final access = await _session.getAccessToken();
+    final generation = _session.generation;
+    ++_epoch;
+    _active = false;
+    await _tokenSubscription?.cancel();
+    _tokenSubscription = null;
+    try {
+      final token = await _firebaseMessaging.getToken();
+      if (token != null && token.isNotEmpty && access != null) {
+        await _api.dio
+            .delete(
+              '/notifications/device-token',
+              data: {'token': token},
+              options: Options(
+                headers: {'Authorization': 'Bearer $access'},
+                extra: {
+                  'skipRefresh': true,
+                  'pinnedAuth': true,
+                  'sessionGeneration': generation,
+                },
+              ),
+            )
+            .timeout(const Duration(seconds: 3));
+      }
+    } finally {
+      await clearLocal();
+    }
+  }
+
+  Future<void> clearLocal() async {
+    ++_epoch;
+    _active = false;
+    await _tokenSubscription?.cancel();
+    _tokenSubscription = null;
+    if (!_isSupportedPlatform) return;
+    try {
+      await _firebaseMessaging.deleteToken();
+    } catch (_) {
+      /* offline */
+    }
+    try {
+      await _localNotifications.cancelAll();
+    } catch (_) {
+      /* not initialized */
+    }
   }
 
   FirebaseMessaging get _firebaseMessaging =>
@@ -117,6 +175,7 @@ class PushNotificationService {
   }
 
   static Future<void> _showForegroundNotification(RemoteMessage message) async {
+    if (!_active) return;
     final notification = message.notification;
     final title = notification?.title ?? message.data['title']?.toString();
     final body = notification?.body ?? message.data['body']?.toString();

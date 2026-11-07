@@ -1,0 +1,92 @@
+{
+  "scope": "B5-P03 same-session profile draft, read/write outcome and late-result recovery",
+  "institutional_data": false,
+  "production_ready": false,
+  "flutter_golden_references": 6,
+  "next_screenshots": 10,
+  "next_cases": 11,
+  "flutter_tests": 17,
+  "next_component_tests": 12,
+  "native_zoom": false,
+  "notes": [
+    "No backend, authorization, clinical rule or session-protocol changes.",
+    "Successful PUT receipt is distinct from a following failed GET; query retry does not repeat PUT.",
+    "Flutter/Next mocked401 unit responses do not model real expiration; actual web expiration removes protected content.",
+    "Draft is in view memory only; no cross-session or cross-account draft restoration claim.",
+    "Existing signature flows and administrative Next profile are outside this change."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "4ace4fed5037e56a2efc3abd0b293271590282788085153e283a70fce052c346"
+    },
+    {
+      "file": "flutter-failed-put-get403-dark-390.png",
+      "sha256": "03fbe2d28de59f245c47cb4a38e3f7aad416db5dac2c4ecaa656e07c36ddc269"
+    },
+    {
+      "file": "flutter-failed-put-get403-light-390.png",
+      "sha256": "22baeb41fec3f151f3b0b14960b261d098f88d881f1cc95eaabdef7cf779ac80"
+    },
+    {
+      "file": "flutter-saved-get403-dark-390.png",
+      "sha256": "7ede51e7fbe99f93d48e70f3c2825d13df6f04053d15414e543f4944cdb8702e"
+    },
+    {
+      "file": "flutter-saved-get403-light-390.png",
+      "sha256": "f73b9795ce017af78be725132d0409e75f973616fe4ac3a7a9b7c96cbae453cf"
+    },
+    {
+      "file": "flutter-saved-get503-dark-390.png",
+      "sha256": "f9b703c0d6ce128967955bd17307b2fab3d7bcf76cf0fea497317d554fe2dd96"
+    },
+    {
+      "file": "flutter-saved-get503-light-390.png",
+      "sha256": "015ba2cf8487a80d4500d5e0c52d1fe2575098aa115a80d389ed5d49a173ebc6"
+    },
+    {
+      "file": "next-draft-get403-dark-390.png",
+      "sha256": "5c1a28e60c4039701389b2f863b2cf0eb14857824185eed0ad91e7e8a71e4253"
+    },
+    {
+      "file": "next-draft-get403-light-390.png",
+      "sha256": "814410565e189219813f168acc5f819b1cb1fe0cb4bc034fcc63c2663d08caf1"
+    },
+    {
+      "file": "next-draft-get503-dark-390.png",
+      "sha256": "db5a8b479602e37e413c1ed76a0c21c1b0a17b2ec5364f9bca1a6fd9c671a322"
+    },
+    {
+      "file": "next-draft-get503-light-390.png",
+      "sha256": "f21f194580e1cecf1e041dde2ef383531712a38dd75cae478c835febc0f83a96"
+    },
+    {
+      "file": "next-failed-put-get403-dark-390.png",
+      "sha256": "9c5e3ea1d041c49a5661ebf81dbc4cb616e61978ee30afde1679403cca6e17a2"
+    },
+    {
+      "file": "next-failed-put-get403-light-390.png",
+      "sha256": "a4838b11a46dffc92d3e7e1679419f0d744dc40d505f0184f281d607d08c3a13"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "8787a775239d53f62b3075c1adcdadb5d3a1a26429ec335b0f08166be299e147"
+    },
+    {
+      "file": "next-saved-get403-dark-390.png",
+      "sha256": "d0827567d3fdadbf71b3544a5e20d90b7ae0f4ca3b453b261fed6e38fa0adbe4"
+    },
+    {
+      "file": "next-saved-get403-light-390.png",
+      "sha256": "7625921daddde7f3034326fa734f64c84531d60552f1093b4fb2cac054e118ef"
+    },
+    {
+      "file": "next-saved-get503-dark-390.png",
+      "sha256": "20a256acd29322f37d696dd11f0f02706bee6ac6a9e510ef53bb33dd8d9c396f"
+    },
+    {
+      "file": "next-saved-get503-light-390.png",
+      "sha256": "755364eef442005d891ff39c6e1c68c9d37c5ed0b1914a8c090794bdb0659f4e"
+    }
+  ]
+}

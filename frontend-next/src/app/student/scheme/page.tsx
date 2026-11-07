@@ -1,7 +1,8 @@
 "use client";
+import { QueryError } from "@/components/query-error";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { toast } from "sonner";
 import {
   CalendarDays,
@@ -16,7 +17,7 @@ import {
 } from "lucide-react";
 import { getMyScheme, updateDose } from "@/lib/api/scheme";
 import { StudentDose, StudentVaccine } from "@/lib/api/types";
-import { formatDate } from "@/lib/format";
+import { formatDate, localDateInputValue } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { VaccineDueBadge } from "@/components/vaccine-due-badge";
@@ -45,6 +46,7 @@ export default function StudentSchemePage() {
       </div>
     );
   }
+  if (error) return <QueryError error={error} retry={refetch} />;
   if (error || !data) {
     return (
       <div className="flex flex-col gap-5">
@@ -136,6 +138,8 @@ function OverviewBox({
 
 function VaccineBox({ vaccine }: { vaccine: StudentVaccine }) {
   const [open, setOpen] = useState(false);
+  const panelId = useId();
+  const triggerId = `${panelId}-trigger`;
   const name = vaccine.vaccine?.name ?? "Vacuna";
   const code = vaccine.vaccine?.code;
   const status = vaccine.status as DoseOrVaccineStatus;
@@ -143,8 +147,12 @@ function VaccineBox({ vaccine }: { vaccine: StudentVaccine }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-[color:var(--divider)] bg-card">
       <button
+        type="button"
+        id={triggerId}
+        aria-expanded={open}
+        aria-controls={panelId}
         onClick={() => setOpen((s) => !s)}
-        className="flex w-full items-center gap-3 p-4 text-left"
+        className="flex w-full items-center gap-3 p-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
       >
         <span
           className="h-10 w-1.5 shrink-0 rounded-full"
@@ -152,7 +160,7 @@ function VaccineBox({ vaccine }: { vaccine: StudentVaccine }) {
           aria-hidden
         />
         <div className="min-w-0 flex-1">
-          <p className="truncate font-bold">{name}</p>
+          <p className="break-words font-bold">{name}</p>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             <StatusPill status={status} />
             <span className="text-xs text-muted-foreground">
@@ -166,6 +174,7 @@ function VaccineBox({ vaccine }: { vaccine: StudentVaccine }) {
           </div>
         </div>
         <ChevronDown
+          aria-hidden
           className={cn(
             "h-4 w-4 shrink-0 text-muted-foreground transition-transform",
             open && "rotate-180",
@@ -173,6 +182,7 @@ function VaccineBox({ vaccine }: { vaccine: StudentVaccine }) {
         />
       </button>
 
+      <div id={panelId} role="region" aria-labelledby={triggerId} hidden={!open}>
       {open && (
         <div className="border-t border-[color:var(--divider)]">
           {vaccine.admin_notes && (
@@ -201,6 +211,7 @@ function VaccineBox({ vaccine }: { vaccine: StudentVaccine }) {
           )}
         </div>
       )}
+      </div>
     </div>
   );
 }
@@ -214,10 +225,7 @@ function DoseRow({ dose }: { dose: StudentDose }) {
   const [titerValue, setTiterValue] = useState(dose.titer_value ?? "");
 
   const isTiter = dose.dose_config?.dose_type === "titer";
-  const editable =
-    dose.status === "pending" ||
-    dose.status === "denied" ||
-    dose.status === "in_review";
+  const editable = dose.status === "denied" || dose.status === "in_review";
   const hasRecord = isTiter
     ? Boolean(dose.applied_date) || Boolean(dose.titer_value)
     : Boolean(dose.applied_date);
@@ -262,7 +270,7 @@ function DoseRow({ dose }: { dose: StudentDose }) {
                 className="h-2 w-2 rounded-full"
                 style={{ background: statusTone(dose.status) }}
               />
-              <span style={{ color: statusTone(dose.status) }} className="font-semibold">
+              <span style={{ color: statusTone(dose.status, true) }} className="font-semibold">
                 {statusLabel(dose.status)}
               </span>
             </span>
@@ -282,6 +290,8 @@ function DoseRow({ dose }: { dose: StudentDose }) {
               <VaccineDueBadge
                 dueDate={dose.due_date}
                 days={dose.days_until_due ?? null}
+                isOverdue={dose.is_overdue}
+                isDueToday={dose.is_due_today}
               />
             )}
           </div>
@@ -331,7 +341,7 @@ function DoseRow({ dose }: { dose: StudentDose }) {
                 type="date"
                 value={appliedDate}
                 onChange={(e) => setAppliedDate(e.target.value)}
-                max={new Date().toISOString().split("T")[0]}
+                max={localDateInputValue()}
               />
             </div>
             {isTiter && (
@@ -381,16 +391,16 @@ function DoseRow({ dose }: { dose: StudentDose }) {
 
 // ── Helpers visuales ─────────────────────────────────────────────────
 
-type DoseOrVaccineStatus = "approved" | "pending" | "denied" | "in_review";
+type DoseOrVaccineStatus = "approved" | "denied" | "in_review";
 
-function statusTone(status: DoseOrVaccineStatus | string): string {
+function statusTone(status: DoseOrVaccineStatus | string, text = false): string {
   switch (status) {
     case "approved":
-      return "var(--success)";
+      return text ? "var(--success-text)" : "var(--success)";
     case "denied":
-      return "var(--destructive)";
+      return text ? "var(--destructive-text)" : "var(--destructive)";
     case "in_review":
-      return "var(--warning)";
+      return text ? "var(--warning-text)" : "var(--warning)";
     default:
       return "var(--brand-gray)";
   }
@@ -402,7 +412,6 @@ function statusLabel(status: string): string {
       approved: "Aprobada",
       denied: "Denegada",
       in_review: "En revisión",
-      pending: "Pendiente",
     } as Record<string, string>
   )[status] ?? status;
 }
@@ -413,7 +422,7 @@ function StatusPill({ status }: { status: DoseOrVaccineStatus }) {
     <span
       className="inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-bold"
       style={{
-        color: tone,
+        color: statusTone(status, true),
         borderColor: `color-mix(in srgb, ${tone} 30%, transparent)`,
         background: `color-mix(in srgb, ${tone} 8%, transparent)`,
       }}

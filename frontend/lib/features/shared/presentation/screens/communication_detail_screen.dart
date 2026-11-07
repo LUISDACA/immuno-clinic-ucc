@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/role_utils.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/datasources/communication_remote_ds.dart';
+import '../communication_error.dart';
 import '../providers/notification_provider.dart';
+import '../widgets/communication_query_error.dart';
 
 class CommunicationDetailScreen extends ConsumerStatefulWidget {
   final String threadId;
@@ -29,7 +30,10 @@ class _CommunicationDetailScreenState
   bool _refreshing = false;
   bool _loading = true;
   bool _sending = false;
-  bool _markedCommunicationRead = false;
+  bool _markingRead = false;
+  String? _readError;
+  String? _markedMessage;
+  int _request = 0;
   String? _error;
   Map<String, dynamic>? _thread;
 
@@ -51,7 +55,8 @@ class _CommunicationDetailScreenState
   }
 
   Future<void> _load({bool showLoading = false}) async {
-    if (_refreshing) return;
+    if (_refreshing || _sending) return;
+    final request = ++_request;
     _refreshing = true;
     if (showLoading && mounted) {
       setState(() {
@@ -63,50 +68,61 @@ class _CommunicationDetailScreenState
       final thread = await ref
           .read(communicationRemoteDataSourceProvider)
           .getThread(widget.threadId);
-      if (!mounted) return;
+      if (!mounted || request != _request) return;
       setState(() {
         _thread = thread;
         _loading = false;
         _error = null;
       });
-      await _markThreadSeen(thread);
       _scrollToBottom();
-      if (!_markedCommunicationRead) {
-        _markedCommunicationRead = true;
-        await ref
-            .read(notificationProvider.notifier)
-            .markCategoryRead('communication');
-      }
-    } catch (_) {
-      if (!mounted) return;
-      if (_thread == null) {
-        setState(() {
-          _error = 'No se pudo cargar la conversación';
-          _loading = false;
-        });
-      }
+      final lastMessage = thread['last_message_at']?.toString() ?? '';
+      await _markRead(lastMessage);
+    } catch (error) {
+      if (!mounted || request != _request) return;
+      setState(() {
+        _error = communicationQueryErrorMessage(error);
+        _loading = false;
+      });
     } finally {
       _refreshing = false;
     }
   }
 
-  Future<void> _markThreadSeen(Map<String, dynamic> thread) async {
-    final threadId = thread['id']?.toString();
-    final lastMessageAt = DateTime.tryParse(
-      thread['last_message_at']?.toString() ?? '',
-    );
-    if (threadId == null || threadId.isEmpty || lastMessageAt == null) return;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(
-      'ic_thread_seen_$threadId',
-      lastMessageAt.millisecondsSinceEpoch,
-    );
+  Future<void> _markRead(String lastMessage) async {
+    if (_markingRead || _markedMessage == lastMessage) return;
+    final userId = ref.read(authStateProvider).userId;
+    final threadId = widget.threadId;
+    bool isCurrent() =>
+        mounted &&
+        ref.read(authStateProvider).userId == userId &&
+        widget.threadId == threadId &&
+        _error == null &&
+        (_thread?['last_message_at']?.toString() ?? '') == lastMessage;
+    setState(() => _markingRead = true);
+    try {
+      await ref
+          .read(notificationProvider.notifier)
+          .markCategoryRead('communication');
+      if (!isCurrent()) return;
+      setState(() {
+        _markedMessage = lastMessage;
+        _readError = null;
+      });
+    } catch (_) {
+      if (!isCurrent()) return;
+      setState(() {
+        _readError = 'No se pudo actualizar la lectura de notificaciones.';
+      });
+    } finally {
+      if (mounted) setState(() => _markingRead = false);
+    }
   }
 
   Future<void> _send() async {
     final text = _messageController.text.trim();
     if (text.isEmpty || _sending) return;
 
+    ++_request;
     final optimisticId = 'local-${DateTime.now().microsecondsSinceEpoch}';
     final auth = ref.read(authStateProvider);
 
@@ -134,7 +150,7 @@ class _CommunicationDetailScreenState
       if (!mounted) return;
       setState(() {
         _thread = _threadWithoutMessage(_thread, optimisticId);
-        _messageController.text = text;
+        if (_messageController.text.isEmpty) _messageController.text = text;
         _messageController.selection = TextSelection.collapsed(
           offset: _messageController.text.length,
         );
@@ -223,7 +239,9 @@ class _CommunicationDetailScreenState
 
   @override
   Widget build(BuildContext context) {
-    final thread = _thread;
+    // Failed refreshes must not leave previous data or actions looking verified.
+    // Retain the controller and thread internally only for retry/draft recovery.
+    final thread = _error == null && !_loading ? _thread : null;
     final auth = ref.watch(authStateProvider);
     final isAdmin = isAdminRole(auth.role);
 
@@ -249,22 +267,35 @@ class _CommunicationDetailScreenState
           ? const Center(child: CircularProgressIndicator())
           : _error != null
           ? Center(
-              child: Text(
-                _error!,
-                style: const TextStyle(color: AppColors.error),
+              child: CommunicationQueryError(
+                message: _error!,
+                onRetry: () => _load(showLoading: true),
               ),
             )
           : Column(
               children: [
                 if (thread != null)
                   _ThreadHeader(thread: thread, currentUserId: auth.userId),
+                if (_readError != null)
+                  CommunicationQueryError(
+                    message: _readError!,
+                    retryLabel: 'Reintentar lectura',
+                    retrying: _markingRead,
+                    onRetry: () => _markRead(
+                      _thread?['last_message_at']?.toString() ?? '',
+                    ),
+                  ),
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () => _load(showLoading: false),
                     child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       controller: _scrollController,
                       padding: const EdgeInsets.all(16),
                       children: [
+                        if (((_thread?['messages'] as List<dynamic>?) ?? [])
+                            .isEmpty)
+                          const Center(child: Text('No hay mensajes')),
                         ...((_thread?['messages'] as List<dynamic>?) ?? []).map(
                           (message) => _MessageBubble(
                             message: message,
@@ -341,7 +372,7 @@ class _ThreadHeader extends StatelessWidget {
         return user;
       }
     }
-    return recipient ?? student ?? createdBy;
+    return null;
   }
 
   String _userLabel(Map<String, dynamic> user) {
@@ -407,7 +438,7 @@ class _MessageBubble extends StatelessWidget {
                   _senderName(sender),
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: isMine ? Colors.white : colorScheme.onSurface,
+                    color: isMine ? Colors.black : colorScheme.onSurface,
                     fontSize: 12,
                   ),
                 ),
@@ -415,7 +446,7 @@ class _MessageBubble extends StatelessWidget {
                 Text(
                   message['body']?.toString() ?? '',
                   style: TextStyle(
-                    color: isMine ? Colors.white : colorScheme.onSurface,
+                    color: isMine ? Colors.black : colorScheme.onSurface,
                   ),
                 ),
                 if (dateText.isNotEmpty) ...[
@@ -425,7 +456,7 @@ class _MessageBubble extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11,
                       color: isMine
-                          ? Colors.white.withValues(alpha: 0.8)
+                          ? Colors.black
                           : colorScheme.onSurfaceVariant,
                     ),
                   ),

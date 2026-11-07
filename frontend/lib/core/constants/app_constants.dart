@@ -22,6 +22,9 @@ class AppConstants {
     return 'http://localhost:8000/api/v1';
   }
 
+  static String authV2(String action) =>
+      '${baseUrl.replaceFirst(RegExp(r'/api/v1/?$'), '/api/v2')}/auth/$action';
+
   // Storage keys
   static const String accessTokenKey = 'access_token';
   static const String refreshTokenKey = 'refresh_token';

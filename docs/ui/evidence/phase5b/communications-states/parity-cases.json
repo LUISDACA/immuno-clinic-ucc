@@ -1,0 +1,551 @@
+{
+  "institutional_data": false,
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "dpr": 1
+  },
+  "pixel_equality_claimed": false,
+  "cases": [
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "loading",
+      "flutter": "flutter-student-light-list-loading-390.png",
+      "next": "../communications-recovery/after-next-student-list-hold-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "empty",
+      "flutter": "flutter-student-light-list-empty-390.png",
+      "next": "../communications-recovery/after-next-student-list-empty-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "error",
+      "flutter": "flutter-student-light-list-error-390.png",
+      "next": "../communications-recovery/after-next-student-list-503-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "retrying",
+      "flutter": "flutter-student-light-list-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "success",
+      "flutter": "flutter-student-light-list-success-390.png",
+      "next": "../communications-layers/after-student-list-light-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "loading",
+      "flutter": "flutter-student-light-detail-loading-390.png",
+      "next": "../communications-recovery/after-next-student-detail-hold-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "empty",
+      "flutter": "flutter-student-light-detail-empty-390.png",
+      "next": "../communications-recovery/after-next-student-detail-empty-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "error",
+      "flutter": "flutter-student-light-detail-error-390.png",
+      "next": "../communications-recovery/after-next-student-detail-503-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "retrying",
+      "flutter": "flutter-student-light-detail-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "success",
+      "flutter": "flutter-student-light-detail-success-390.png",
+      "next": "../communications-layers/after-student-detail-light-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "loading",
+      "flutter": "flutter-student-dark-list-loading-390.png",
+      "next": "../communications-recovery/after-next-student-list-hold-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "empty",
+      "flutter": "flutter-student-dark-list-empty-390.png",
+      "next": "../communications-recovery/after-next-student-list-empty-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "error",
+      "flutter": "flutter-student-dark-list-error-390.png",
+      "next": "../communications-recovery/after-next-student-list-503-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "retrying",
+      "flutter": "flutter-student-dark-list-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "success",
+      "flutter": "flutter-student-dark-list-success-390.png",
+      "next": "../communications-layers/after-student-list-dark-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "loading",
+      "flutter": "flutter-student-dark-detail-loading-390.png",
+      "next": "../communications-recovery/after-next-student-detail-hold-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "empty",
+      "flutter": "flutter-student-dark-detail-empty-390.png",
+      "next": "../communications-recovery/after-next-student-detail-empty-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "error",
+      "flutter": "flutter-student-dark-detail-error-390.png",
+      "next": "../communications-recovery/after-next-student-detail-503-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "retrying",
+      "flutter": "flutter-student-dark-detail-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "success",
+      "flutter": "flutter-student-dark-detail-success-390.png",
+      "next": "../communications-layers/after-student-detail-dark-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "loading",
+      "flutter": "flutter-admin-light-list-loading-390.png",
+      "next": "../communications-recovery/after-next-admin-list-hold-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "empty",
+      "flutter": "flutter-admin-light-list-empty-390.png",
+      "next": "../communications-recovery/after-next-admin-list-empty-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "error",
+      "flutter": "flutter-admin-light-list-error-390.png",
+      "next": "../communications-recovery/after-next-admin-list-503-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "retrying",
+      "flutter": "flutter-admin-light-list-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "success",
+      "flutter": "flutter-admin-light-list-success-390.png",
+      "next": "../communications-layers/after-admin-list-light-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "loading",
+      "flutter": "flutter-admin-light-detail-loading-390.png",
+      "next": "../communications-recovery/after-next-admin-detail-hold-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "empty",
+      "flutter": "flutter-admin-light-detail-empty-390.png",
+      "next": "../communications-recovery/after-next-admin-detail-empty-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "error",
+      "flutter": "flutter-admin-light-detail-error-390.png",
+      "next": "../communications-recovery/after-next-admin-detail-503-light-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "retrying",
+      "flutter": "flutter-admin-light-detail-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "success",
+      "flutter": "flutter-admin-light-detail-success-390.png",
+      "next": "../communications-layers/after-admin-detail-light-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "loading",
+      "flutter": "flutter-admin-dark-list-loading-390.png",
+      "next": "../communications-recovery/after-next-admin-list-hold-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "empty",
+      "flutter": "flutter-admin-dark-list-empty-390.png",
+      "next": "../communications-recovery/after-next-admin-list-empty-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "error",
+      "flutter": "flutter-admin-dark-list-error-390.png",
+      "next": "../communications-recovery/after-next-admin-list-503-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "retrying",
+      "flutter": "flutter-admin-dark-list-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "success",
+      "flutter": "flutter-admin-dark-list-success-390.png",
+      "next": "../communications-layers/after-admin-list-dark-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "loading",
+      "flutter": "flutter-admin-dark-detail-loading-390.png",
+      "next": "../communications-recovery/after-next-admin-detail-hold-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "empty",
+      "flutter": "flutter-admin-dark-detail-empty-390.png",
+      "next": "../communications-recovery/after-next-admin-detail-empty-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "error",
+      "flutter": "flutter-admin-dark-detail-error-390.png",
+      "next": "../communications-recovery/after-next-admin-detail-503-dark-390.png",
+      "note": "Controlled HTTP state in Chrome; backend recovery covered separately by existing E2E."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "retrying",
+      "flutter": "flutter-admin-dark-detail-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "success",
+      "flutter": "flutter-admin-dark-detail-success-390.png",
+      "next": "../communications-layers/after-admin-detail-dark-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "loading",
+      "flutter": "flutter-app_admin-light-list-loading-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "empty",
+      "flutter": "flutter-app_admin-light-list-empty-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "error",
+      "flutter": "flutter-app_admin-light-list-error-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "retrying",
+      "flutter": "flutter-app_admin-light-list-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "success",
+      "flutter": "flutter-app_admin-light-list-success-390.png",
+      "next": "../communications-layers/after-app_admin-list-light-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "loading",
+      "flutter": "flutter-app_admin-light-detail-loading-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "empty",
+      "flutter": "flutter-app_admin-light-detail-empty-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "error",
+      "flutter": "flutter-app_admin-light-detail-error-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "retrying",
+      "flutter": "flutter-app_admin-light-detail-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "success",
+      "flutter": "flutter-app_admin-light-detail-success-390.png",
+      "next": "../communications-layers/after-app_admin-detail-light-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "loading",
+      "flutter": "flutter-app_admin-dark-list-loading-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "empty",
+      "flutter": "flutter-app_admin-dark-list-empty-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "error",
+      "flutter": "flutter-app_admin-dark-list-error-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "retrying",
+      "flutter": "flutter-app_admin-dark-list-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "success",
+      "flutter": "flutter-app_admin-dark-list-success-390.png",
+      "next": "../communications-layers/after-app_admin-list-dark-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "loading",
+      "flutter": "flutter-app_admin-dark-detail-loading-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "empty",
+      "flutter": "flutter-app_admin-dark-detail-empty-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "error",
+      "flutter": "flutter-app_admin-dark-detail-error-390.png",
+      "next": null,
+      "note": "Shared Next state components are tested; no matching app_admin browser capture for this state. Three-role component coverage applies specifically to read retry."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "retrying",
+      "flutter": "flutter-app_admin-dark-detail-retrying-390.png",
+      "next": null,
+      "note": "Flutter query-retry loading captured; Next query retry verified by component, no separate matching query-retry screenshot."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "success",
+      "flutter": "flutter-app_admin-dark-detail-success-390.png",
+      "next": "../communications-layers/after-app_admin-detail-dark-390.png",
+      "note": "Existing successful Chrome view; separate synthetic dataset, semantic comparison only."
+    }
+  ]
+}

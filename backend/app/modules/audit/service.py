@@ -4,8 +4,10 @@ import uuid
 from datetime import date, datetime, timezone
 from enum import Enum
 
+from app.common.access import is_app_admin, require_admin_scope
 from app.modules.audit.models import AuditLog
-from sqlalchemy import or_, select
+from app.modules.users.models import Profile, User
+from sqlalchemy import String, case, cast, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
@@ -64,7 +66,7 @@ class AuditService:
         result = await self.db.execute(
             select(AuditLog)
             .options(joinedload(AuditLog.actor))
-            .order_by(AuditLog.created_at.desc())
+            .order_by(AuditLog.created_at.desc(), AuditLog.id.desc())
             .offset(offset)
             .limit(limit)
         )
@@ -84,8 +86,55 @@ class AuditService:
                     AuditLog.details["target_user_id"].astext == student_id_text,
                 )
             )
-            .order_by(AuditLog.created_at.desc())
+            .order_by(AuditLog.created_at.desc(), AuditLog.id.desc())
             .offset(offset)
             .limit(limit)
         )
         return list(result.unique().scalars().all())
+
+    async def page_for_user(
+        self, user: User, *, administrative: bool, page: int, size: int, include_self: bool = True
+    ):
+        """Apply the existing visibility predicates before counting/limiting."""
+        query = select(AuditLog).options(joinedload(AuditLog.actor))
+        if not administrative:
+            query = query.where(
+                or_(
+                    AuditLog.target_id == user.id,
+                    AuditLog.details["student_id"].as_string() == str(user.id),
+                    AuditLog.details["target_user_id"].as_string() == str(user.id),
+                )
+            )
+            if not include_self:
+                query = query.where(or_(AuditLog.actor_id != user.id, AuditLog.actor_id.is_(None)))
+        else:
+            query = query.where(
+                or_(~AuditLog.action.startswith("password."), AuditLog.actor_id == user.id)
+            )
+            if not is_app_admin(user):
+                program, campus = require_admin_scope(user)
+                reference = func.coalesce(
+                    AuditLog.details["student_id"].as_string(),
+                    AuditLog.details["target_user_id"].as_string(),
+                    case((AuditLog.target_type == "user", cast(AuditLog.target_id, String))),
+                )
+                scoped = (
+                    select(Profile.user_id)
+                    .where(
+                        func.replace(cast(Profile.user_id, String), "-", "")
+                        == func.replace(reference, "-", ""),
+                        Profile.program == program,
+                        Profile.campus == campus,
+                    )
+                    .exists()
+                )
+                query = query.where(or_(AuditLog.actor_id == user.id, scoped))
+        total = (
+            await self.db.execute(select(func.count()).select_from(query.subquery()))
+        ).scalar_one()
+        rows = await self.db.execute(
+            query.order_by(AuditLog.created_at.desc(), AuditLog.id.desc())
+            .offset((page - 1) * size)
+            .limit(size)
+        )
+        return list(rows.unique().scalars()), total

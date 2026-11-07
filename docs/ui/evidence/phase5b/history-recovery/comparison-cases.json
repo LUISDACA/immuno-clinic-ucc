@@ -1,0 +1,41 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "viewport_width": 390,
+  "pixel_equality_claimed": false,
+  "pairs": [
+    {
+      "role": "student",
+      "theme": "light",
+      "scenario": "GET503 recovery",
+      "flutter": "flutter-student-light-390.png",
+      "next": "next-student-get503-light-390.png",
+      "note": "Same safe GET503 outcome and GET-only retry; initial Flutter failure vs failed refresh of real paginated Next data. Different platform shells; no pixel equality/native-device assertion."
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "scenario": "GET503 recovery",
+      "flutter": "flutter-student-dark-390.png",
+      "next": "next-student-get503-dark-390.png",
+      "note": "Same safe GET503 outcome and GET-only retry; initial Flutter failure vs failed refresh of real paginated Next data. Different platform shells; no pixel equality/native-device assertion."
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "scenario": "GET503 recovery",
+      "flutter": "flutter-admin-light-390.png",
+      "next": "next-admin-get503-light-390.png",
+      "note": "Same safe GET503 outcome and GET-only retry; initial Flutter failure vs failed refresh of real paginated Next data. Different platform shells; no pixel equality/native-device assertion."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "scenario": "GET503 recovery",
+      "flutter": "flutter-admin-dark-390.png",
+      "next": "next-admin-get503-dark-390.png",
+      "note": "Same safe GET503 outcome and GET-only retry; initial Flutter failure vs failed refresh of real paginated Next data. Different platform shells; no pixel equality/native-device assertion."
+    }
+  ],
+  "unpaired_native": "app_admin light/dark widget references are isolated screen tests. Next route is blocked by existing RoleGuard; H02 remains PARTIAL."
+}

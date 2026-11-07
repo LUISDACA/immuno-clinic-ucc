@@ -336,11 +336,11 @@ class TestStudentImportRowToRequest:
         req, pwd = student_import_row_to_request(self._valid_raw())
         assert req.email == "student@example.edu"
         assert req.sex == Gender.FEMALE
-        assert pwd == "123456789"
+        assert pwd is None
 
-    def test_document_is_temporary_password(self):
+    def test_document_is_not_a_credential(self):
         _, pwd = student_import_row_to_request(self._valid_raw(document_number="987654321"))
-        assert pwd == "987654321"
+        assert pwd is None
 
     def test_missing_email_raises(self):
         with pytest.raises(ValueError, match="correo"):

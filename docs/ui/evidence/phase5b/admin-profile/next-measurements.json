@@ -1,0 +1,82 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "measurements": [
+    {
+      "case": "administrative_scope",
+      "role": "admin",
+      "status": 403,
+      "actual_backend": true
+    },
+    {
+      "case": "confirmed_put_failed_get",
+      "role": "admin",
+      "theme": "light",
+      "writes": 1,
+      "real_postgresql_write": true,
+      "retry_get_only": true
+    },
+    {
+      "case": "confirmed_put_failed_get",
+      "role": "admin",
+      "theme": "dark",
+      "writes": 1,
+      "real_postgresql_write": true,
+      "retry_get_only": true
+    },
+    {
+      "case": "draft_get_error",
+      "role": "admin",
+      "draft_restored": true,
+      "retry_writes": 0
+    },
+    {
+      "case": "failed_put_failed_get",
+      "role": "admin",
+      "first_write_controlled_503": true,
+      "explicit_retry_postgresql": true,
+      "writes": 2
+    },
+    {
+      "case": "expiration",
+      "role": "admin",
+      "controlled_status": 401,
+      "protected_content_removed": true
+    },
+    {
+      "case": "confirmed_put_failed_get",
+      "role": "app_admin",
+      "theme": "light",
+      "writes": 1,
+      "real_postgresql_write": true,
+      "retry_get_only": true
+    },
+    {
+      "case": "confirmed_put_failed_get",
+      "role": "app_admin",
+      "theme": "dark",
+      "writes": 1,
+      "real_postgresql_write": true,
+      "retry_get_only": true
+    },
+    {
+      "case": "draft_get_error",
+      "role": "app_admin",
+      "draft_restored": true,
+      "retry_writes": 0
+    },
+    {
+      "case": "failed_put_failed_get",
+      "role": "app_admin",
+      "first_write_controlled_503": true,
+      "explicit_retry_postgresql": true,
+      "writes": 2
+    },
+    {
+      "case": "expiration",
+      "role": "app_admin",
+      "controlled_status": 401,
+      "protected_content_removed": true
+    }
+  ]
+}

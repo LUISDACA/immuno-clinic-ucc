@@ -1,0 +1,188 @@
+--- a/frontend-next/src/app/admin/profile/page.tsx
++++ b/frontend-next/src/app/admin/profile/page.tsx
+@@ -6 +6 @@
+-import { useEffect, useState } from "react";
++import { useEffect, useRef, useState } from "react";
+@@ -30,0 +31 @@
++import { Alert } from "@/components/ui/alert";
+@@ -41 +42 @@
+-  const { data, isLoading, error, refetch } = useQuery({
++  const { data, isFetching, error, refetch } = useQuery({
+@@ -45,3 +46,6 @@
+-  if (error) return <QueryError error={error} retry={refetch} />;
+-  if (isLoading || !data) return <LoadingState />;
+-  return <ProfileView key={data.id} user={data} />;
++  const retry = () => refetch({ cancelRefetch: false });
++  if (!data) {
++    if (error) return <QueryError error={error} retrying={isFetching} retry={retry} />;
++    return <LoadingState />;
++  }
++  return <ProfileEditor key={data.id} user={data} readError={error} retrying={isFetching} retry={retry} />;
+@@ -56 +60,98 @@
+-function ProfileView({ user }: { user: User }) {
++interface ProfileReadProps {
++  user: User;
++  readError: unknown;
++  retrying: boolean;
++  retry: () => unknown;
++}
++
++// Preserve only the base editor during failed reads. ProfileView (including the
++// unchanged signature section) still unmounts on a read error, as before.
++function ProfileEditor({ user, readError, retrying, retry }: ProfileReadProps) {
++  const queryClient = useQueryClient();
++  const mounted = useRef(true);
++  const busyRef = useRef(false);
++  const [busy, setBusy] = useState(false);
++  const [editing, setEditing] = useState(false);
++  const [writeError, setWriteError] = useState(false);
++  const [confirmedReadVersion, setConfirmedReadVersion] = useState<number | null>(null);
++  const p = user.profile;
++  const [form, setForm] = useState<EditableState>({
++    first_name: p?.first_name ?? "",
++    last_name: p?.last_name ?? "",
++    job_title: p?.job_title ?? "",
++  });
++  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
++  const confirmedSave = confirmedReadVersion !== null &&
++    queryClient.getQueryState(["user", "me"])?.dataUpdateCount === confirmedReadVersion;
++  const update = useMutation({
++    affectedQueries: [["user", "me"]],
++    mutationFn: (payload: Parameters<typeof updateMyProfile>[0]) => updateMyProfile(payload),
++    onMutate: () => {
++      if (!mounted.current) return;
++      setWriteError(false);
++      setConfirmedReadVersion(null);
++    },
++    onSuccess: () => {
++      if (!mounted.current) return;
++      const read = queryClient.getQueryState(["user", "me"]);
++      const failedRead = read?.status === "error";
++      setConfirmedReadVersion(failedRead ? read.dataUpdateCount : null);
++      if (failedRead) toast.warning("Los cambios se guardaron, pero no se pudo actualizar el perfil.");
++      else toast.success("Perfil actualizado");
++      setEditing(false);
++    },
++    onError: () => {
++      if (!mounted.current) return;
++      setWriteError(true);
++      toast.error("No se pudo guardar");
++    },
++  });
++
++  async function save() {
++    if (busyRef.current) return;
++    busyRef.current = true;
++    setBusy(true);
++    const payload = {
++      first_name: form.first_name || undefined,
++      last_name: form.last_name || undefined,
++      job_title: form.job_title.trim() || null,
++    };
++    try { await update.mutateAsync(payload); }
++    catch { /* The mutation presents a safe error; no transport details. */ }
++    finally {
++      busyRef.current = false;
++      if (mounted.current) setBusy(false);
++    }
++  }
++
++  function startEdit() {
++    if (busyRef.current) return;
++    setWriteError(false);
++    setForm({ first_name: p?.first_name ?? "", last_name: p?.last_name ?? "", job_title: p?.job_title ?? "" });
++    setEditing(true);
++  }
++
++  if (readError) return <div className="flex flex-col gap-3">
++    {confirmedSave && <p role="status">Los cambios se guardaron, pero no se pudo actualizar el perfil.</p>}
++    {writeError && <p role="status">No se pudo guardar el perfil. Intenta nuevamente.</p>}
++    <QueryError error={readError} retrying={retrying} retry={retry} />
++  </div>;
++
++  return <ProfileView user={user} editing={editing} form={form} busy={busy}
++    writeError={writeError} setForm={setForm} startEdit={startEdit} save={() => { void save(); }}
++    cancelEdit={() => { if (!busyRef.current) { setWriteError(false); setEditing(false); } }} />;
++}
++
++interface ProfileViewProps {
++  user: User;
++  editing: boolean;
++  form: EditableState;
++  busy: boolean;
++  writeError: boolean;
++  setForm: (value: EditableState) => void;
++  startEdit: () => void;
++  save: () => void;
++  cancelEdit: () => void;
++}
++
++function ProfileView({ user, editing, form, busy, writeError, setForm, startEdit, save, cancelEdit }: ProfileViewProps) {
+@@ -59 +159,0 @@
+-  const [editing, setEditing] = useState(false);
+@@ -97,31 +196,0 @@
+-  const [form, setForm] = useState<EditableState>({
+-    first_name: p?.first_name ?? "",
+-    last_name: p?.last_name ?? "",
+-    job_title: p?.job_title ?? "",
+-  });
+-
+-  const update = useMutation({
+-    affectedQueries: [["user", "me"]],
+-    mutationFn: () =>
+-      updateMyProfile({
+-        first_name: form.first_name || undefined,
+-        last_name: form.last_name || undefined,
+-        job_title: form.job_title.trim() || null,
+-      }),
+-    onSuccess: () => {
+-      toast.success("Perfil actualizado");
+-      setEditing(false);
+-      queryClient.invalidateQueries({ queryKey: ["user", "me"] });
+-    },
+-    onError: () => toast.error("No se pudo guardar"),
+-  });
+-
+-  function startEdit() {
+-    setForm({
+-      first_name: p?.first_name ?? "",
+-      last_name: p?.last_name ?? "",
+-      job_title: p?.job_title ?? "",
+-    });
+-    setEditing(true);
+-  }
+-
+@@ -140,0 +210 @@
++      {editing && writeError && <Alert tone="error">No se pudo guardar el perfil. Intenta nuevamente.</Alert>}
+@@ -256 +326,2 @@
+-        <div className="flex flex-col gap-4">
++        <form className="flex flex-col gap-4" aria-label="Editar perfil" aria-busy={busy}
++          onSubmit={(event) => { event.preventDefault(); save(); }}>
+@@ -288 +359 @@
+-                disabled={update.isPending}
++                disabled={busy}
+@@ -295 +366 @@
+-                disabled={update.isPending}
++                disabled={busy}
+@@ -303 +374 @@
+-                disabled={update.isPending}
++                disabled={busy}
+@@ -316,2 +387,3 @@
+-              onClick={() => setEditing(false)}
+-              disabled={update.isPending}
++              type="button"
++              onClick={cancelEdit}
++              disabled={busy}
+@@ -322,2 +394,2 @@
+-            <Button onClick={() => update.mutate()} disabled={update.isPending}>
+-              {update.isPending ? (
++            <Button type="submit" disabled={busy}>
++              {busy ? (
+@@ -336 +408 @@
+-        </div>
++        </form>
+--- a/frontend-next/src/components/app-shell.tsx
++++ b/frontend-next/src/components/app-shell.tsx
+@@ -102 +102 @@
+-      <div className={cn("flex min-h-screen flex-col", (notificationPage || communicationPage || studentProfilePage || accountPasswordPage || pathname === "/admin/students/create" || pathname === "/admin") && "relative z-0", studentProfilePage && profileStyles.shell)}>
++      <div className={cn("flex min-h-screen flex-col", (notificationPage || communicationPage || studentProfilePage || accountPasswordPage || pathname === "/admin/profile" || pathname === "/admin/students/create" || pathname === "/admin") && "relative z-0", studentProfilePage && profileStyles.shell)}>

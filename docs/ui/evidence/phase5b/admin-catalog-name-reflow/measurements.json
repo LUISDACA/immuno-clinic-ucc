@@ -1,0 +1,66 @@
+{
+  "synthetic_data_only": true,
+  "production_ready": false,
+  "measurements": [
+    {
+      "scenario": "mobile-320-css-px",
+      "viewport": 320,
+      "documentWidth": 320,
+      "title": {
+        "visible": true,
+        "width": 100.03125,
+        "height": 336,
+        "lineHeight": 24,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 100,
+        "scrollWidth": 100
+      },
+      "refresh": {
+        "visible": true,
+        "disabled": false
+      }
+    },
+    {
+      "scenario": "mobile-wide-640-css-px",
+      "viewport": 640,
+      "documentWidth": 640,
+      "title": {
+        "visible": true,
+        "width": 324.171875,
+        "height": 96,
+        "lineHeight": 24,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 324,
+        "scrollWidth": 324
+      },
+      "refresh": {
+        "visible": true,
+        "disabled": false
+      }
+    },
+    {
+      "scenario": "200-percent-reflow-equivalent-720-css-px",
+      "viewport": 720,
+      "documentWidth": 720,
+      "title": {
+        "visible": true,
+        "width": 404.171875,
+        "height": 72,
+        "lineHeight": 24,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 404,
+        "scrollWidth": 404
+      },
+      "refresh": {
+        "visible": true,
+        "disabled": false
+      }
+    }
+  ]
+}

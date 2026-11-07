@@ -1,0 +1,74 @@
+.dashboard {
+  container-type: inline-size;
+}
+
+@container (max-width: 22rem) {
+  .dashboard [class~="grid"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard [class~="grid"] > * {
+    min-width: 0;
+  }
+
+  .hero > div > div:last-child {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .hero > div > div:last-child > div:nth-child(2) {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  .hero > div > div:last-child > div:last-child {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .hero img {
+    width: 3rem;
+    height: auto;
+  }
+
+  .dashboard :is(h1, h2, h3),
+  .hero p,
+  .actions p,
+  .statLabel {
+    overflow-wrap: anywhere;
+  }
+
+  .hero p {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+  }
+
+  .statistics > div:first-child > div:last-child,
+  .statistics > div:first-child > div:last-child > div {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .actions > a > div > div > div {
+    flex-direction: column;
+  }
+
+  .actions > a > div > div > div > div {
+    width: 100%;
+  }
+
+  .rankingHeader {
+    flex-direction: column;
+  }
+
+  .rankingHeader > div {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .dashboard li > div:first-child > span:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}

@@ -16,7 +16,7 @@ class TokenResponse(BaseModel):
 
 
 class RefreshRequest(BaseModel):
-    refresh_token: str
+    refresh_token: str = Field(min_length=1, max_length=4096)
 
 
 class LogoutRequest(BaseModel):
@@ -26,6 +26,12 @@ class LogoutRequest(BaseModel):
 class AccessTokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+class RotatedTokenResponse(TokenResponse):
+    expires_in: int
+    refresh_expires_in: int
+    session_id: str
 
 
 def _validate_password_strength(v: str) -> str:

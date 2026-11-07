@@ -1,0 +1,60 @@
+{
+  "scope": "B5-E01 local selection, immutable upload controls and late file-picker results",
+  "institutional_data": false,
+  "production_ready": false,
+  "flutter_golden_references": 4,
+  "next_screenshots": 4,
+  "next_cases": 4,
+  "flutter_tests": 13,
+  "next_component_tests": 6,
+  "native_zoom": false,
+  "notes": [
+    "No backend, clinical rule, auth, API, private storage or PDF/certificate changes.",
+    "Minimal synthetic PDF upload payloads exercise the current API; not an institutional PDF render validation.",
+    "Native file picker is controlled in widget tests; actual OS picker, reader, keyboard and devices UNKNOWN.",
+    "POST-success/GET-failure recovery is separate E02 pending; S06 remains PARTIAL.",
+    "Next captures are cropped upload cards; Flutter captures are full screens. Fixture association/byte-size differences are explicit."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "f1f5ce585a07d2d0559db77be1697b8f746af9dc521bcefea8b43472b5cd23d1"
+    },
+    {
+      "file": "flutter-dark-selected-390.png",
+      "sha256": "3bd9d0ccbd6aaaba35282eefaa64c230aaa6135cf02ee0589c3fb4b85bba7a9b"
+    },
+    {
+      "file": "flutter-dark-sending-390.png",
+      "sha256": "f526e0c1902f325e3441edb4d0943ba325988378908576a1b745cf105fc3e05c"
+    },
+    {
+      "file": "flutter-light-selected-390.png",
+      "sha256": "78020820e415f67836376b4a094543816466a1110083f4f89d9365be8f7d51f4"
+    },
+    {
+      "file": "flutter-light-sending-390.png",
+      "sha256": "ac8824849943adbfc63f7abd1c0154ee328dfeb6f6c1c88d4116465cad8c97d5"
+    },
+    {
+      "file": "next-dark-selected-390.png",
+      "sha256": "a408b042f605cd0079e138eaeb2f3b26940ab0e2a0359f4c5ae8173a6314d752"
+    },
+    {
+      "file": "next-dark-sending-390.png",
+      "sha256": "5d250e2ab08189a11c85193234ef6108ff9b18483d62a356f8a710d36b5ca4b0"
+    },
+    {
+      "file": "next-light-selected-390.png",
+      "sha256": "157f046d0553e2cd90f7ae68be2728ba12ed75ac032ea4728e12947102fee0e8"
+    },
+    {
+      "file": "next-light-sending-390.png",
+      "sha256": "aeda5808c5b9043ffc040e36a826ba2be81c7a7062cdf2dcfa01ea2ec0a58a3a"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "fa8cd375cfb2cbc5f0cd3395f50e821f606e90633e5e680d88e9e0a86244c593"
+    }
+  ]
+}

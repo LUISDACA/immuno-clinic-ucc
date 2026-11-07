@@ -1,12 +1,14 @@
 "use client";
+import { useSafeMutation as useMutation } from "@/lib/query/safe-mutation";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { ArrowLeft, MessageSquare, Send } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { safeCommunicationReturn } from "@/lib/navigation";
 import { toast } from "sonner";
-import { addMessage, getThread } from "@/lib/api/communications";
+import { addMessage, getThread, updateThreadStatus } from "@/lib/api/communications";
 import { useAuthStore } from "@/lib/auth/store";
 import { isAdminRole } from "@/lib/config";
 import { CommunicationMessage } from "@/lib/api/types";
@@ -20,29 +22,33 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { LoadingState } from "@/components/page-header";
-import { Alert } from "@/components/ui/alert";
+import { EmptyState, LoadingState } from "@/components/page-header";
+import { QueryError } from "@/components/query-error";
+import { communicationPeer } from "@/lib/ui/communication-peer";
+import { useCommunicationReadSync } from "@/lib/query/communication-read-sync";
 
 export function ThreadDetail({ threadId }: { threadId: string }) {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const params=useSearchParams();
   const { userId, role } = useAuthStore();
+  const [confirmStatus, setConfirmStatus] = useState<"open" | "closed" | null>(null);
   const [message, setMessage] = useState("");
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ["thread", threadId],
     queryFn: () => getThread(threadId),
+    refetchInterval: 5000,
   });
 
-  useEffect(() => {
-    if (!data || typeof window === "undefined") return;
-    window.localStorage.setItem(
-      `ic_thread_seen_${data.id}`,
-      String(new Date(data.last_message_at).getTime()),
-    );
-  }, [data]);
-
+  const readSync = useCommunicationReadSync(data?.id, data?.last_message_at);
+  const statusChange = useMutation({
+    affectedQueries: [["thread",threadId],["threads"],["notifications"]],
+    mutationFn: (status: "open" | "closed") => updateThreadStatus(threadId, status),
+    onSuccess: () => { setConfirmStatus(null); void queryClient.invalidateQueries({queryKey:["thread", threadId]}); void queryClient.invalidateQueries({queryKey:["threads"]}); },
+  });
   const send = useMutation({
+    affectedQueries: [["thread",threadId],["threads"],["notifications"]],
     mutationFn: () => addMessage(threadId, message.trim()),
     onSuccess: () => {
       toast.success("Mensaje enviado");
@@ -53,7 +59,7 @@ export function ThreadDetail({ threadId }: { threadId: string }) {
     onError: () => toast.error("No se pudo enviar"),
   });
 
-  const baseList = isAdminRole(role) ? "/admin/communications" : "/student/communications";
+  const baseList = safeCommunicationReturn(params.get("returnTo"),isAdminRole(role)?"/admin":"/student");
 
   if (isLoading) {
     return (
@@ -67,15 +73,18 @@ export function ThreadDetail({ threadId }: { threadId: string }) {
     return (
       <div className="flex flex-col gap-5">
         <BackBar baseList={baseList} />
-        <Alert tone="error">No se pudo cargar el hilo.</Alert>
+        <QueryError error={error} retry={() => refetch({ cancelRefetch: false })} retrying={isFetching} />
       </div>
     );
   }
+
+  const peer = communicationPeer(data, userId);
 
   return (
     <div className="flex flex-col gap-4">
       <BackBar baseList={baseList} onBack={() => router.push(baseList)} />
 
+      {!!readSync.error && <QueryError error={readSync.error} retry={readSync.retry} retrying={readSync.pending} />}
       <Card>
         <CardHeader>
           <div className="flex items-start justify-between gap-3">
@@ -85,12 +94,7 @@ export function ThreadDetail({ threadId }: { threadId: string }) {
               </span>
               <div>
                 <h2 className="text-lg font-bold">{data.subject}</h2>
-                <p className="mt-0.5 text-sm text-muted-foreground">
-                  {data.student.name ?? data.student.email}
-                  {data.recipient && (
-                    <> · con {data.recipient.name ?? data.recipient.email}</>
-                  )}
-                </p>
+                {peer && <p className="mt-0.5 text-sm text-muted-foreground">{peer.name ?? peer.email}</p>}
               </div>
             </div>
             <Badge
@@ -108,18 +112,33 @@ export function ThreadDetail({ threadId }: { threadId: string }) {
         </CardHeader>
       </Card>
 
-      <ul className="flex flex-col gap-3">
+      <div>
+        <Button variant="outline" onClick={() => setConfirmStatus(data.status === "open" ? "closed" : "open")}>
+          {data.status === "open" ? "Cerrar conversación" : "Reabrir conversación"}
+        </Button>
+        {confirmStatus && <div role="alert"><p>¿Confirmar {confirmStatus === "closed" ? "cierre" : "reapertura"} de la conversación?</p>
+          <Button disabled={statusChange.isPending} onClick={() => statusChange.mutate(confirmStatus)}>Confirmar estado</Button>
+          <Button variant="ghost" onClick={() => setConfirmStatus(null)}>Cancelar</Button>
+        </div>}
+        {statusChange.error && <QueryError error={statusChange.error} retry={() => statusChange.reset()} />}
+        {data.status === "closed" && <p>Responder reabrirá la conversación.</p>}
+      </div>
+      {data.messages.length === 0 ? <EmptyState icon={null} title="No hay mensajes" /> : <ul className="flex flex-col gap-3">
         {data.messages.map((m) => (
           <li key={m.id}>
             <Bubble message={m} mine={m.sender?.id === userId} />
           </li>
         ))}
-      </ul>
+      </ul>}
 
-      {data.status === "open" && (
+      {(
+
         <Card>
           <CardContent className="flex flex-col gap-2 p-4">
+            <label htmlFor="thread-reply">Respuesta</label>
             <Textarea
+              id="thread-reply"
+              disabled={send.isPending}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
@@ -210,7 +229,7 @@ function Bubble({
           className={cn(
             "rounded-2xl px-4 py-2.5 text-sm leading-relaxed shadow-sm",
             mine
-              ? "rounded-br-sm bg-[color:var(--primary)] text-white"
+              ? "rounded-br-sm bg-[color:var(--primary)] text-black"
               : "rounded-bl-sm bg-card text-foreground border border-[color:var(--divider)]",
           )}
         >

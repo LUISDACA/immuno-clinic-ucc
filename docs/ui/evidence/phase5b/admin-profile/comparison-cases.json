@@ -1,0 +1,39 @@
+{
+  "scope": "R02C/S22 base profile recovery; signature excluded; R02 remains PARTIAL",
+  "institutional_data": false,
+  "production_ready": false,
+  "cases": [
+    {
+      "role": "admin",
+      "theme": "light",
+      "status": 503,
+      "flutter": "flutter-admin-saved-get503-light-390.png",
+      "next": "next-admin-saved-get503-light-390.png",
+      "note": "Same confirmed write followed by failed read. Flutter uses real ProfileScreen/ProfileNotifier with controlled Dio; web writes reach isolated PostgreSQL, with read503 controlled explicitly. Flutter generic load-error text and web status-specific copy remain distinct. No signature upload/image/storage validation, pixel parity or native-device claim."
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "status": 503,
+      "flutter": "flutter-admin-saved-get503-dark-390.png",
+      "next": "next-admin-saved-get503-dark-390.png",
+      "note": "Same confirmed write followed by failed read. Flutter uses real ProfileScreen/ProfileNotifier with controlled Dio; web writes reach isolated PostgreSQL, with read503 controlled explicitly. Flutter generic load-error text and web status-specific copy remain distinct. No signature upload/image/storage validation, pixel parity or native-device claim."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "status": 503,
+      "flutter": "flutter-app_admin-saved-get503-light-390.png",
+      "next": "next-app_admin-saved-get503-light-390.png",
+      "note": "Same confirmed write followed by failed read. Flutter uses real ProfileScreen/ProfileNotifier with controlled Dio; web writes reach isolated PostgreSQL, with read503 controlled explicitly. Flutter generic load-error text and web status-specific copy remain distinct. No signature upload/image/storage validation, pixel parity or native-device claim."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "status": 503,
+      "flutter": "flutter-app_admin-saved-get503-dark-390.png",
+      "next": "next-app_admin-saved-get503-dark-390.png",
+      "note": "Same confirmed write followed by failed read. Flutter uses real ProfileScreen/ProfileNotifier with controlled Dio; web writes reach isolated PostgreSQL, with read503 controlled explicitly. Flutter generic load-error text and web status-specific copy remain distinct. No signature upload/image/storage validation, pixel parity or native-device claim."
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 import uuid
 from datetime import datetime
+from typing import Literal
 
 from app.common.enums import ConversationStatus
 from pydantic import BaseModel, Field
@@ -12,6 +13,11 @@ class ConversationUserResponse(BaseModel):
     email: str
     name: str | None = None
     role: str
+
+
+class RecipientSearchRequest(BaseModel):
+    target: Literal["admins", "students"]
+    search: str = Field(min_length=2, max_length=100)
 
 
 class CommunicationMessageResponse(BaseModel):

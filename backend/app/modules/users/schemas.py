@@ -48,6 +48,8 @@ class ProfileUpdateRequest(BaseModel):
     eps_affiliation: str | None = Field(None, max_length=150)
     emergency_contact_name: str | None = Field(None, max_length=150)
     emergency_contact_phone: str | None = Field(None, max_length=20)
+    # Accepted so self-service attempts can be explicitly denied with HTTP 403.
+    sex: Gender | None = None
     program: str | None = Field(None, max_length=150)
     campus: str | None = Field(None, max_length=150)
     semester: int | None = Field(None, ge=1, le=20)

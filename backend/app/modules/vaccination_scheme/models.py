@@ -6,8 +6,19 @@ from typing import TYPE_CHECKING
 
 from app.common.enums import DoseStatus, VaccineStatus
 from app.db.base import Base, TimestampMixin, UUIDMixin
-from sqlalchemy import Date, DateTime, Enum, ForeignKey, Integer, String, Text, UniqueConstraint
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Date,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+)
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
@@ -51,6 +62,10 @@ class StudentVaccine(Base, UUIDMixin, TimestampMixin):
         nullable=True,
     )
 
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, server_default="true", nullable=False
+    )
+
     # ── Relationships ─────────────────────────────────────────────────
     user: Mapped["User"] = relationship(
         back_populates="student_vaccines",
@@ -63,6 +78,7 @@ class StudentVaccine(Base, UUIDMixin, TimestampMixin):
     )
     doses: Mapped[list["StudentVaccineDose"]] = relationship(
         back_populates="student_vaccine",
+        primaryjoin="and_(StudentVaccine.id == StudentVaccineDose.student_vaccine_id, StudentVaccineDose.is_active == True)",
         cascade="all, delete-orphan",
         order_by="StudentVaccineDose.dose_number",
         lazy="selectin",
@@ -112,10 +128,33 @@ class StudentVaccineDose(Base, UUIDMixin, TimestampMixin):
         nullable=True,
     )
 
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, server_default="true", nullable=False
+    )
+
     # ── Relationships ─────────────────────────────────────────────────
     student_vaccine: Mapped["StudentVaccine"] = relationship(back_populates="doses")
     dose_config: Mapped["VaccineDoseConfig"] = relationship(lazy="joined")
     reviewer: Mapped["User | None"] = relationship(
         foreign_keys=[reviewed_by],
         lazy="joined",
+    )
+
+
+class StudentSchemeVersion(Base, UUIDMixin, TimestampMixin):
+    """Append-only snapshot of a student's scheme at a reconciliation boundary."""
+
+    __tablename__ = "student_scheme_versions"
+    __table_args__ = (
+        UniqueConstraint("user_id", "version_number", name="uq_student_scheme_version_number"),
+    )
+
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    version_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    reason: Mapped[str] = mapped_column(String(80), nullable=False)
+    snapshot: Mapped[dict] = mapped_column(JSONB().with_variant(JSON(), "sqlite"), nullable=False)
+    created_by: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )

@@ -1,5 +1,7 @@
 import unittest
+from pathlib import Path
 
+from app.core.config import Settings
 from app.core.security import (
     create_access_token,
     create_refresh_token,
@@ -8,6 +10,7 @@ from app.core.security import (
     hash_password,
     verify_password,
 )
+from pydantic import ValidationError
 
 
 class SecurityTests(unittest.TestCase):
@@ -26,6 +29,27 @@ class SecurityTests(unittest.TestCase):
         self.assertIsNone(decode_refresh_token(access))
         self.assertIsNotNone(decode_refresh_token(refresh))
         self.assertIsNone(decode_access_token(refresh))
+
+    def test_env_example_uses_distinct_marked_jwt_placeholders(self) -> None:
+        example_path = Path(__file__).resolve().parents[1] / ".env.example"
+        values = {}
+        for line in example_path.read_text().splitlines():
+            key, separator, value = line.partition("=")
+            if separator and key in {"SECRET_KEY", "REFRESH_SECRET_KEY"}:
+                values[key] = value
+
+        self.assertEqual(set(values), {"SECRET_KEY", "REFRESH_SECRET_KEY"})
+        self.assertNotEqual(values["SECRET_KEY"], values["REFRESH_SECRET_KEY"])
+        self.assertTrue(all(value.startswith("change-me-") for value in values.values()))
+
+        with self.assertRaises(ValidationError):
+            Settings(
+                _env_file=None,
+                DATABASE_URL="sqlite+aiosqlite:///:memory:",
+                SECRET_KEY=values["SECRET_KEY"],
+                REFRESH_SECRET_KEY=values["REFRESH_SECRET_KEY"],
+                DEBUG=False,
+            )
 
 
 if __name__ == "__main__":

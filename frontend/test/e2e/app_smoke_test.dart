@@ -6,6 +6,8 @@
 /// real devices via `flutter test integration_test/`.
 library;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,10 +19,27 @@ import 'package:immuno_clinic_app/main.dart';
 
 class _FakeAuthNotifier extends StateNotifier<AuthState>
     implements AuthNotifier {
-  _FakeAuthNotifier() : super(const AuthState());
+  _FakeAuthNotifier({
+    Future<void> Function()? onCheckSession,
+    this.loadingWhileChecking = false,
+  }) : _onCheckSession = onCheckSession ?? (() async {}),
+       super(const AuthState());
+
+  final Future<void> Function() _onCheckSession;
+  final bool loadingWhileChecking;
+  int cancelCalls = 0;
 
   @override
-  Future<void> checkSession() async {}
+  Future<void> checkSession() {
+    if (loadingWhileChecking) state = state.copyWith(isLoading: true);
+    return _onCheckSession();
+  }
+
+  @override
+  void cancelPendingSessionRestore() {
+    cancelCalls++;
+    state = const AuthState();
+  }
 
   @override
   Future<void> login(String email, String password) async {}
@@ -33,8 +52,9 @@ class _FakeAuthNotifier extends StateNotifier<AuthState>
 }
 
 void main() {
-  testWidgets('App boots and shows the login screen for an anonymous user',
-      (tester) async {
+  testWidgets('App boots and shows the login screen for an anonymous user', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
 
@@ -55,6 +75,39 @@ void main() {
     expect(find.text('Contraseña'), findsOneWidget);
 
     // Clean up timers/animations before the test ends.
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('Splash routes to login when session restoration exceeds 5s', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final pendingRestoration = Completer<void>();
+    final notifier = _FakeAuthNotifier(
+      onCheckSession: () => pendingRestoration.future,
+      loadingWhileChecking: true,
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          authStateProvider.overrideWith((ref) => notifier),
+        ],
+        child: const ImmunoClinicApp(),
+      ),
+    );
+
+    expect(find.byType(LinearProgressIndicator), findsOneWidget);
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bienvenido'), findsOneWidget);
+    expect(find.text('Ingresar'), findsOneWidget);
+    expect(find.text('Ingresando'), findsNothing);
+    expect(notifier.cancelCalls, 1);
+    pendingRestoration.complete();
     await tester.pumpWidget(const SizedBox());
   });
 }

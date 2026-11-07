@@ -5,14 +5,23 @@ export interface AuthTokens {
 }
 
 export type Role = "student" | "admin" | "app_admin";
-export type Gender = "male" | "female" | "other";
+export type Gender = "male" | "female";
 export type AppliesTo = "all" | "male" | "female";
-export type DoseType = "standard" | "booster" | "titer" | "annual";
+export type DoseType = "standard" | "booster" | "titer";
 
-export type VaccineStatus = "approved" | "pending" | "denied" | "in_review";
-export type DoseStatus = "approved" | "pending" | "denied" | "in_review";
-export type ConversationStatus = "open" | "closed" | "archived";
-export type EvidenceBatchStatus = "pending" | "in_review" | "approved" | "denied";
+export type VaccineStatus = "approved" | "denied" | "in_review";
+export type DoseStatus = "approved" | "denied" | "in_review";
+export type ReportVaccinationStatus = "approved" | "pending" | "denied" | "in_review";
+export type ConversationStatus = "open" | "closed";
+/** Includes FastAPI's authoritative values and legacy client values during migration. */
+export type EvidenceBatchStatus =
+  | "in_review"
+  | "approved"
+  | "denied"
+  | "uploaded"
+  | "under_review"
+  | "reviewed"
+  | "pending";
 
 export interface Profile {
   id: string;
@@ -71,6 +80,8 @@ export interface StudentDose {
   applied_date: string | null;
   due_date: string | null;
   days_until_due: number | null;
+  is_overdue: boolean | null;
+  is_due_today: boolean | null;
   titer_value: string | null;
   status: DoseStatus;
   admin_notes: string | null;
@@ -95,6 +106,11 @@ export interface SchemeOverview {
   pending_vaccines: number;
   denied_vaccines: number;
   in_review_vaccines: number;
+  is_up_to_date: boolean;
+  is_complete: boolean;
+  is_certifiable: boolean;
+  evaluated_on: string | null;
+  scheme_version: number;
   vaccines: StudentVaccine[];
 }
 
@@ -108,10 +124,24 @@ export interface EvidenceFile {
 
 export interface EvidenceBatch {
   id: string;
+  dose_id?: string | null;
   status: EvidenceBatchStatus;
   notes: string | null;
   created_at: string;
   files: EvidenceFile[];
+}
+
+export interface PageResponse<T> {
+  items: T[];
+  page: number;
+  size?: number;
+  total: number;
+  pages?: number;
+  has_next?: boolean;
+  has_previous?: boolean;
+  /** Legacy aliases retained for older FastAPI deployments. */
+  page_size?: number;
+  total_pages?: number;
 }
 
 export interface NotificationItem {
@@ -158,7 +188,7 @@ export interface CommunicationThread extends CommunicationThreadListItem {
 }
 
 export interface AdminStudentListItem extends User {
-  vaccination_status: "approved" | "pending";
+  vaccination_status: ReportVaccinationStatus;
 }
 
 export interface AdminStudentListResponse {
@@ -167,6 +197,16 @@ export interface AdminStudentListResponse {
   page: number;
   page_size: number;
   total_pages: number;
+  size?: number;
+  pages?: number;
+  has_next?: boolean;
+  has_previous?: boolean;
+}
+
+export interface AcademicOptions {
+  programs: string[];
+  campuses: string[];
+  semesters: number[];
 }
 
 export interface AdminStatistics {

@@ -33,11 +33,13 @@ class ImmunoClinicApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
     ref.listen<AuthState>(authStateProvider, (previous, next) {
       final pushService = ref.read(pushNotificationServiceProvider);
-      if (next.isAuthenticated && previous?.isAuthenticated != true) {
-        unawaited(pushService.registerDevice());
+      if (next.isAuthenticated &&
+          (previous?.isAuthenticated != true ||
+              previous?.userId != next.userId)) {
+        unawaited(pushService.registerDevice().catchError((Object _) {}));
       }
       if (!next.isAuthenticated && previous?.isAuthenticated == true) {
-        unawaited(pushService.unregisterDevice());
+        unawaited(pushService.clearLocal());
       }
     });
 

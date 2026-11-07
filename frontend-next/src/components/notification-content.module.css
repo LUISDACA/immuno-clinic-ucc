@@ -1,0 +1,4 @@
+.content,
+.content :is(h1, [role="alert"], button) {
+  scroll-margin-top: calc(var(--notification-header-height, 5rem) + 1rem);
+}

@@ -105,9 +105,13 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
       await ref.read(adminExportReportProvider)(_semesterFilter);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error exportando: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'No se pudo exportar el reporte. Intenta nuevamente.',
+            ),
+          ),
+        );
       }
     } finally {
       if (mounted) setState(() => _isExporting = false);
@@ -135,6 +139,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
               child: const Icon(Icons.notifications_outlined),
             ),
             onPressed: () => unawaited(_openRoute('/admin/notifications')),
+            tooltip: 'Notificaciones',
           ),
           IconButton(
             icon: Badge(
@@ -261,8 +266,13 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                       child: CircularProgressIndicator(),
                     ),
                   ),
-                  error: (err, stack) =>
-                      Center(child: Text('Error al cargar estadísticas: $err')),
+                  error: (err, stack) => _StatisticsError(
+                    onRetry: statsAsync.isLoading
+                        ? null
+                        : () => ref.invalidate(
+                            adminStatisticsProvider(_semesterFilter),
+                          ),
+                  ),
                   data: (stats) {
                     final total = stats.totalStudents;
                     final active = stats.activeStudents;
@@ -474,10 +484,44 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                     child: CircularProgressIndicator(),
                   ),
                 ),
-                error: (err, stack) =>
-                    Center(child: Text('Error al cargar estadísticas: $err')),
+                error: (err, stack) => _StatisticsError(
+                  onRetry: statsAsync.isLoading
+                      ? null
+                      : () => ref.invalidate(adminStatisticsProvider(null)),
+                ),
                 data: (stats) =>
                     _ChartsSection(stats: stats, showSchemeStatus: false),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StatisticsError extends StatelessWidget {
+  final VoidCallback? onRetry;
+  const _StatisticsError({required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Semantics(
+      liveRegion: true,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const Text('No se pudieron cargar las estadísticas.'),
+              const SizedBox(height: 12),
+              OutlinedButton(
+                onPressed: onRetry,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: colorScheme.onSurface,
+                ),
+                child: const Text('Reintentar'),
               ),
             ],
           ),

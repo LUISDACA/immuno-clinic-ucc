@@ -1,0 +1,44 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "viewport_width": 390,
+  "pixel_equality_claimed": false,
+  "pairs": [
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "status": 403,
+      "scenario": "Read failure hides data/form and offers GET-only retry",
+      "flutter": "flutter-get403-light-390.png",
+      "next": "../admin-recovery/next-get403-light-390.png",
+      "note": "New Flutter initial-read failure vs M02 Next failed refresh of real synthetic PostgreSQL. Native centered text vs web alert and platform shells differ. No real mobile device/HTTP integration or pixel parity assertion."
+    },
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "status": 503,
+      "scenario": "Read failure hides data/form and offers GET-only retry",
+      "flutter": "flutter-get503-light-390.png",
+      "next": "../admin-recovery/next-get503-light-390.png",
+      "note": "New Flutter initial-read failure vs M02 Next failed refresh of real synthetic PostgreSQL. Native centered text vs web alert and platform shells differ. No real mobile device/HTTP integration or pixel parity assertion."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "status": 403,
+      "scenario": "Read failure hides data/form and offers GET-only retry",
+      "flutter": "flutter-get403-dark-390.png",
+      "next": "../admin-recovery/next-get403-dark-390.png",
+      "note": "New Flutter initial-read failure vs M02 Next failed refresh of real synthetic PostgreSQL. Native centered text vs web alert and platform shells differ. No real mobile device/HTTP integration or pixel parity assertion."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "status": 503,
+      "scenario": "Read failure hides data/form and offers GET-only retry",
+      "flutter": "flutter-get503-dark-390.png",
+      "next": "../admin-recovery/next-get503-dark-390.png",
+      "note": "New Flutter initial-read failure vs M02 Next failed refresh of real synthetic PostgreSQL. Native centered text vs web alert and platform shells differ. No real mobile device/HTTP integration or pixel parity assertion."
+    }
+  ]
+}

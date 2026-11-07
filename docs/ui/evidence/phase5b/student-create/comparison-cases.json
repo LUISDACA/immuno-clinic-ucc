@@ -1,0 +1,21 @@
+{
+  "scope": "R02B/S18 create/import controls only; R02 remains PARTIAL",
+  "institutional_data": false,
+  "production_ready": false,
+  "cases": [
+    {
+      "screen": "S18 import preview",
+      "theme": "light",
+      "flutter": "flutter-preview-light-390.png",
+      "next": "next-preview-light-390.png",
+      "note": "Same synthetic single creatable row, CSV calendar date 2000-02-29. Flutter uses controlled Dio; web previews/imports reach isolated PostgreSQL with email disabled. Modal Flutter versus inline web are existing compositions, not pixel parity. File picker/virtual keyboard/reader/device remain UNKNOWN."
+    },
+    {
+      "screen": "S18 import preview",
+      "theme": "dark",
+      "flutter": "flutter-preview-dark-390.png",
+      "next": "next-preview-dark-390.png",
+      "note": "Same synthetic single creatable row, CSV calendar date 2000-02-29. Flutter uses controlled Dio; web previews/imports reach isolated PostgreSQL with email disabled. Modal Flutter versus inline web are existing compositions, not pixel parity. File picker/virtual keyboard/reader/device remain UNKNOWN."
+    }
+  ]
+}

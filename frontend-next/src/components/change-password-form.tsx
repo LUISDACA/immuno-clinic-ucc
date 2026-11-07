@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { accountFormError } from "@/lib/ui/account-form-error";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, KeyRound } from "lucide-react";
-import { isAxiosError } from "axios";
 import { changePassword } from "@/lib/auth/api";
 import { useAuthStore } from "@/lib/auth/store";
 import { isAdminRole } from "@/lib/config";
+import { toast } from "sonner";
 import {
   passwordRequirementsText,
   validateStrongPassword,
@@ -25,12 +26,18 @@ import { PasswordInput } from "@/components/ui/password-input";
 
 export function ChangePasswordForm() {
   const router = useRouter();
-  const { role, mustChangePassword, markPasswordChanged } = useAuthStore();
+  const { role, mustChangePassword, logout } = useAuthStore();
 
   const [current, setCurrent] = useState("");
   const [next, setNext] = useState("");
   const [confirm, setConfirm] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const inFlight = useRef(false);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [errors, setErrors] = useState<{
@@ -51,28 +58,23 @@ export function ChangePasswordForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (inFlight.current) return;
     setError(null);
     if (!validate()) return;
+    inFlight.current = true;
     setSubmitting(true);
     try {
       await changePassword(current, next);
-      markPasswordChanged();
-      setSuccess(true);
+      await logout();
+      toast.success(
+        "Contraseña actualizada. Inicia sesión con tu nueva contraseña.",
+      );
+      if (mounted.current) { router.replace("/login"); setSuccess(true); }
     } catch (err) {
-      if (isAxiosError(err)) {
-        const detail = err.response?.data?.detail;
-        if (typeof detail === "string") {
-          setError(detail);
-        } else if (err.response?.status === 401) {
-          setError("La contraseña actual no es correcta.");
-        } else {
-          setError("Error al cambiar contraseña.");
-        }
-      } else {
-        setError("Error al cambiar contraseña.");
-      }
+      if (mounted.current) setError(accountFormError(err, "change"));
     } finally {
-      setSubmitting(false);
+      inFlight.current = false;
+      if (mounted.current) setSubmitting(false);
     }
   }
 
@@ -121,11 +123,12 @@ export function ChangePasswordForm() {
         {mustChangePassword && (
           <div className="mb-4">
             <Alert tone="warning">
-              Tu contraseña temporal es tu cédula. Debes cambiarla antes de continuar.
+              Usa la contraseña temporal recibida por correo. Debes cambiarla antes de continuar.
             </Alert>
           </div>
         )}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+        <form onSubmit={handleSubmit} aria-busy={submitting} noValidate>
+          <fieldset disabled={submitting} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="current">Contraseña actual</Label>
             <PasswordInput
@@ -134,9 +137,10 @@ export function ChangePasswordForm() {
               value={current}
               onChange={(e) => setCurrent(e.target.value)}
               aria-invalid={!!errors.current}
+              aria-describedby={errors.current ? "current-error" : undefined}
             />
             {errors.current && (
-              <p className="text-xs text-[color:var(--destructive)]">
+              <p id="current-error" className="text-xs text-[color:var(--destructive)]">
                 {errors.current}
               </p>
             )}
@@ -150,12 +154,13 @@ export function ChangePasswordForm() {
               value={next}
               onChange={(e) => setNext(e.target.value)}
               aria-invalid={!!errors.next}
+              aria-describedby={errors.next ? "next-error" : undefined}
             />
             <p className="text-xs text-muted-foreground">
               {passwordRequirementsText}
             </p>
             {errors.next && (
-              <p className="text-xs text-[color:var(--destructive)]">
+              <p id="next-error" className="text-xs text-[color:var(--destructive)]">
                 {errors.next}
               </p>
             )}
@@ -169,9 +174,10 @@ export function ChangePasswordForm() {
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               aria-invalid={!!errors.confirm}
+              aria-describedby={errors.confirm ? "confirm-error" : undefined}
             />
             {errors.confirm && (
-              <p className="text-xs text-[color:var(--destructive)]">
+              <p id="confirm-error" className="text-xs text-[color:var(--destructive)]">
                 {errors.confirm}
               </p>
             )}
@@ -189,6 +195,7 @@ export function ChangePasswordForm() {
               "Cambiar contraseña"
             )}
           </Button>
+          </fieldset>
         </form>
       </CardContent>
     </Card>

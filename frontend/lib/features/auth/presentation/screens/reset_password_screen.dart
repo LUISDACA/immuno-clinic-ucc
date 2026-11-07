@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/error/api_error_message.dart';
+import '../../../../core/error/account_form_error.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/password_rules.dart';
 import '../../data/datasources/auth_remote_ds.dart';
@@ -36,7 +35,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   }
 
   Future<void> _resetPassword() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (_isLoading || _formKey.currentState?.validate() != true) return;
 
     setState(() {
       _isLoading = true;
@@ -46,19 +45,16 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     try {
       final ds = ref.read(authRemoteDataSourceProvider);
       await ds.resetPassword(widget.token, _passwordController.text.trim());
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
         _success = true;
       });
-    } on DioException catch (e) {
+    } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
-        _error = dioErrorMessage(e, fallback: 'Token inválido o expirado.');
-      });
-    } catch (_) {
-      setState(() {
-        _isLoading = false;
-        _error = 'No se pudo restablecer la contraseña.';
+        _error = accountFormError(e, AccountFormOperation.reset);
       });
     }
   }
@@ -147,54 +143,76 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
           ),
           const SizedBox(height: 32),
           if (_error != null) ...[
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.error.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                _error!,
-                style: const TextStyle(color: AppColors.error, fontSize: 13),
+            Semantics(
+              liveRegion: true,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  _error!,
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.error,
+                    fontSize: 13,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 16),
           ],
           TextFormField(
+            enabled: !_isLoading,
             controller: _passwordController,
             obscureText: _obscurePassword,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Nueva contraseña',
               helperText: passwordRequirementsText,
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
+                tooltip: _obscurePassword
+                    ? 'Mostrar contraseña'
+                    : 'Ocultar contraseña',
                 icon: Icon(
                   _obscurePassword
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
                 ),
-                onPressed: () =>
-                    setState(() => _obscurePassword = !_obscurePassword),
+                onPressed: _isLoading
+                    ? null
+                    : () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
               ),
             ),
             validator: validateStrongPassword,
           ),
           const SizedBox(height: 16),
           TextFormField(
+            enabled: !_isLoading,
             controller: _confirmController,
             obscureText: _obscureConfirm,
+            textInputAction: TextInputAction.done,
+            onFieldSubmitted: (_) => _resetPassword(),
             decoration: InputDecoration(
               labelText: 'Confirmar contraseña',
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
+                tooltip: _obscureConfirm
+                    ? 'Mostrar contraseña'
+                    : 'Ocultar contraseña',
                 icon: Icon(
                   _obscureConfirm
                       ? Icons.visibility_off_outlined
                       : Icons.visibility_outlined,
                 ),
-                onPressed: () =>
-                    setState(() => _obscureConfirm = !_obscureConfirm),
+                onPressed: _isLoading
+                    ? null
+                    : () => setState(() => _obscureConfirm = !_obscureConfirm),
               ),
             ),
             validator: (v) {

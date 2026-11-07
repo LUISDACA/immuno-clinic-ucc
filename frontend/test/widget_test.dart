@@ -19,6 +19,9 @@ class MockAuthNotifier extends StateNotifier<AuthState>
   Future<void> checkSession() async {}
 
   @override
+  void cancelPendingSessionRestore() {}
+
+  @override
   Future<void> login(String email, String password) async {}
 
   @override

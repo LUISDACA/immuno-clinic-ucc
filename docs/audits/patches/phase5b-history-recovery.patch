@@ -1,0 +1,150 @@
+--- a/frontend/lib/features/shared/presentation/screens/audit_history_screen.dart
++++ b/frontend/lib/features/shared/presentation/screens/audit_history_screen.dart
+@@ -1,0 +2 @@
++import 'package:dio/dio.dart';
+@@ -24,0 +26 @@
++  Future<void>? _inFlightLoad;
+@@ -32 +34,18 @@
+-  Future<void> _load() async {
++  Future<void> _load() {
++    if (!mounted) return Future.value();
++    if (_inFlightLoad != null) return _inFlightLoad!;
++    final load = _performLoad();
++    _inFlightLoad = load;
++    load.whenComplete(() {
++      if (identical(_inFlightLoad, load)) _inFlightLoad = null;
++    });
++    return load;
++  }
++
++  void _goToPage(int page) {
++    if (!mounted || _loading || _error != null) return;
++    _page = page;
++    _load();
++  }
++
++  Future<void> _performLoad() async {
+@@ -36 +54,0 @@
+-      _error = null;
+@@ -57,0 +76 @@
++        _error = null;
+@@ -63 +82,10 @@
+-        _error = 'No se pudo cargar el historial';
++        final status = e is DioException ? e.response?.statusCode : null;
++        _error = switch (status) {
++          401 => 'Tu sesión expiró. Inicia sesión nuevamente.',
++          403 => 'No tienes permiso para consultar esta información.',
++          404 => 'No se encontró la información solicitada.',
++          429 => 'Demasiadas solicitudes. Espera antes de reintentar.',
++          500 => 'Ocurrió un error en el servidor. Intenta nuevamente.',
++          503 => 'El servicio no está disponible temporalmente.',
++          _ => 'No se pudo cargar el historial',
++        };
+@@ -77,12 +105,21 @@
+-      bottomNavigationBar: SafeArea(
+-        child: Row(
+-          mainAxisAlignment: MainAxisAlignment.center,
+-          children: [
+-            TextButton(
+-              onPressed: !_loading && _metadata?['has_previous'] == true
+-                  ? () {
+-                      _page--;
+-                      _load();
+-                    }
+-                  : null,
+-              child: const Text('Anterior'),
++      bottomNavigationBar: _error != null || _metadata == null
++          ? null
++          : SafeArea(
++              child: Row(
++                mainAxisAlignment: MainAxisAlignment.center,
++                children: [
++                  TextButton(
++                    onPressed: !_loading && _metadata?['has_previous'] == true
++                        ? () => _goToPage(_page - 1)
++                        : null,
++                    child: const Text('Anterior'),
++                  ),
++                  Text('Página $_page de ${_metadata?['total_pages'] ?? 0}'),
++                  TextButton(
++                    onPressed: !_loading && _metadata?['has_next'] == true
++                        ? () => _goToPage(_page + 1)
++                        : null,
++                    child: const Text('Siguiente'),
++                  ),
++                ],
++              ),
+@@ -90,14 +127,25 @@
+-            Text('Página $_page de ${_metadata?['total_pages'] ?? 0}'),
+-            TextButton(
+-              onPressed: !_loading && _metadata?['has_next'] == true
+-                  ? () {
+-                      _page++;
+-                      _load();
+-                    }
+-                  : null,
+-              child: const Text('Siguiente'),
+-            ),
+-          ],
+-        ),
+-      ),
+-      body: _loading
++      body: _error != null
++          ? Center(
++              child: Padding(
++                padding: const EdgeInsets.all(16),
++                child: Column(
++                  mainAxisSize: MainAxisSize.min,
++                  children: [
++                    Semantics(
++                      liveRegion: true,
++                      child: Text(
++                        _error!,
++                        textAlign: TextAlign.center,
++                        style: const TextStyle(color: AppColors.error),
++                      ),
++                    ),
++                    const SizedBox(height: 8),
++                    TextButton(
++                      onPressed: _loading ? null : _load,
++                      child: const Text('Reintentar'),
++                    ),
++                  ],
++                ),
++              ),
++            )
++          : _loading
+@@ -105,11 +152,0 @@
+-          : _error != null
+-          ? Center(
+-              child: Column(
+-                mainAxisSize: MainAxisSize.min,
+-                children: [
+-                  Text(_error!, style: const TextStyle(color: AppColors.error)),
+-                  const SizedBox(height: 8),
+-                  TextButton(onPressed: _load, child: const Text('Reintentar')),
+-                ],
+-              ),
+-            )
+--- a/frontend-next/src/app/student/history/page.tsx
++++ b/frontend-next/src/app/student/history/page.tsx
+@@ -15 +15 @@
+-  const { data, isLoading, error, refetch } = useQuery({
++  const { data, isLoading, isFetching, error, refetch } = useQuery({
+@@ -20 +20 @@
+-  if (error) return <QueryError error={error} retry={refetch} />;
++  if (error) return <QueryError error={error} retrying={isFetching} retry={() => refetch({ cancelRefetch: false })} />;
+@@ -28 +28 @@
+-      <Pagination data={data} page={page} onPage={setPage} refresh={refetch} busy={isLoading} />
++      <Pagination data={data} page={page} onPage={setPage} refresh={refetch} busy={isFetching} />
+--- a/frontend-next/src/app/admin/history/page.tsx
++++ b/frontend-next/src/app/admin/history/page.tsx
+@@ -15 +15 @@
+-  const { data, isLoading, error, refetch } = useQuery({
++  const { data, isLoading, isFetching, error, refetch } = useQuery({
+@@ -20 +20 @@
+-  if (error) return <QueryError error={error} retry={refetch} />;
++  if (error) return <QueryError error={error} retrying={isFetching} retry={() => refetch({ cancelRefetch: false })} />;
+@@ -28 +28 @@
+-      <Pagination data={data} page={page} onPage={setPage} refresh={refetch} busy={isLoading} />
++      <Pagination data={data} page={page} onPage={setPage} refresh={refetch} busy={isFetching} />

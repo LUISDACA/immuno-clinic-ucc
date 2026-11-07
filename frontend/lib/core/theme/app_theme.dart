@@ -69,6 +69,19 @@ class AppColors {
 class AppTheme {
   AppTheme._();
 
+  static final PageTransitionsTheme pageTransitionsTheme = PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: const FadeUpwardsPageTransitionsBuilder(),
+      // Resolve the Cupertino builder through the stable theme API across SDKs.
+      TargetPlatform.iOS:
+          const PageTransitionsTheme().builders[TargetPlatform.iOS]!,
+      TargetPlatform.macOS:
+          const PageTransitionsTheme().builders[TargetPlatform.macOS]!,
+      TargetPlatform.windows: const FadeUpwardsPageTransitionsBuilder(),
+      TargetPlatform.linux: const FadeUpwardsPageTransitionsBuilder(),
+    },
+  );
+
   static ThemeData get lightTheme => _buildTheme(Brightness.light);
 
   static ThemeData get darkTheme => _buildTheme(Brightness.dark);
@@ -256,15 +269,7 @@ class AppTheme {
         textColor: textPrimary,
       ),
       dividerTheme: DividerThemeData(color: divider, thickness: 1),
-      pageTransitionsTheme: const PageTransitionsTheme(
-        builders: {
-          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.windows: FadeUpwardsPageTransitionsBuilder(),
-          TargetPlatform.linux: FadeUpwardsPageTransitionsBuilder(),
-        },
-      ),
+      pageTransitionsTheme: pageTransitionsTheme,
     );
   }
 }

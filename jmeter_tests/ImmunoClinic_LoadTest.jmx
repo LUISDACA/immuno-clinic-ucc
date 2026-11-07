@@ -7,17 +7,17 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="BASE_URL" elementType="Argument">
             <stringProp name="Argument.name">BASE_URL</stringProp>
-            <stringProp name="Argument.value">immunoclinic-backend.onrender.com</stringProp>
+            <stringProp name="Argument.value">${__P(BASE_URL,localhost)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PORT" elementType="Argument">
             <stringProp name="Argument.name">PORT</stringProp>
-            <stringProp name="Argument.value">443</stringProp>
+            <stringProp name="Argument.value">${__P(PORT,8000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PROTOCOL" elementType="Argument">
             <stringProp name="Argument.name">PROTOCOL</stringProp>
-            <stringProp name="Argument.value">https</stringProp>
+            <stringProp name="Argument.value">${__P(PROTOCOL,http)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -106,7 +106,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;email&quot;:&quot;miguel@ucc.edu.co&quot;,&quot;password&quot;:&quot;021021migueL.&quot;}</stringProp>
+                <stringProp name="Argument.value">{&quot;email&quot;:&quot;${__P(ADMIN_EMAIL,admin.load@example.invalid)}&quot;,&quot;password&quot;:&quot;${__P(ADMIN_PASSWORD,)}&quot;}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -165,7 +165,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;email&quot;:&quot;miguel@ucc.edu.co&quot;,&quot;password&quot;:&quot;021021migueL.&quot;}</stringProp>
+                <stringProp name="Argument.value">{&quot;email&quot;:&quot;${__P(ADMIN_EMAIL,admin.load@example.invalid)}&quot;,&quot;password&quot;:&quot;${__P(ADMIN_PASSWORD,)}&quot;}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -287,7 +287,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;email&quot;:&quot;migueldavidcampo@gmail.com&quot;,&quot;password&quot;:&quot;021021migueL.&quot;}</stringProp>
+                <stringProp name="Argument.value">{&quot;email&quot;:&quot;${__P(STUDENT_EMAIL,student.load@example.invalid)}&quot;,&quot;password&quot;:&quot;${__P(STUDENT_PASSWORD,)}&quot;}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -397,7 +397,7 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">{&quot;email&quot;:&quot;test${__threadNum}@ucc.edu.co&quot;}</stringProp>
+                <stringProp name="Argument.value">{&quot;email&quot;:&quot;student.load${__threadNum}@example.invalid&quot;}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>

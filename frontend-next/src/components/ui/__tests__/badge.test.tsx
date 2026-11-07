@@ -12,13 +12,13 @@ describe("Badge", () => {
   it("applies the success variant classes", () => {
     render(<Badge variant="success">Activa</Badge>);
     const el = screen.getByText("Activa");
-    expect(el.className).toMatch(/emerald/);
+    expect(el.className).toContain('var(--success-text)');
   });
 
   it("applies the destructive variant classes", () => {
     render(<Badge variant="destructive">Rechazada</Badge>);
     const el = screen.getByText("Rechazada");
-    expect(el.className).toMatch(/red-/);
+    expect(el.className).toContain('var(--destructive-text)');
   });
 
   it("uses the default variant when none is provided", () => {

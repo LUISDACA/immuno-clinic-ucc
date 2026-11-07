@@ -5,7 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from app.core.config import settings
 
 engine_options = {
-    "echo": settings.DEBUG,
+    # SQL statements and bound values may contain personal or clinical data.
+    "echo": False,
+    "hide_parameters": True,
     "pool_pre_ping": True,
 }
 if not settings.DATABASE_URL.startswith("sqlite"):

@@ -1,0 +1,22 @@
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { afterEach, expect, it, vi } from 'vitest';
+import { AxiosError } from 'axios';
+import Profile from '@/app/admin/profile/page';
+import { useAuthStore } from '@/lib/auth/store';
+import { getActiveAdminSignatureImage } from '@/lib/api/users';
+vi.mock('@/lib/api/users',()=>({getMe:vi.fn().mockResolvedValue({id:'admin',email:'synthetic@example.invalid',profile:null}),getActiveAdminSignature:vi.fn().mockResolvedValue({id:'signature'}),getActiveAdminSignatureImage:vi.fn(),uploadAdminSignature:vi.fn(),updateMyProfile:vi.fn()}));
+afterEach(()=>{cleanup();vi.unstubAllGlobals();});
+it('distinguishes unavailable private preview from missing signature and supports retry',async()=>{
+ useAuthStore.setState({role:'admin'});
+ vi.mocked(getActiveAdminSignatureImage).mockRejectedValueOnce(new AxiosError('unavailable',undefined,undefined,undefined,{status:503} as never)).mockResolvedValueOnce(new Blob(['synthetic']));
+ const createObjectURL=vi.fn().mockReturnValue('blob:synthetic');const revokeObjectURL=vi.fn();
+ Object.defineProperty(URL,'createObjectURL',{value:createObjectURL,configurable:true});Object.defineProperty(URL,'revokeObjectURL',{value:revokeObjectURL,configurable:true});
+ const view=render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}><Profile /></QueryClientProvider>);
+ await screen.findByText('El servicio no está disponible temporalmente.');
+ expect(screen.queryByText('No hay una firma activa.')).not.toBeInTheDocument();
+ fireEvent.click(screen.getByText('Reintentar'));
+ await waitFor(()=>expect(screen.getByAltText('Vista previa de la firma activa')).toHaveAttribute('src','blob:synthetic'));
+ expect(getActiveAdminSignatureImage).toHaveBeenCalledTimes(2);
+ view.unmount();expect(revokeObjectURL).toHaveBeenCalledWith('blob:synthetic');
+});

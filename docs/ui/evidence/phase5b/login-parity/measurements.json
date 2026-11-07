@@ -1,0 +1,65 @@
+{
+  "syntheticOnly": true,
+  "credentialsUsed": false,
+  "apiMutations": 0,
+  "sessionRestorationResponses": 2,
+  "login": {
+    "viewport": {
+      "width": 393,
+      "height": 873,
+      "scrollWidth": 393
+    },
+    "card": {
+      "x": 24,
+      "y": 179.5,
+      "width": 345,
+      "height": 514
+    },
+    "cardRadius": "24px",
+    "contentMaxWidth": "460px",
+    "externalBrandDisplay": "none",
+    "logo": {
+      "x": 137.5,
+      "y": 208.5,
+      "width": 118,
+      "height": 118
+    },
+    "email": {
+      "x": 53,
+      "y": 440.5,
+      "width": 287,
+      "height": 52
+    },
+    "password": {
+      "x": 53,
+      "y": 508.5,
+      "width": 287,
+      "height": 52
+    },
+    "emailLabel": {
+      "x": 93,
+      "y": 459.5,
+      "width": 132.78125,
+      "height": 14
+    },
+    "submit": {
+      "x": 53,
+      "y": 612.5,
+      "width": 287,
+      "height": 52
+    },
+    "sessionErrorVisible": false
+  },
+  "floatedLabel": {
+    "top": "0px",
+    "fontSize": "12px",
+    "populated": true,
+    "transitionDuration": "0.12s, 0.12s, 0.12s"
+  },
+  "recovery": {
+    "brandDisplay": "flex",
+    "contentMaxWidth": "448px",
+    "scrollWidth": 393,
+    "viewportWidth": 393
+  }
+}

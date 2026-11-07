@@ -1,8 +1,11 @@
 "use client";
+import { QueryError } from "@/components/query-error";
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense, useId, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { adminDashboardSemester, adminDashboardUrl } from "@/lib/ui/admin-dashboard-location";
 import { toast } from "sonner";
 import {
   ShieldCheck,
@@ -19,9 +22,11 @@ import {
   Syringe,
   Settings2,
   Download,
+  RefreshCw,
 } from "lucide-react";
 import {
   downloadStudentsExport,
+  getAcademicOptions,
   getStatistics,
 } from "@/lib/api/admin";
 import { useAuthStore } from "@/lib/auth/store";
@@ -37,30 +42,35 @@ import {
 } from "@/components/ui/card";
 import {
   ActionCard,
-  DataState,
   PageSurface,
-  RetryButton,
   SectionHeader,
   SkeletonCard,
 } from "@/components/ui/page";
 import { Select } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { UccHeroPanel, UccLogo } from "@/components/brand";
+import styles from "./admin-dashboard.module.css";
 
 export default function AdminDashboard() {
   const { role } = useAuthStore();
   if (isAppAdminRole(role)) return <AppAdminDashboard />;
-  return <RegularAdminDashboard />;
+  return (
+    <Suspense fallback={<p>Cargando…</p>}>
+      <RegularAdminDashboard />
+    </Suspense>
+  );
 }
 
 // ── Admin de aplicación ───────────────────────────────────────────────
 
 function AppAdminDashboard() {
   const { email } = useAuthStore();
-  const { data, isError, isLoading, refetch } = useQuery({
+  const { data, error, isError, isLoading, isFetching, refetch } = useQuery({
     queryKey: ["admin", "stats", "all"],
     queryFn: () => getStatistics(),
   });
+
+  const refresh = () => refetch({ cancelRefetch: false });
 
   const tiles = [
     {
@@ -87,18 +97,20 @@ function AppAdminDashboard() {
   ];
 
   return (
-    <PageSurface>
-      <UccHeroPanel
-        eyebrow="Administrador de aplicación"
-        title="Panel global"
-        subtitle={email ?? ""}
-        icon={<Settings2 className="h-6 w-6 text-white" />}
-        trailing={<UccLogo size={64} />}
-      />
+    <PageSurface className={styles.dashboard}>
+      <div className={styles.hero}>
+        <UccHeroPanel
+          eyebrow="Administrador de aplicación"
+          title="Panel global"
+          subtitle={email ?? ""}
+          icon={<Settings2 className="h-6 w-6 text-white" />}
+          trailing={<UccLogo size={64} />}
+        />
+      </div>
 
       <div>
         <SectionHeader title="Gestion global" />
-        <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={`mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 ${styles.actions}`}>
           {tiles.map((tile) => (
             <ActionCard
               key={tile.href}
@@ -112,8 +124,11 @@ function AppAdminDashboard() {
         </div>
       </div>
 
-      <div>
-        <SectionHeader title="Analisis global" />
+      <section aria-label="Análisis global" aria-busy={isFetching} className={styles.statistics}>
+        <SectionHeader
+          title="Analisis global"
+          actions={<StatisticsRefresh fetching={isFetching} refresh={refresh} />}
+        />
         {isLoading ? (
           <div className="mt-3 grid gap-4 lg:grid-cols-3">
             <SkeletonCard rows={4} />
@@ -121,21 +136,15 @@ function AppAdminDashboard() {
             <SkeletonCard rows={4} />
           </div>
         ) : isError ? (
-          <DataState
-            className="mt-3"
-            type="error"
-            title="No se pudo cargar el analisis"
-            description="Revisa la conexion con el servidor e intenta de nuevo."
-            action={<RetryButton onClick={() => refetch()} />}
-          />
+          <QueryError error={error} retry={refresh} retrying={isFetching} />
         ) : data ? (
           <div className="mt-3 grid gap-4 lg:grid-cols-3">
-            <VaccineComplianceRanking stats={data} compact />
+            <VaccineComplianceRanking stats={data} />
             <Distribution title="Por sede" map={data.by_campus} />
             <Distribution title="Por programa" map={data.by_program} />
           </div>
         ) : null}
-      </div>
+      </section>
     </PageSurface>
   );
 }
@@ -144,13 +153,24 @@ function AppAdminDashboard() {
 
 function RegularAdminDashboard() {
   const { email } = useAuthStore();
-  const [semester, setSemester] = useState<string>("");
+  const params = useSearchParams();
+  const router = useRouter();
+  const academicOptions = useQuery({
+    queryKey: ["academic-options"],
+    queryFn: getAcademicOptions,
+  });
+  const semesters = academicOptions.data?.semesters ?? [];
+  const semester = adminDashboardSemester(params, semesters);
+  const setSemester = (value: string) => router.push(adminDashboardUrl(value, semesters), { scroll: false });
   const [exporting, setExporting] = useState(false);
 
-  const { data, isError, isLoading, refetch } = useQuery({
+  const { data, error, isError, isLoading, isFetching, refetch } = useQuery({
     queryKey: ["admin", "stats", semester],
     queryFn: () => getStatistics(semester ? Number(semester) : undefined),
+    enabled: academicOptions.isSuccess,
   });
+
+  const refresh = () => refetch({ cancelRefetch: false });
 
   async function onExport() {
     setExporting(true);
@@ -177,18 +197,21 @@ function RegularAdminDashboard() {
   }
 
   return (
-    <PageSurface>
-      <UccHeroPanel
-        eyebrow="Administración UCC"
-        title="Panel administrativo"
-        subtitle={email ?? ""}
-        icon={<ShieldCheck className="h-6 w-6 text-white" />}
-        trailing={<UccLogo size={64} />}
-      />
+    <PageSurface className={styles.dashboard}>
+      <div className={styles.hero}>
+        <UccHeroPanel
+          eyebrow="Administración UCC"
+          title="Panel administrativo"
+          subtitle={email ?? ""}
+          icon={<ShieldCheck className="h-6 w-6 text-white" />}
+          trailing={<UccLogo size={64} />}
+        />
+      </div>
 
-      <div>
+      <section aria-label="Estadísticas" aria-busy={isFetching} className={styles.statistics}>
         <SectionHeader title="Estadisticas" actions={
-            <div className="flex items-end gap-2">
+            <div className="flex flex-wrap items-end gap-2">
+              <StatisticsRefresh fetching={!academicOptions.isSuccess || isFetching} refresh={refresh} />
               <div className="flex flex-col gap-1">
                 <Label htmlFor="semester" className="text-xs">
                   Semestre
@@ -200,7 +223,7 @@ function RegularAdminDashboard() {
                   className="h-9"
                 >
                   <option value="">Todos</option>
-                  {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => (
+                  {semesters.map((n) => (
                     <option key={n} value={n}>
                       {n}
                     </option>
@@ -210,8 +233,10 @@ function RegularAdminDashboard() {
               <Button
                 variant="outline"
                 size="sm"
+                aria-label="Exportar reporte CSV"
+                title="Exportar reporte CSV"
                 onClick={onExport}
-                disabled={exporting}
+                disabled={exporting || !academicOptions.isSuccess}
               >
                 <Download className="h-4 w-4" />
                 {exporting ? "Exportando…" : "CSV"}
@@ -219,61 +244,57 @@ function RegularAdminDashboard() {
             </div>
           }
         />
-        {isError ? (
-          <DataState
-            className="mt-3"
-            type="error"
-            title="No se pudieron cargar las estadisticas"
-            description="Revisa la conexion con el servidor e intenta de nuevo."
-            action={<RetryButton onClick={() => refetch()} />}
-          />
+        {academicOptions.isError ? (
+          <QueryError error={academicOptions.error} retry={() => academicOptions.refetch({ cancelRefetch: false })} retrying={academicOptions.isFetching} />
+        ) : isError ? (
+          <QueryError error={error} retry={refresh} retrying={isFetching} />
         ) : (
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          <StatTile
-            label="Totales"
-            value={data?.total_students}
-            loading={isLoading}
-            href="/admin/students"
-            icon={<Users className="h-5 w-5" />}
-            color="var(--primary)"
-          />
-          <StatTile
-            label="Activos"
-            value={data?.active_students}
-            loading={isLoading}
-            href="/admin/students?active=true"
-            icon={<UserCheck className="h-5 w-5" />}
-            color="var(--success)"
-          />
-          <StatTile
-            label="Desactivados"
-            value={data?.inactive_students}
-            loading={isLoading}
-            href="/admin/students?active=false"
-            icon={<UserMinus className="h-5 w-5" />}
-            color="var(--destructive)"
-          />
-          <StatTile
-            label="Esquema 100%"
-            value={data?.vaccination_status.approved}
-            loading={isLoading}
-            href="/admin/students?scheme=approved"
-            icon={<BadgeCheck className="h-5 w-5" />}
-            color="var(--accent)"
-          />
-          <StatTile
-            label="Pendientes"
-            value={data?.vaccination_status.pending}
-            loading={isLoading}
-            href="/admin/students?scheme=pending"
-            icon={<Clock4 className="h-5 w-5" />}
-            color="var(--warning)"
-          />
-        </div>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <StatTile
+              label="Totales"
+              value={data?.total_students}
+              loading={isLoading}
+              href={`/admin/students${semester ? `?semester=${semester}` : ""}`}
+              icon={<Users className="h-5 w-5" />}
+              color="var(--primary)"
+            />
+            <StatTile
+              label="Activos"
+              value={data?.active_students}
+              loading={isLoading}
+              href={`/admin/students?active=true${semester ? `&semester=${semester}` : ""}`}
+              icon={<UserCheck className="h-5 w-5" />}
+              color="var(--success)"
+            />
+            <StatTile
+              label="Desactivados"
+              value={data?.inactive_students}
+              loading={isLoading}
+              href={`/admin/students?active=false${semester ? `&semester=${semester}` : ""}`}
+              icon={<UserMinus className="h-5 w-5" />}
+              color="var(--destructive)"
+            />
+            <StatTile
+              label="Esquema 100%"
+              value={data?.vaccination_status.approved}
+              loading={isLoading}
+              href={`/admin/students?scheme=approved${semester ? `&semester=${semester}` : ""}`}
+              icon={<BadgeCheck className="h-5 w-5" />}
+              color="var(--accent)"
+            />
+            <StatTile
+              label="Pendientes"
+              value={data?.vaccination_status.pending}
+              loading={isLoading}
+              href={`/admin/students?scheme=pending${semester ? `&semester=${semester}` : ""}`}
+              icon={<Clock4 className="h-5 w-5" />}
+              color="var(--warning)"
+            />
+          </div>
         )}
-      </div>
+      </section>
 
-      {isLoading ? (
+      {academicOptions.isError ? null : isLoading ? (
         <div>
           <SectionHeader title="Analisis grafico" />
           <div className="mt-3 grid gap-4 lg:grid-cols-2">
@@ -281,7 +302,7 @@ function RegularAdminDashboard() {
             <SkeletonCard rows={4} />
           </div>
         </div>
-      ) : data && (
+      ) : data && !isError && !academicOptions.isError && (
         <div>
           <SectionHeader title="Analisis grafico" />
           <div className="mt-3">
@@ -292,7 +313,7 @@ function RegularAdminDashboard() {
 
       <div>
         <SectionHeader title="Gestion" />
-        <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={`mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 ${styles.actions}`}>
           <TileCard
             href="/admin/students/create"
             title="Crear estudiante"
@@ -338,6 +359,25 @@ function RegularAdminDashboard() {
         </div>
       </div>
     </PageSurface>
+  );
+}
+
+function StatisticsRefresh({ fetching, refresh }: {
+  fetching: boolean;
+  refresh: () => unknown;
+}) {
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      size="icon"
+      aria-label="Actualizar estadísticas"
+      title="Actualizar estadísticas"
+      disabled={fetching}
+      onClick={() => { void refresh(); }}
+    >
+      <RefreshCw aria-hidden="true" className="h-4 w-4" />
+    </Button>
   );
 }
 
@@ -399,7 +439,7 @@ function StatTile({
             {icon}
           </span>
           <div className="flex flex-col">
-            <span className="text-xs uppercase tracking-wide text-muted-foreground">
+            <span className={`text-xs uppercase tracking-wide text-muted-foreground ${styles.statLabel}`}>
               {label}
             </span>
             <span className="text-2xl font-extrabold">
@@ -493,24 +533,25 @@ function SchemeBreakdown({ stats }: { stats: AdminStatistics }) {
 
 function VaccineComplianceRanking({
   stats,
-  compact,
 }: {
   stats: AdminStatistics;
-  compact?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const vaccines = [...(stats.vaccine_compliance ?? [])].sort((a, b) => {
-    const aPct = a.total > 0 ? a.up_to_date / a.total : 0;
-    const bPct = b.total > 0 ? b.up_to_date / b.total : 0;
-    return bPct - aPct;
-  });
-  const limit = compact ? 4 : 3;
+  const listId = useId();
+  const vaccines = [...(stats.vaccine_compliance ?? [])]
+    .filter((vaccine) => vaccine.total > 0)
+    .sort((a, b) => {
+      const aPct = a.total > 0 ? a.up_to_date / a.total : 0;
+      const bPct = b.total > 0 ? b.up_to_date / b.total : 0;
+      return bPct - aPct || b.total - a.total;
+    });
+  const limit = 3;
   const visible = expanded ? vaccines : vaccines.slice(0, limit);
   const canExpand = vaccines.length > limit;
 
   return (
     <Card>
-      <CardHeader className="flex-row items-start justify-between gap-3">
+      <CardHeader className={`flex-row items-start justify-between gap-3 ${styles.rankingHeader}`}>
         <div>
           <CardTitle className="text-sm">Vacunas al dia vs pendientes</CardTitle>
           <CardDescription>Resumen por cumplimiento.</CardDescription>
@@ -520,6 +561,8 @@ function VaccineComplianceRanking({
             type="button"
             variant="ghost"
             size="sm"
+            aria-expanded={expanded}
+            aria-controls={listId}
             onClick={() => setExpanded((value) => !value)}
           >
             {expanded ? "Ver menos" : "Ver mas"}
@@ -530,7 +573,7 @@ function VaccineComplianceRanking({
         {visible.length === 0 ? (
           <p className="text-sm text-muted-foreground">Sin datos.</p>
         ) : (
-          <ul className="flex flex-col gap-2.5 text-sm">
+          <ul id={listId} className="flex flex-col gap-2.5 text-sm">
             {visible.map((vaccine) => {
               const pending =
                 vaccine.pending + vaccine.denied + vaccine.in_review;

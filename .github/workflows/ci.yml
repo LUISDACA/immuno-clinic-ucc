@@ -6,6 +6,18 @@ on:
   pull_request:
 
 jobs:
+  container-images:
+    name: Container image build (no push)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build FastAPI image
+        run: docker build --tag immunoclinic-api:ci backend
+
+      - name: Build Next.js BFF image
+        run: docker build --tag immunoclinic-web:ci frontend-next
+
   backend:
     name: Backend (FastAPI + pytest + ruff)
     runs-on: ubuntu-latest

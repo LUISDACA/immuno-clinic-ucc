@@ -5,7 +5,13 @@
 
 from app.db.base import Base  # noqa: F401
 from app.modules.audit.models import AuditLog  # noqa: F401
-from app.modules.auth.models import PasswordResetToken  # noqa: F401
+from app.modules.auth.models import PasswordResetToken, RateLimitBucket  # noqa: F401
+from app.modules.certificates.models import (  # noqa: F401
+    CertificateEmission,
+    CertificateSignature,
+    CertificateSignerAssignment,
+    CertificateSignerAssignmentConflict,
+)
 from app.modules.communications.models import (  # noqa: F401
     CommunicationMessage,
     CommunicationThread,
@@ -15,5 +21,9 @@ from app.modules.notifications.models import DeviceToken, Notification  # noqa: 
 
 # Import every model module to register them with SQLAlchemy
 from app.modules.users.models import Profile, User  # noqa: F401
-from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose  # noqa: F401
+from app.modules.vaccination_scheme.models import (  # noqa: F401
+    StudentSchemeVersion,
+    StudentVaccine,
+    StudentVaccineDose,
+)
 from app.modules.vaccines.models import Vaccine, VaccineDoseConfig, VaccineRule  # noqa: F401

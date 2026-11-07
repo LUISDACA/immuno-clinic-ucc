@@ -1,0 +1,86 @@
+--- a/frontend-next/src/app/admin/admins/page.tsx
++++ b/frontend-next/src/app/admin/admins/page.tsx
+@@ -35 +35 @@
+-  const { data, isLoading, error, refetch } = useQuery({
++  const { data, isLoading, isFetching, error, refetch } = useQuery({
+@@ -41,0 +42,20 @@
++  const [confirmedWrite, setConfirmedWrite] = useState<{ message: string; readVersion: number } | null>(null);
++  const [writeError, setWriteError] = useState<string | null>(null);
++  const confirmedMessage = confirmedWrite?.readVersion === queryClient.getQueryState(["admins"])?.dataUpdateCount
++    ? confirmedWrite?.message : null;
++  const retry = () => refetch({ cancelRefetch: false });
++
++  function beginWrite() {
++    setConfirmedWrite(null);
++    setWriteError(null);
++  }
++  function notifyWrite(success: string, confirmedButUnread: string) {
++    const read = queryClient.getQueryState(["admins"]);
++    if (read?.status === "error") {
++      setConfirmedWrite({ message: confirmedButUnread, readVersion: read.dataUpdateCount });
++      toast.warning(confirmedButUnread);
++    } else {
++      setConfirmedWrite(null);
++      toast.success(success);
++    }
++  }
+@@ -45,0 +66 @@
++    onMutate: beginWrite,
+@@ -47 +68 @@
+-      toast.success("Administrador creado");
++      notifyWrite("Administrador creado", "El administrador se creó, pero no se pudo actualizar la lista.");
+@@ -51 +72 @@
+-    onError: () => toast.error("No se pudo crear"),
++    onError: () => { setWriteError("No se pudo crear el administrador."); toast.error("No se pudo crear"); },
+@@ -56,0 +78 @@
++    onMutate: beginWrite,
+@@ -58,2 +80 @@
+-      toast.success("Administrador eliminado");
+-      queryClient.invalidateQueries({ queryKey: ["admins"] });
++      notifyWrite("Administrador eliminado", "El administrador se eliminó, pero no se pudo actualizar la lista.");
+@@ -61 +82 @@
+-    onError: () => toast.error("No se pudo eliminar"),
++    onError: () => { setWriteError("No se pudo eliminar el administrador."); toast.error("No se pudo eliminar"); },
+@@ -62,0 +84,2 @@
++  const busy = isFetching || create.isPending || remove.isPending;
++  const readable = !error && !isLoading && data !== undefined;
+@@ -73,3 +96,8 @@
+-        <Button disabled={create.isPending || remove.isPending} onClick={() => setShowForm((s) => !s)}>
+-          {showForm ? "Cancelar" : "Crear admin"}
+-        </Button>
++        {readable && (
++          <div className="flex flex-wrap justify-end gap-2">
++            <Button variant="outline" disabled={busy} onClick={retry}>Actualizar lista</Button>
++            <Button disabled={busy} onClick={() => { setWriteError(null); setShowForm((s) => !s); }}>
++              {showForm ? "Cancelar" : "Crear admin"}
++            </Button>
++          </div>
++        )}
+@@ -78 +106,3 @@
+-      {showForm && (
++      {error && confirmedMessage && <p role="status">{confirmedMessage}</p>}
++      {writeError && <p role="status">{writeError}</p>}
++      {showForm && readable && (
+@@ -88 +118 @@
+-                if (create.isPending || remove.isPending || !event.currentTarget.reportValidity()) return;
++                if (busy || !readable || !event.currentTarget.reportValidity()) return;
+@@ -102 +132 @@
+-              <fieldset disabled={create.isPending || remove.isPending} className="grid gap-4 sm:grid-cols-2">
++              <fieldset disabled={busy} className="grid gap-4 sm:grid-cols-2">
+@@ -151 +181 @@
+-                  <Button type="submit" disabled={create.isPending || remove.isPending}>
++                  <Button type="submit" disabled={busy}>
+@@ -161,4 +191,6 @@
+-      {isLoading ? (
+-        <p className="text-sm text-muted-foreground">Cargando…</p>
+-      ) : error ? (
+-        <QueryError error={error} retry={refetch} />
++      {error ? (
++        <QueryError error={error} retry={retry} retrying={isFetching} />
++      ) : isLoading ? (
++        <p role="status" className="text-sm text-muted-foreground">Cargando…</p>
++      ) : data?.length === 0 ? (
++        <p className="text-sm text-muted-foreground">No hay administradores creados</p>
+@@ -202 +234 @@
+-                            disabled={create.isPending || remove.isPending}
++                            disabled={busy}

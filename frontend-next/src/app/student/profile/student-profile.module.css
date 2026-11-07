@@ -1,0 +1,28 @@
+.profile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  container-type: inline-size;
+}
+
+.identity > span {
+  flex-shrink: 0;
+}
+
+@container (max-width: 36rem) {
+  .tiles,
+  .fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Use available component width, including when text/zoom reduces the space. */
+@container (max-width: 22rem) {
+  .identity {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .identity > div {
+    width: 100%;
+  }
+}

@@ -1,135 +1,46 @@
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  InternalAxiosRequestConfig,
-} from "axios";
+import axios from "axios";
 import { API_BASE_URL, STORAGE_KEYS } from "@/lib/config";
 
-const PUBLIC_PATHS = [
-  "/auth/login",
-  "/auth/forgot-password",
-  "/auth/reset-password",
-  "/auth/refresh",
-];
-
-function isBrowser() {
-  return typeof window !== "undefined";
-}
-
-export function getAccessToken(): string | null {
-  if (!isBrowser()) return null;
-  return localStorage.getItem(STORAGE_KEYS.accessToken);
-}
-
-export function getRefreshToken(): string | null {
-  if (!isBrowser()) return null;
-  return localStorage.getItem(STORAGE_KEYS.refreshToken);
-}
-
-export function saveTokens(accessToken: string, refreshToken: string) {
-  if (!isBrowser()) return;
-  localStorage.setItem(STORAGE_KEYS.accessToken, accessToken);
-  localStorage.setItem(STORAGE_KEYS.refreshToken, refreshToken);
-}
-
-export function saveUserRole(role: string) {
-  if (!isBrowser()) return;
-  localStorage.setItem(STORAGE_KEYS.userRole, role);
-}
-
+let generation = 0;
+const epochs = new WeakMap<object, number>();
 export function clearSession() {
-  if (!isBrowser()) return;
-  localStorage.removeItem(STORAGE_KEYS.accessToken);
-  localStorage.removeItem(STORAGE_KEYS.refreshToken);
-  localStorage.removeItem(STORAGE_KEYS.userRole);
+  generation++;
+  if (typeof window !== "undefined") for (const key of Object.values(STORAGE_KEYS)) localStorage.removeItem(key);
 }
-
-let isRefreshing = false;
-let pendingQueue: Array<{
-  resolve: (token: string) => void;
-  reject: (error: unknown) => void;
-}> = [];
-
-function flushQueue(error: unknown, token: string | null) {
-  pendingQueue.forEach(({ resolve, reject }) => {
-    if (error || !token) reject(error);
-    else resolve(token);
-  });
-  pendingQueue = [];
-}
-
-export const apiClient: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 30_000,
-  headers: { Accept: "application/json" },
+export const apiClient = axios.create({ baseURL: API_BASE_URL, timeout: 30000, withCredentials: true });
+apiClient.interceptors.request.use(async config => {
+  const epoch = generation;
+  if (!["get", "head", "options"].includes(config.method ?? "get")) {
+    const response = await axios.get<{token: string}>("/api/auth/csrf", { timeout: 10000 });
+    config.headers.set("X-CSRF-Token", response.data.token);
+  }
+  if (epoch !== generation && !config.url?.endsWith("/auth/logout")) throw new axios.CanceledError("Session changed");
+  epochs.set(config, epoch);
+  config.headers.delete("Authorization");
+  return config;
 });
-
-apiClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const url = config.url ?? "";
-    const isPublic = PUBLIC_PATHS.some((p) => url.includes(p));
-    if (!isPublic) {
-      const token = getAccessToken();
-      if (token) {
-        config.headers.set("Authorization", `Bearer ${token}`);
-      }
+apiClient.interceptors.response.use(response => {
+  if (epochs.has(response.config) && epochs.get(response.config) !== generation) throw new axios.CanceledError("Session changed");
+  return response;
+}, error => {
+  if (axios.isAxiosError(error) && error.config && epochs.has(error.config) && epochs.get(error.config) !== generation) return Promise.reject(new axios.CanceledError("Session changed"));
+  if (axios.isAxiosError(error) && error.response?.status === 401 && !error.config?.url?.includes("/auth/") && typeof window !== "undefined") {
+    window.dispatchEvent(new Event("immuno:session-expired"));
+  }
+  if (axios.isAxiosError(error) && error.response?.data && typeof error.response.data === "object") {
+    const payload = error.response.data as { message?: unknown };
+    if (typeof payload.message === "string") {
+      // Keep the legacy property consumed by existing screens, but show the safe contract message.
+      (error.response.data as { detail?: string }).detail = payload.message;
     }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError) => {
-    const original = error.config as InternalAxiosRequestConfig & {
-      _retry?: boolean;
-    };
-
-    if (error.response?.status !== 401 || !original || original._retry) {
-      return Promise.reject(error);
-    }
-
-    const refreshToken = getRefreshToken();
-    if (!refreshToken) {
-      clearSession();
-      return Promise.reject(error);
-    }
-
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        pendingQueue.push({
-          resolve: (token: string) => {
-            original.headers.set("Authorization", `Bearer ${token}`);
-            original._retry = true;
-            resolve(apiClient(original));
-          },
-          reject,
-        });
-      });
-    }
-
-    isRefreshing = true;
-    original._retry = true;
-
-    try {
-      const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-        refresh_token: refreshToken,
-      });
-      const newAccessToken = response.data.access_token as string;
-      saveTokens(newAccessToken, refreshToken);
-      flushQueue(null, newAccessToken);
-      original.headers.set("Authorization", `Bearer ${newAccessToken}`);
-      return apiClient(original);
-    } catch (refreshError) {
-      flushQueue(refreshError, null);
-      clearSession();
-      if (isBrowser()) {
-        window.location.href = "/login";
-      }
-      return Promise.reject(refreshError);
-    } finally {
-      isRefreshing = false;
-    }
-  },
-);
+  }
+  return Promise.reject(error);
+});
+// Serialize browser login/logout, including across tabs where Web Locks is supported.
+let authQueue: Promise<unknown> = Promise.resolve();
+export async function authOperation<T>(operation: () => Promise<T>): Promise<T> {
+  if (typeof navigator !== "undefined" && navigator.locks) return navigator.locks.request("immuno-auth", operation);
+  const result = authQueue.then(operation, operation);
+  authQueue = result.catch(() => undefined);
+  return result;
+}

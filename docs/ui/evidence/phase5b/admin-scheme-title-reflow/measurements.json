@@ -1,0 +1,87 @@
+{
+  "synthetic_data_only": true,
+  "production_ready": false,
+  "measurements": [
+    {
+      "scenario": "mobile-320-css-px",
+      "viewport": 320,
+      "documentWidth": 320,
+      "title": {
+        "visible": true,
+        "width": 212,
+        "height": 225,
+        "lineHeight": 22.5,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 212,
+        "scrollWidth": 212
+      },
+      "doseLabel": {
+        "visible": true,
+        "width": 262,
+        "height": 140,
+        "lineHeight": 20,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 262,
+        "scrollWidth": 262
+      }
+    },
+    {
+      "scenario": "mobile-wide-640-css-px",
+      "viewport": 640,
+      "documentWidth": 640,
+      "title": {
+        "visible": true,
+        "width": 490,
+        "height": 90,
+        "lineHeight": 22.5,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 490,
+        "scrollWidth": 490
+      },
+      "doseLabel": {
+        "visible": true,
+        "width": 540,
+        "height": 60,
+        "lineHeight": 20,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 540,
+        "scrollWidth": 540
+      }
+    },
+    {
+      "scenario": "200-percent-reflow-equivalent-720-css-px",
+      "viewport": 720,
+      "documentWidth": 720,
+      "title": {
+        "visible": true,
+        "width": 570,
+        "height": 67.5,
+        "lineHeight": 22.5,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 570,
+        "scrollWidth": 570
+      },
+      "doseLabel": {
+        "visible": true,
+        "width": 620,
+        "height": 60,
+        "lineHeight": 20,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 620,
+        "scrollWidth": 620
+      }
+    }
+  ]
+}

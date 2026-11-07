@@ -10,11 +10,17 @@ from app.common.enums import Role
 from app.core.config import settings
 from app.core.email import send_vaccine_due_email
 from app.db.session import AsyncSessionLocal
-from app.modules.notifications.models import DeviceToken, Notification
-from app.modules.notifications.push import PushNotificationSender
+from app.modules.notifications.models import Notification
+from app.modules.notifications.repository import NotificationRepository
+from app.modules.notifications.service import NotificationService
 from app.modules.users.models import User
 from app.modules.vaccination_scheme.models import StudentVaccine, StudentVaccineDose
-from app.modules.vaccination_scheme.rules import DoseDueInfo, due_reminders_for_scheme
+from app.modules.vaccination_scheme.rules import (
+    DoseDueInfo,
+    clinical_today,
+    due_reminders_for_scheme,
+)
+from app.modules.vaccines.models import Vaccine
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
@@ -28,25 +34,26 @@ async def run_vaccine_due_reminder_loop() -> None:
         try:
             async with AsyncSessionLocal() as session:
                 await send_due_vaccine_reminders(session)
-        except Exception as exc:  # pragma: no cover - defensive background logging
-            logger.exception("Vaccine reminder error: %s", exc)
+        except Exception:  # pragma: no cover - defensive background logging
+            logger.error("Vaccine reminder task failed")
         await asyncio.sleep(settings.VACCINE_REMINDER_INTERVAL_SECONDS)
 
 
 async def send_due_vaccine_reminders(db: AsyncSession) -> int:
     """Send push/internal notifications for doses due between today and 7 days."""
-    today = date.today()
+    today = clinical_today()
     count = 0
     result = await db.execute(
         select(StudentVaccine)
         .join(User, StudentVaccine.user_id == User.id)
         .where(
             User.role == Role.STUDENT,
+            StudentVaccine.is_active.is_(True),
             User.is_active.is_(True),
         )
         .options(
             joinedload(StudentVaccine.user).joinedload(User.profile),
-            joinedload(StudentVaccine.vaccine),
+            joinedload(StudentVaccine.vaccine).selectinload(Vaccine.rules),
             selectinload(StudentVaccine.doses).joinedload(StudentVaccineDose.dose_config),
         )
     )
@@ -99,13 +106,7 @@ async def _create_reminder_if_needed(
     db.add(notification)
     await db.flush()
 
-    tokens = await _active_tokens_for_user(db, user.id)
-    await PushNotificationSender().send_to_tokens(
-        tokens,
-        title=title,
-        body=message,
-        data={"category": category},
-    )
+    NotificationService(NotificationRepository(db))._send_push_after_commit(user.id)
     if due_info.days_until_due in _configured_email_reminder_days():
         await send_vaccine_due_email(
             user.email,
@@ -142,16 +143,6 @@ async def _notification_exists_today(
         .limit(1)
     )
     return result.scalar_one_or_none() is not None
-
-
-async def _active_tokens_for_user(db: AsyncSession, user_id) -> list[str]:
-    result = await db.execute(
-        select(DeviceToken.token).where(
-            DeviceToken.user_id == user_id,
-            DeviceToken.is_active.is_(True),
-        )
-    )
-    return list(result.scalars().all())
 
 
 def _reminder_message(due_info: DoseDueInfo) -> str:

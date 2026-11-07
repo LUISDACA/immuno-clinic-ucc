@@ -1,8 +1,9 @@
 """Vaccine catalog seed data — the 8 required vaccines with all dose configs and rules."""
 
+import json
 import logging
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.common.enums import AppliesTo, DoseType, Gender, Role
@@ -46,7 +47,7 @@ async def seed_vaccines(db: AsyncSession) -> None:
 async def sync_vaccine_schedule_rules(db: AsyncSession) -> None:
     """Synchronize schedule rules for existing vaccine catalogs."""
     catalog = _build_vaccine_catalog()
-    changed = False
+    updates = []
     for vdata in catalog:
         schedule_rules = [
             rule for rule in vdata.get("rules", []) if rule["rule_type"] == "schedule"
@@ -57,12 +58,35 @@ async def sync_vaccine_schedule_rules(db: AsyncSession) -> None:
         vaccine = result.scalar_one_or_none()
         if vaccine is None:
             continue
-        await db.execute(
-            delete(VaccineRule).where(
+        existing_result = await db.execute(
+            select(VaccineRule).where(
                 VaccineRule.vaccine_id == vaccine.id,
                 VaccineRule.rule_type == "schedule",
+                VaccineRule.is_active.is_(True),
             )
         )
+        existing = list(existing_result.scalars().all())
+        old_contract = sorted(
+            (json.dumps(rule.rule_config, sort_keys=True), rule.description) for rule in existing
+        )
+        new_contract = sorted(
+            (json.dumps(rule["rule_config"], sort_keys=True), rule.get("description"))
+            for rule in schedule_rules
+        )
+        if old_contract != new_contract:
+            updates.append((vaccine, schedule_rules, existing))
+
+    if not updates:
+        return
+
+    from app.modules.vaccination_scheme.repository import SchemeRepository, VaccineRepository
+    from app.modules.vaccination_scheme.service import SchemeService
+
+    scheme_service = SchemeService(SchemeRepository(db), VaccineRepository(db))
+    await scheme_service.append_versions_for_active_students("catalog:rules:before")
+    for vaccine, schedule_rules, existing in updates:
+        for rule in existing:
+            rule.is_active = False
         for rule in schedule_rules:
             db.add(
                 VaccineRule(
@@ -70,11 +94,14 @@ async def sync_vaccine_schedule_rules(db: AsyncSession) -> None:
                     rule_type=rule["rule_type"],
                     rule_config=rule["rule_config"],
                     description=rule.get("description"),
+                    is_active=True,
                 )
             )
-        changed = True
-    if changed:
-        await db.commit()
+    await db.flush()
+    for vaccine, _, _ in updates:
+        await db.refresh(vaccine, ["rules"])
+    await scheme_service.append_versions_for_active_students("catalog:rules:after")
+    await db.commit()
 
 
 async def seed_admin_user(db: AsyncSession) -> None:
@@ -91,9 +118,6 @@ async def seed_admin_user(db: AsyncSession) -> None:
         if admin.email != admin_email:
             admin.email = admin_email
             changed = True
-        if settings.ADMIN_PASSWORD:
-            admin.hashed_password = hash_password(settings.ADMIN_PASSWORD)
-            changed = True
         if admin.profile:
             if admin.profile.first_name != settings.ADMIN_FIRST_NAME:
                 admin.profile.first_name = settings.ADMIN_FIRST_NAME
@@ -103,7 +127,7 @@ async def seed_admin_user(db: AsyncSession) -> None:
                 changed = True
         if changed:
             await db.commit()
-            logger.info("Admin user synchronized: %s", admin.email)
+            logger.info("Admin user synchronized")
         return
 
     if not settings.ADMIN_PASSWORD:
@@ -128,7 +152,7 @@ async def seed_admin_user(db: AsyncSession) -> None:
     )
     db.add(profile)
     await db.commit()
-    logger.info("Admin user created: %s", admin.email)
+    logger.info("Admin user created")
 
 
 def _build_vaccine_catalog() -> list[dict]:
@@ -300,7 +324,6 @@ def _build_vaccine_catalog() -> list[dict]:
                 {
                     "rule_type": "schedule",
                     "rule_config": {
-                        "annual": True,
                         "dose_number": 1,
                         "reminder_window_days": 7,
                     },

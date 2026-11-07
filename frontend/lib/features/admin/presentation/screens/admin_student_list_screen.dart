@@ -72,7 +72,18 @@ class _AdminStudentListScreenState
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Estudiantes')),
+      appBar: AppBar(
+        title: const Text('Estudiantes'),
+        actions: [
+          IconButton(
+            tooltip: 'Actualizar lista',
+            icon: const Icon(Icons.refresh),
+            onPressed: state.isLoading
+                ? null
+                : () => ref.read(adminStudentListProvider.notifier).refresh(),
+          ),
+        ],
+      ),
       body: UccBrandBackground(
         child: Column(
           children: [
@@ -206,6 +217,15 @@ class _AdminStudentListScreenState
             Expanded(
               child: state.isLoading
                   ? const Center(child: CircularProgressIndicator())
+                  : state.error != null
+                  ? Center(
+                      child: TextButton(
+                        onPressed: () => ref
+                            .read(adminStudentListProvider.notifier)
+                            .refresh(),
+                        child: Text("${state.error} · Reintentar"),
+                      ),
+                    )
                   : state.students.isEmpty
                   ? const Center(child: Text('No se encontraron estudiantes'))
                   : Builder(
@@ -236,8 +256,9 @@ class _AdminStudentListScreenState
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
+                      tooltip: 'Página anterior',
                       icon: const Icon(Icons.chevron_left),
-                      onPressed: state.page > 1
+                      onPressed: !state.isLoading && state.page > 1
                           ? () => ref
                                 .read(adminStudentListProvider.notifier)
                                 .prevPage()
@@ -248,8 +269,10 @@ class _AdminStudentListScreenState
                       style: const TextStyle(fontWeight: FontWeight.w500),
                     ),
                     IconButton(
+                      tooltip: 'Página siguiente',
                       icon: const Icon(Icons.chevron_right),
-                      onPressed: state.page < state.totalPages
+                      onPressed:
+                          !state.isLoading && state.page < state.totalPages
                           ? () => ref
                                 .read(adminStudentListProvider.notifier)
                                 .nextPage()
@@ -405,7 +428,7 @@ class _AdminStudentListScreenState
           icon: const Icon(Icons.more_vert),
           onSelected: (action) async {
             if (action == 'detail') {
-              context.push('/admin/students/$studentId');
+              await _openStudent(studentId);
             }
             if (action == 'deactivate') {
               await ref
@@ -442,9 +465,14 @@ class _AdminStudentListScreenState
             ),
           ],
         ),
-        onTap: () => context.push('/admin/students/$studentId'),
+        onTap: () => _openStudent(studentId),
       ),
     );
+  }
+
+  Future<void> _openStudent(String id) async {
+    await context.push('/admin/students/$id');
+    if (mounted) await ref.read(adminStudentListProvider.notifier).refresh();
   }
 
   String _studentVaccinationStatus(AdminStudentListItem student) {
@@ -531,8 +559,10 @@ class _AdminStudentListScreenState
         color: backgroundColor,
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Wrap(
+        spacing: 3,
+        runSpacing: 2,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           if (icon != null) ...[
             Icon(icon, size: 12, color: color),

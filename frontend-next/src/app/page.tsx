@@ -33,7 +33,9 @@ export default function HomePage() {
         <p className="text-base font-bold text-[color:var(--primary-dark)]">
           UCC ImmunoClinic
         </p>
-        <p className="text-sm text-muted-foreground">Cargando…</p>
+        <p role="status" aria-live="polite" className="text-sm text-muted-foreground">
+          Cargando…
+        </p>
       </div>
     </UccBrandBackground>
   );

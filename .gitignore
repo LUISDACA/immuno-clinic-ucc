@@ -50,3 +50,7 @@ frontend-next/.env*.local
 frontend-next/*.tsbuildinfo
 frontend-next/.turbo/
 frontend-next/.vercel/
+
+# Codex - local only
+AGENTS.md
+.agents/

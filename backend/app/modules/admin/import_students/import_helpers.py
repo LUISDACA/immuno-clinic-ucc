@@ -409,7 +409,7 @@ def read_csv_rows(content: bytes) -> list[list[object]]:
 
 def student_import_row_to_request(
     raw: dict[str, object],
-) -> tuple[CreateStudentRequest, str]:
+) -> tuple[CreateStudentRequest, None]:
     email = clean_cell(raw.get("email"))
     document_number = clean_cell(raw.get("document_number"))
     if not email:
@@ -431,7 +431,6 @@ def student_import_row_to_request(
 
     return CreateStudentRequest(
         email=email,
-        password=document_number,
         first_name=first_name,
         last_name=last_name,
         document_number=document_number,
@@ -445,4 +444,4 @@ def student_import_row_to_request(
         program=clean_cell(raw.get("program")),
         campus=clean_cell(raw.get("campus")),
         semester=parse_int(raw.get("semester")),
-    ), document_number
+    ), None

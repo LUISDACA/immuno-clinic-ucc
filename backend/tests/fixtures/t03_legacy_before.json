@@ -1,0 +1,22 @@
+{
+  "format_version": 1,
+  "synthetic_only": true,
+  "records": {
+    "assignments": [
+      {"id": "assign-a", "owner_id": "student-a", "vaccine_code": "LEGACY_A", "status": "pending", "is_active": true},
+      {"id": "assign-partial", "owner_id": "student-a", "vaccine_code": "LEGACY_B", "status": "under_review", "is_active": true}
+    ],
+    "doses": [
+      {"id": "dose-old", "owner_id": "student-a", "assignment_id": "assign-a", "dose_number": 1, "status": "approved", "applied_date": "2014-02-28", "reviewed_by": "admin-a", "reviewed_at": "2014-03-01T12:30:00Z", "admin_notes": "legacy review"},
+      {"id": "dose-titer", "owner_id": "student-a", "assignment_id": "assign-a", "dose_number": 9, "status": "reviewed", "applied_date": "2020-02-29", "titer_value": "synthetic-positive", "reviewed_by": null, "reviewed_at": null},
+      {"id": "dose-partial", "owner_id": "student-a", "assignment_id": "assign-partial", "dose_number": 1, "status": "pending", "applied_date": null, "reviewed_by": null, "reviewed_at": null}
+    ],
+    "evidence": [
+      {"id": "evidence-uploaded", "owner_id": "student-a", "status": "uploaded", "dose_id": null, "reviewed_by": null, "reviewed_at": null, "created_at": "2015-01-02T00:00:00Z"},
+      {"id": "evidence-reviewed", "owner_id": "student-a", "status": "reviewed", "dose_id": null, "reviewed_by": "admin-a", "reviewed_at": "2015-01-04T00:00:00Z", "created_at": "2015-01-03T00:00:00Z"}
+    ],
+    "eligibility": [
+      {"id": "eligibility-a", "owner_id": "student-a", "is_up_to_date": false, "is_complete": false, "is_certifiable": false}
+    ]
+  }
+}

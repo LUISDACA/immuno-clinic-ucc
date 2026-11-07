@@ -1,0 +1,45 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "actual_backend": true,
+  "measurements": [
+    {
+      "case": "confirmed_upload",
+      "theme": "light",
+      "keyboard_remove": true,
+      "duplicate_submit_writes": 1,
+      "frozen_controls": true,
+      "late_drop_ignored": true,
+      "exact_files_and_dose_confirmed": true,
+      "page_size": 20,
+      "admin_permission": 403
+    },
+    {
+      "case": "controlled_failure_explicit_retry",
+      "theme": "light",
+      "controlled_status": 503,
+      "draft_preserved": true,
+      "explicit_retry_real": true,
+      "writes": 2
+    },
+    {
+      "case": "confirmed_upload",
+      "theme": "dark",
+      "keyboard_remove": true,
+      "duplicate_submit_writes": 1,
+      "frozen_controls": true,
+      "late_drop_ignored": true,
+      "exact_files_and_dose_confirmed": true,
+      "page_size": 20,
+      "admin_permission": 403
+    },
+    {
+      "case": "controlled_failure_explicit_retry",
+      "theme": "dark",
+      "controlled_status": 503,
+      "draft_preserved": true,
+      "explicit_retry_real": true,
+      "writes": 2
+    }
+  ]
+}

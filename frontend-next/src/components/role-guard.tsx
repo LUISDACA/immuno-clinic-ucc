@@ -3,9 +3,9 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/auth/store";
-import { isAppAdminRole, isPlainAdminRole } from "@/lib/config";
+import { isAdminRole, isAppAdminRole, isPlainAdminRole } from "@/lib/config";
 
-type Allowed = "app_admin" | "plain_admin";
+type Allowed = "admin" | "app_admin" | "plain_admin";
 
 export function RoleGuard({
   allow,
@@ -17,8 +17,11 @@ export function RoleGuard({
   const router = useRouter();
   const { role, isHydrated } = useAuthStore();
 
-  const ok =
-    allow === "app_admin" ? isAppAdminRole(role) : isPlainAdminRole(role);
+  const ok = allow === "admin"
+    ? isAdminRole(role)
+    : allow === "app_admin"
+      ? isAppAdminRole(role)
+      : isPlainAdminRole(role);
 
   useEffect(() => {
     if (!isHydrated) return;

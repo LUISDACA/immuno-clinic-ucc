@@ -21,6 +21,9 @@ class MockAuthNotifier extends StateNotifier<AuthState>
   Future<void> checkSession() async {}
 
   @override
+  void cancelPendingSessionRestore() {}
+
+  @override
   Future<void> login(String email, String password) async {}
 
   @override
@@ -82,16 +85,13 @@ Widget _buildApp({
         ),
       ),
       notificationProvider.overrideWith(
-        (ref) => MockNotificationNotifier(
-          const NotificationState(unreadCount: 0),
-        ),
+        (ref) =>
+            MockNotificationNotifier(const NotificationState(unreadCount: 0)),
       ),
       themeModeProvider.overrideWith(
         (ref) => MockThemeModeController(ThemeMode.light),
       ),
-      adminStatisticsProvider.overrideWith(
-        (ref, semester) async => stats,
-      ),
+      adminStatisticsProvider.overrideWith((ref, semester) async => stats),
     ],
     child: MaterialApp.router(routerConfig: router),
   );
@@ -146,8 +146,9 @@ void main() {
   });
 
   group('AdminDashboardScreen — campus breakdown chart', () {
-    testWidgets('shows campus chart title when byCampus data is present',
-        (tester) async {
+    testWidgets('shows campus chart title when byCampus data is present', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -188,7 +189,9 @@ void main() {
       });
     });
 
-    testWidgets('campus names appear in chart when data present', (tester) async {
+    testWidgets('campus names appear in chart when data present', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -216,8 +219,9 @@ void main() {
   });
 
   group('AdminDashboardScreen — program breakdown chart', () {
-    testWidgets('shows program chart title when byProgram data is present',
-        (tester) async {
+    testWidgets('shows program chart title when byProgram data is present', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -258,7 +262,9 @@ void main() {
       });
     });
 
-    testWidgets('program names appear in chart when data present', (tester) async {
+    testWidgets('program names appear in chart when data present', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -286,8 +292,9 @@ void main() {
   });
 
   group('AdminDashboardScreen — both charts shown simultaneously', () {
-    testWidgets('shows both campus and program charts when both have data',
-        (tester) async {
+    testWidgets('shows both campus and program charts when both have data', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);

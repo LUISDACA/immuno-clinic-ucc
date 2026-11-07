@@ -1,0 +1,59 @@
+{
+  "scope": "Flutter notifications load-error and retry",
+  "institutional_data": false,
+  "renderer": "Flutter 3.41.6 widget-test, local Inter, DPR 1",
+  "comparison": "presentation snapshots; not additional golden references or real-device E2E",
+  "existing_flutter_goldens_unchanged": true,
+  "paired_next_error": "../notifications-comparison/after-next-notifications-student-error-dark-390-csszoom1.png",
+  "references": [
+    {
+      "file": "flutter-notifications-error-initial-dark-390-text1.png",
+      "sha256": "96d34eff45d93405253c40573b3674a0b4d66565fa511a589c0ba0fb9b32c0ee"
+    },
+    {
+      "file": "flutter-notifications-error-initial-dark-390-text2.png",
+      "sha256": "86d4666774e2d640b5e3060e30771d496f3169661913a020cd39a5479e49775c"
+    },
+    {
+      "file": "flutter-notifications-error-initial-light-390-text1.png",
+      "sha256": "cce37678e4f7c774c0a8d9fdebff9a0f5999f4c034d3c42c732acf5d22a6f689"
+    },
+    {
+      "file": "flutter-notifications-error-initial-light-390-text2.png",
+      "sha256": "32af3d84e068bde52116859294b678de257ffc8b2b0d949acf943021adde3eda"
+    },
+    {
+      "file": "flutter-notifications-error-retained-dark-390-text1.png",
+      "sha256": "77ffa2b4f6cd5f78a653b0911ae2e841123cae37db8248801f6d14213bedacbe"
+    },
+    {
+      "file": "flutter-notifications-error-retained-dark-390-text2.png",
+      "sha256": "18d363f3c9f17089a8a89568fcea6ba83bededaca6b46221592a28c018f58984"
+    },
+    {
+      "file": "flutter-notifications-error-retained-light-390-text1.png",
+      "sha256": "48dc182bf9e2eef52bece3e99abd6250743b3666192b8743422569d6d33c7c70"
+    },
+    {
+      "file": "flutter-notifications-error-retained-light-390-text2.png",
+      "sha256": "c914bd0aac50c7c7458e2bd2e10a9c4535bd4bffc045b9844047dc1824494dfc"
+    }
+  ],
+  "next_snapshots_regenerated": [
+    "after-next-notifications-admin-loading-dark-390-csszoom1.png",
+    "after-next-notifications-admin-loading-dark-390-csszoom2-content.png",
+    "after-next-notifications-admin-loading-dark-390-csszoom2.png",
+    "after-next-notifications-admin-unread-dark-390-csszoom2.png",
+    "after-next-notifications-student-empty-dark-390-csszoom2.png",
+    "after-next-notifications-student-empty-light-390-csszoom2.png",
+    "after-next-notifications-student-loading-dark-390-csszoom1.png",
+    "after-next-notifications-student-loading-dark-390-csszoom2-content.png",
+    "after-next-notifications-student-loading-dark-390-csszoom2.png",
+    "after-next-notifications-student-loading-light-390-csszoom1.png",
+    "after-next-notifications-student-loading-light-390-csszoom2-content.png",
+    "after-next-notifications-student-loading-light-390-csszoom2.png",
+    "after-next-notifications-student-read-dark-390-csszoom2.png",
+    "after-next-notifications-student-read-light-390-csszoom2.png",
+    "after-next-notifications-student-unread-dark-390-csszoom2.png"
+  ]
+}

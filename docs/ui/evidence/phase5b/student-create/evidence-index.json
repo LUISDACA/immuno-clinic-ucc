@@ -1,0 +1,41 @@
+{
+  "scope": "R02B/S18 controls; no integral screen/phase closure",
+  "institutional_data": false,
+  "production_ready": false,
+  "next_new_tests": 11,
+  "shell_regressions": 3,
+  "flutter_new_tests": 18,
+  "next_screenshots": 2,
+  "flutter_references": 2,
+  "real_email_delivery": false,
+  "notes": [
+    "Actual browser creation/import uses isolated PostgreSQL and synthetic users; test settings disable email and FCM. One re-preview 503 is explicitly controlled; successful writes and subsequent existing-row preview are real.",
+    "New Flutter golden references only; existing references must remain unchanged. Desktop/mobile/physical coverage beyond described fixtures remains PARTIAL/UNKNOWN."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "8ff65c8d1748fa3a8b4141eab8ef0e2d6232446c17888083daaa913dd5dee8ef"
+    },
+    {
+      "file": "flutter-preview-dark-390.png",
+      "sha256": "010f8e5c419fa14e7087ee6e910face04d7c5042c7f0d833999a46c8d3c42705"
+    },
+    {
+      "file": "flutter-preview-light-390.png",
+      "sha256": "c1923282b97e9fd143e9363c11397eaa8a70ef86ef734ca778806bb0c4776f9b"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "d307ba9dbdc79d95d8e8a07110eacafa3322016b05c25d8ba4bfa4c68f31cb28"
+    },
+    {
+      "file": "next-preview-dark-390.png",
+      "sha256": "3d60dccf933404f4417568fbe5e6aafa2ffe6fa299214bd124373b89e06b2fe0"
+    },
+    {
+      "file": "next-preview-light-390.png",
+      "sha256": "d8c50846ae756bd517f54324197b055d5a4fbe47d14605249615f053a08772b4"
+    }
+  ]
+}

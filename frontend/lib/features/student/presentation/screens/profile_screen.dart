@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../../../../core/network/api_client.dart';
+import '../../../../core/error/api_error_message.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/role_utils.dart';
 import '../../../../core/widgets/ucc_brand.dart';
@@ -13,12 +17,16 @@ class ProfileState {
   final bool isLoading;
   final bool isSaving;
   final String? error;
+  final String? saveError;
+  final bool saveConfirmed;
   final Map<String, dynamic>? profile;
 
   const ProfileState({
     this.isLoading = false,
     this.isSaving = false,
     this.error,
+    this.saveError,
+    this.saveConfirmed = false,
     this.profile,
   });
 
@@ -26,12 +34,16 @@ class ProfileState {
     bool? isLoading,
     bool? isSaving,
     String? error,
+    String? saveError,
+    bool? saveConfirmed,
     Map<String, dynamic>? profile,
   }) {
     return ProfileState(
       isLoading: isLoading ?? this.isLoading,
       isSaving: isSaving ?? this.isSaving,
       error: error,
+      saveError: saveError,
+      saveConfirmed: saveConfirmed ?? this.saveConfirmed,
       profile: profile ?? this.profile,
     );
   }
@@ -42,17 +54,51 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
   ProfileNotifier(this._api) : super(const ProfileState());
 
-  Future<void> loadProfile() async {
-    state = state.copyWith(isLoading: true, error: null);
+  int _request = 0;
+  Future<void>? _inFlightLoad;
+  Future<void> loadProfile({bool afterWrite = false}) {
+    if (!mounted || (state.isSaving && !afterWrite)) return Future.value();
+    if (!afterWrite && _inFlightLoad != null) return _inFlightLoad!;
+    final load = _loadProfile();
+    _inFlightLoad = load;
+    load.whenComplete(() {
+      if (identical(_inFlightLoad, load)) _inFlightLoad = null;
+    });
+    return load;
+  }
+
+  Future<void> _loadProfile() async {
+    final request = ++_request;
+    state = state.copyWith(isLoading: true, saveError: state.saveError);
     try {
       final response = await _api.dio.get('/users/me');
-      state = state.copyWith(isLoading: false, profile: response.data);
-    } on DioException catch (e) {
+      if (!mounted || request != _request) return;
       state = state.copyWith(
         isLoading: false,
-        error: e.response?.data?['detail'] ?? 'Error al cargar perfil',
+        profile: response.data,
+        saveError: state.saveError,
+        saveConfirmed: false,
+      );
+    } catch (error) {
+      if (!mounted || request != _request) return;
+      final status = error is DioException ? error.response?.statusCode : null;
+      final message = switch (status) {
+        401 => 'Tu sesión expiró. Inicia sesión nuevamente.',
+        403 => 'No tienes permiso para consultar esta información.',
+        404 => 'No se encontró la información solicitada.',
+        429 => 'Demasiadas solicitudes. Espera antes de reintentar.',
+        _ => 'Error al cargar perfil',
+      };
+      state = state.copyWith(
+        isLoading: false,
+        error: message,
+        saveError: state.saveError,
       );
     }
+  }
+
+  void clearSaveError() {
+    if (mounted) state = state.copyWith(error: state.error);
   }
 
   Future<bool> updateProfile({
@@ -64,7 +110,14 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     String? emergencyContactName,
     String? emergencyContactPhone,
   }) async {
-    state = state.copyWith(isSaving: true, error: null);
+    if (!mounted || state.isSaving) return false;
+    ++_request;
+    _inFlightLoad = null; // A pre-write GET is obsolete, including for retries.
+    state = state.copyWith(
+      isSaving: true,
+      isLoading: false,
+      saveConfirmed: false,
+    );
     try {
       final data = <String, dynamic>{
         'phone': phone,
@@ -75,14 +128,27 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       if (firstName != null) data['first_name'] = firstName;
       if (lastName != null) data['last_name'] = lastName;
       if (jobTitle != null) data['job_title'] = jobTitle;
-      await _api.dio.put('/users/me/profile', data: data);
-      await loadProfile();
-      state = state.copyWith(isSaving: false);
-      return true;
-    } on DioException catch (e) {
+      final response = await _api.dio.put('/users/me/profile', data: data);
+      if (!mounted) return false;
+      state = state.copyWith(
+        profile: response.data is Map<String, dynamic> ? response.data : null,
+        saveConfirmed: true,
+      );
+      await loadProfile(afterWrite: true);
+      if (!mounted) return false;
       state = state.copyWith(
         isSaving: false,
-        error: e.response?.data?['detail'] ?? 'Error al actualizar',
+        error: state.error,
+        saveError: state.saveError,
+      );
+      return true;
+    } catch (_) {
+      if (!mounted) return false;
+      state = state.copyWith(
+        isSaving: false,
+        isLoading: false,
+        saveConfirmed: false,
+        saveError: 'No se pudo guardar el perfil. Intenta nuevamente.',
       );
       return false;
     }
@@ -92,6 +158,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 final profileProvider = StateNotifierProvider<ProfileNotifier, ProfileState>((
   ref,
 ) {
+  ref.watch(authStateProvider.select((state) => state.userId));
   return ProfileNotifier(ref.watch(apiClientProvider));
 });
 
@@ -116,11 +183,99 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _programController = TextEditingController();
   final _semesterController = TextEditingController();
   bool _isEditing = false;
+  Uint8List? _signatureBytes;
+  bool _signatureLoading = false;
+  bool _signatureUploading = false;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() => ref.read(profileProvider.notifier).loadProfile());
+    if (ref.read(authStateProvider).role?.toLowerCase() == 'admin') {
+      Future.microtask(_loadSignature);
+    }
+  }
+
+  Future<void> _loadSignature() async {
+    setState(() => _signatureLoading = true);
+    try {
+      final response = await ref
+          .read(apiClientProvider)
+          .dio
+          .get<List<int>>(
+            '/certificates/signature/active/image',
+            options: Options(responseType: ResponseType.bytes),
+          );
+      if (mounted) {
+        setState(
+          () => _signatureBytes = Uint8List.fromList(response.data ?? []),
+        );
+      }
+    } on DioException catch (error) {
+      if (mounted) {
+        setState(() => _signatureBytes = null);
+        if (error.response?.statusCode != 404) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No se pudo consultar la firma activa'),
+            ),
+          );
+        }
+      }
+    } finally {
+      if (mounted) setState(() => _signatureLoading = false);
+    }
+  }
+
+  Future<void> _pickAndUploadSignature() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: const ['png', 'jpg', 'jpeg', 'webp'],
+      withData: true,
+    );
+    final file = result?.files.single;
+    if (file == null || file.bytes == null) return;
+    final extension = file.extension?.toLowerCase();
+    final mime = switch (extension) {
+      'png' => DioMediaType('image', 'png'),
+      'jpg' || 'jpeg' => DioMediaType('image', 'jpeg'),
+      'webp' => DioMediaType('image', 'webp'),
+      _ => null,
+    };
+    if (mime == null) return;
+    setState(() => _signatureUploading = true);
+    try {
+      final form = FormData.fromMap({
+        'file': MultipartFile.fromBytes(
+          file.bytes!,
+          filename: file.name,
+          contentType: mime,
+        ),
+      });
+      await ref
+          .read(apiClientProvider)
+          .dio
+          .post('/certificates/signature', data: form);
+      await _loadSignature();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Firma guardada para futuros certificados'),
+          ),
+        );
+      }
+    } on DioException catch (error) {
+      if (mounted) {
+        final message =
+            apiErrorMessageFromData(error.response?.data) ??
+            'No se pudo validar o guardar la firma';
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
+    } finally {
+      if (mounted) setState(() => _signatureUploading = false);
+    }
   }
 
   @override
@@ -144,22 +299,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _populateFields(Map<String, dynamic> profile) {
-    final p = profile['profile'] as Map<String, dynamic>?;
-    if (p != null) {
-      _firstNameController.text = p['first_name']?.toString() ?? '';
-      _lastNameController.text = p['last_name']?.toString() ?? '';
-      _jobTitleController.text = p['job_title']?.toString() ?? '';
-      _studentIdController.text = p['student_id']?.toString() ?? '';
-      _birthDateController.text = p['birth_date']?.toString() ?? '';
-      _phoneController.text = p['phone']?.toString() ?? '';
-      _epsController.text = p['eps_affiliation']?.toString() ?? '';
-      _emergencyNameController.text =
-          p['emergency_contact_name']?.toString() ?? '';
-      _emergencyPhoneController.text =
-          p['emergency_contact_phone']?.toString() ?? '';
-      _programController.text = p['program']?.toString() ?? '';
-      _semesterController.text = p['semester']?.toString() ?? '';
-    }
+    final p = profile['profile'] as Map<String, dynamic>? ?? {};
+    _firstNameController.text = p['first_name']?.toString() ?? '';
+    _lastNameController.text = p['last_name']?.toString() ?? '';
+    _jobTitleController.text = p['job_title']?.toString() ?? '';
+    _studentIdController.text = p['student_id']?.toString() ?? '';
+    _birthDateController.text = p['birth_date']?.toString() ?? '';
+    _phoneController.text = p['phone']?.toString() ?? '';
+    _epsController.text = p['eps_affiliation']?.toString() ?? '';
+    _emergencyNameController.text =
+        p['emergency_contact_name']?.toString() ?? '';
+    _emergencyPhoneController.text =
+        p['emergency_contact_phone']?.toString() ?? '';
+    _programController.text = p['program']?.toString() ?? '';
+    _semesterController.text = p['semester']?.toString() ?? '';
   }
 
   String? _cleanText(TextEditingController controller) {
@@ -168,7 +321,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _saveProfile() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (ref.read(profileProvider).isSaving ||
+        !(_formKey.currentState?.validate() ?? false)) {
+      return;
+    }
+    final owner = ref.read(authStateProvider).userId;
     final isAdmin = isAdminRole(ref.read(authStateProvider).role);
     final success = await ref
         .read(profileProvider.notifier)
@@ -181,8 +338,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           emergencyContactName: _cleanText(_emergencyNameController),
           emergencyContactPhone: _cleanText(_emergencyPhoneController),
         );
-    if (success && mounted) {
+    if (success && mounted && ref.read(authStateProvider).userId == owner) {
       setState(() => _isEditing = false);
+      if (ref.read(profileProvider).error != null) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Perfil actualizado'),
@@ -208,11 +366,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       appBar: AppBar(
         title: const Text('Mi Perfil'),
         actions: [
-          if (!_isEditing && state.profile != null)
+          if (!_isEditing &&
+              state.profile != null &&
+              state.error == null &&
+              !state.isLoading &&
+              !state.isSaving)
             IconButton(
               icon: const Icon(Icons.edit_outlined),
               tooltip: 'Editar',
               onPressed: () {
+                ref.read(profileProvider.notifier).clearSaveError();
                 _populateFields(state.profile!);
                 setState(() => _isEditing = true);
               },
@@ -220,13 +383,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ],
       ),
       body: UccBrandBackground(
-        child: state.isLoading
+        child: state.isLoading || (state.profile == null && state.error == null)
             ? const Center(child: CircularProgressIndicator())
-            : state.error != null && state.profile == null
+            : state.error != null
             ? Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    if (state.saveConfirmed)
+                      Semantics(
+                        liveRegion: true,
+                        child: const Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Text(
+                            'Los cambios se guardaron, pero no se pudo actualizar el perfil.',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    if (state.saveError != null)
+                      Semantics(
+                        liveRegion: true,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Text(
+                            state.saveError!,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
                     Icon(Icons.error_outline, size: 48, color: AppColors.error),
                     const SizedBox(height: 8),
                     Text(
@@ -251,6 +436,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final profile = state.profile!;
     final p = profile['profile'] as Map<String, dynamic>? ?? {};
     final isAdmin = isAdminRole(auth.role);
+    final isNormalAdmin = auth.role?.toLowerCase() == 'admin';
     final email = profile['email'] ?? auth.email ?? '';
     final firstName = p['first_name'] ?? '';
     final lastName = p['last_name'] ?? '';
@@ -272,6 +458,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          if (_isEditing && state.saveError != null)
+            Semantics(
+              liveRegion: true,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(state.saveError!, textAlign: TextAlign.center),
+              ),
+            ),
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
@@ -333,6 +527,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !state.isSaving,
                       controller: _firstNameController,
                       decoration: const InputDecoration(
                         labelText: 'Nombre',
@@ -345,6 +540,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !state.isSaving,
                       controller: _lastNameController,
                       decoration: const InputDecoration(
                         labelText: 'Apellido',
@@ -357,6 +553,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !state.isSaving,
                       controller: _jobTitleController,
                       decoration: const InputDecoration(
                         labelText: 'Cargo',
@@ -416,6 +613,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !state.isSaving,
                       controller: _phoneController,
                       decoration: const InputDecoration(
                         labelText: 'Teléfono',
@@ -425,6 +623,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !state.isSaving,
                       controller: _epsController,
                       decoration: const InputDecoration(
                         labelText: 'EPS afiliado',
@@ -433,6 +632,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !state.isSaving,
                       controller: _emergencyNameController,
                       decoration: const InputDecoration(
                         labelText: 'Nombre contacto de emergencia',
@@ -441,6 +641,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      enabled: !state.isSaving,
                       controller: _emergencyPhoneController,
                       decoration: const InputDecoration(
                         labelText: 'Teléfono contacto de emergencia',
@@ -454,7 +655,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     children: [
                       Expanded(
                         child: OutlinedButton(
-                          onPressed: () => setState(() => _isEditing = false),
+                          onPressed: state.isSaving
+                              ? null
+                              : () => setState(() => _isEditing = false),
                           child: const Text('Cancelar'),
                         ),
                       ),
@@ -557,6 +760,56 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Icons.numbers_outlined,
                 'Semestre',
                 semester.isNotEmpty ? semester : 'No registrado',
+              ),
+            ],
+            if (isNormalAdmin) ...[
+              const SizedBox(height: 20),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Firma visual para certificados',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        'PNG, JPG o WebP. Máximo 2 MiB, 8 megapíxeles y 4096 px por lado.',
+                      ),
+                      const SizedBox(height: 12),
+                      if (_signatureLoading)
+                        const LinearProgressIndicator()
+                      else if (_signatureBytes != null)
+                        Image.memory(
+                          _signatureBytes!,
+                          height: 72,
+                          fit: BoxFit.contain,
+                        ),
+                      const SizedBox(height: 8),
+                      OutlinedButton.icon(
+                        onPressed: _signatureUploading
+                            ? null
+                            : _pickAndUploadSignature,
+                        icon: _signatureUploading
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.upload_file_outlined),
+                        label: Text(
+                          _signatureBytes == null
+                              ? 'Subir firma'
+                              : 'Reemplazar firma',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ],

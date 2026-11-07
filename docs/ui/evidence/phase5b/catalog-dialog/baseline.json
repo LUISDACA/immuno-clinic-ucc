@@ -1,0 +1,27 @@
+{
+  "stage": "before-source-build-not-parity-validation",
+  "measurements": [
+    {
+      "screen": "catalog-editor",
+      "preference": "light",
+      "os": "dark",
+      "panel": {
+        "background": "rgb(36, 41, 44)",
+        "foreground": "rgb(234, 247, 247)",
+        "dialog": false,
+        "labels": false
+      }
+    },
+    {
+      "screen": "catalog-editor",
+      "preference": "dark",
+      "os": "light",
+      "panel": {
+        "background": "rgb(36, 41, 44)",
+        "foreground": "rgb(234, 247, 247)",
+        "dialog": false,
+        "labels": false
+      }
+    }
+  ]
+}

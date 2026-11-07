@@ -1,0 +1,31 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "viewport_width": 390,
+  "pixel_equality_claimed": false,
+  "pairs": [
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "scenario": "Successful empty administrator list",
+      "flutter": "../admin-create/flutter-form-light-390.png",
+      "next": "next-empty-light-390.png",
+      "note": "Existing M01 Flutter golden displays its empty list below an always-visible form; Next shows the empty list and explicit create action. Same empty meaning, different form visibility and shell. This pair does not validate Flutter failed reads/writes."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "scenario": "Successful empty administrator list",
+      "flutter": "../admin-create/flutter-form-dark-390.png",
+      "next": "next-empty-dark-390.png",
+      "note": "Existing M01 Flutter golden displays its empty list below an always-visible form; Next shows the empty list and explicit create action. Same empty meaning, different form visibility and shell. This pair does not validate Flutter failed reads/writes."
+    }
+  ],
+  "unpaired_next_states": [
+    "get403",
+    "get503",
+    "created-read-failed",
+    "removed-read-failed"
+  ],
+  "native_error_recovery": "Not implemented/verified in this block; source-inspected Flutter gap M03"
+}

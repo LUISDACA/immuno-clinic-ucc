@@ -32,12 +32,14 @@ class Vaccine(Base, UUIDMixin, TimestampMixin):
     # ── Relationships ─────────────────────────────────────────────────
     dose_configs: Mapped[list["VaccineDoseConfig"]] = relationship(
         back_populates="vaccine",
+        primaryjoin="and_(Vaccine.id == VaccineDoseConfig.vaccine_id, VaccineDoseConfig.is_active == True)",
         cascade="all, delete-orphan",
         order_by="VaccineDoseConfig.dose_number",
         lazy="selectin",
     )
     rules: Mapped[list["VaccineRule"]] = relationship(
         back_populates="vaccine",
+        primaryjoin="and_(Vaccine.id == VaccineRule.vaccine_id, VaccineRule.is_active == True)",
         cascade="all, delete-orphan",
         lazy="selectin",
     )
@@ -74,6 +76,10 @@ class VaccineDoseConfig(Base, UUIDMixin):
         nullable=False,
     )
 
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, server_default="true", nullable=False
+    )
+
     # ── Relationships ─────────────────────────────────────────────────
     vaccine: Mapped["Vaccine"] = relationship(back_populates="dose_configs")
 
@@ -95,6 +101,9 @@ class VaccineRule(Base, UUIDMixin):
         default=dict,
     )
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, server_default="true", nullable=False
+    )
 
     # ── Relationships ─────────────────────────────────────────────────
     vaccine: Mapped["Vaccine"] = relationship(back_populates="rules")

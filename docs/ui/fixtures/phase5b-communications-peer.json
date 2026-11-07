@@ -1,0 +1,20 @@
+{
+  "institutional_data": false,
+  "users": {
+    "student": {"id": "synthetic-student", "name": "Synthetic Student", "email": "student@example.invalid", "role": "student"},
+    "admin": {"id": "synthetic-admin", "name": "Synthetic Admin", "email": "admin@example.invalid", "role": "admin"},
+    "app_admin": {"id": "synthetic-app-admin", "name": "Synthetic App Admin", "email": "app-admin@example.invalid", "role": "app_admin"}
+  },
+  "cases": [
+    {"name": "student sends to admin", "viewer": "student", "student": "student", "created_by": "student", "recipient": "admin", "peer": "admin"},
+    {"name": "admin receives from student", "viewer": "admin", "student": "student", "created_by": "student", "recipient": "admin", "peer": "student"},
+    {"name": "admin sends to student", "viewer": "admin", "student": "student", "created_by": "admin", "recipient": "student", "peer": "student"},
+    {"name": "student receives from admin", "viewer": "student", "student": "student", "created_by": "admin", "recipient": "student", "peer": "admin"},
+    {"name": "admin sends to app admin", "viewer": "admin", "student": "admin", "created_by": "admin", "recipient": "app_admin", "peer": "app_admin"},
+    {"name": "app admin receives from admin", "viewer": "app_admin", "student": "admin", "created_by": "admin", "recipient": "app_admin", "peer": "admin"},
+    {"name": "app admin sends to admin", "viewer": "app_admin", "student": "admin", "created_by": "app_admin", "recipient": "admin", "peer": "admin"},
+    {"name": "admin receives from app admin", "viewer": "admin", "student": "admin", "created_by": "app_admin", "recipient": "admin", "peer": "app_admin"},
+    {"name": "scoped admin opens thread without recipient", "viewer": "admin", "student": "student", "created_by": "student", "recipient": null, "peer": "student"},
+    {"name": "legacy thread without creator", "viewer": "admin", "student": "student", "created_by": null, "recipient": "admin", "peer": "student"}
+  ]
+}

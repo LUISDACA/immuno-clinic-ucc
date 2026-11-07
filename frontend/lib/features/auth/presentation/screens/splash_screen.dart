@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +21,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeApp();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) unawaited(_initializeApp());
+    });
   }
 
   Future<void> _initializeApp() async {
@@ -51,6 +55,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       }
     } catch (_) {
       if (mounted) {
+        ref.read(authStateProvider.notifier).cancelPendingSessionRestore();
         context.go('/login');
       }
     }

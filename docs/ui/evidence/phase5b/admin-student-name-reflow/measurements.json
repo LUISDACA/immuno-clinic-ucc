@@ -1,0 +1,54 @@
+{
+  "synthetic_data_only": true,
+  "production_ready": false,
+  "measurements": [
+    {
+      "scenario": "mobile-320-css-px",
+      "viewport": 320,
+      "documentWidth": 320,
+      "title": {
+        "visible": true,
+        "width": 288,
+        "height": 150,
+        "lineHeight": 25,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 288,
+        "scrollWidth": 288
+      }
+    },
+    {
+      "scenario": "mobile-wide-640-css-px",
+      "viewport": 640,
+      "documentWidth": 640,
+      "title": {
+        "visible": true,
+        "width": 402,
+        "height": 125,
+        "lineHeight": 25,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 402,
+        "scrollWidth": 402
+      }
+    },
+    {
+      "scenario": "200-percent-reflow-equivalent-720-css-px",
+      "viewport": 720,
+      "documentWidth": 720,
+      "title": {
+        "visible": true,
+        "width": 482,
+        "height": 100,
+        "lineHeight": 25,
+        "whiteSpace": "normal",
+        "textOverflow": "clip",
+        "overflowWrap": "break-word",
+        "clientWidth": 482,
+        "scrollWidth": 482
+      }
+    }
+  ]
+}

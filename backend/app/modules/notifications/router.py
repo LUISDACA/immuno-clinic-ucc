@@ -5,6 +5,7 @@ import uuid
 
 from app.core.config import settings
 from app.core.dependencies import get_current_active_user
+from app.core.security import decode_access_token
 from app.db.session import get_db
 from app.modules.notifications.models import Notification
 from app.modules.notifications.repository import NotificationRepository
@@ -17,7 +18,7 @@ from app.modules.notifications.schemas import (
 from app.modules.notifications.service import NotificationService
 from app.modules.notifications.vaccine_due import send_due_vaccine_reminders
 from app.modules.users.models import User
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
@@ -110,6 +111,7 @@ async def mark_notification_category_read(
 
 @router.post("/device-token", response_model=MessageResponse)
 async def register_device_token(
+    request: Request,
     payload: DeviceTokenRequest,
     current_user: User = Depends(get_current_active_user),
     service: NotificationService = Depends(_get_notification_service),
@@ -119,18 +121,24 @@ async def register_device_token(
         current_user.id,
         payload.token,
         payload.platform,
+        uuid.UUID(decode_access_token(request.headers["authorization"].split()[1])["sid"]),
     )
     return {"message": "Dispositivo registrado"}
 
 
 @router.delete("/device-token", response_model=MessageResponse)
 async def unregister_device_token(
+    request: Request,
     payload: DeviceTokenRequest,
     current_user: User = Depends(get_current_active_user),
     service: NotificationService = Depends(_get_notification_service),
 ):
     """Deactivate the current user's FCM device token."""
-    await service.unregister_device_token(current_user.id, payload.token)
+    await service.unregister_device_token(
+        current_user.id,
+        payload.token,
+        uuid.UUID(decode_access_token(request.headers["authorization"].split()[1])["sid"]),
+    )
     return {"message": "Dispositivo desregistrado"}
 
 

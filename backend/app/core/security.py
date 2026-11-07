@@ -29,23 +29,37 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 ALGORITHM = "HS256"
 
 
-def create_access_token(data: dict[str, Any]) -> str:
+def create_access_token(data: dict[str, Any], *, expires_at: datetime | None = None) -> str:
     """Create a short-lived access token."""
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(
         minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES,
     )
-    to_encode.update({"exp": expire, "type": "access"})
+    to_encode.update(
+        {
+            "exp": min(expire, expires_at) if expires_at else expire,
+            "type": "access",
+            "iat": datetime.now(timezone.utc),
+            "jti": str(uuid.uuid4()),
+        }
+    )
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
 
 
-def create_refresh_token(data: dict[str, Any]) -> str:
+def create_refresh_token(data: dict[str, Any], *, expires_at: datetime | None = None) -> str:
     """Create a long-lived refresh token."""
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(
         days=settings.REFRESH_TOKEN_EXPIRE_DAYS,
     )
-    to_encode.update({"exp": expire, "type": "refresh", "jti": str(uuid.uuid4())})
+    to_encode.update(
+        {
+            "exp": expires_at or expire,
+            "type": "refresh",
+            "iat": datetime.now(timezone.utc),
+            "jti": str(uuid.uuid4()),
+        }
+    )
     return jwt.encode(to_encode, settings.REFRESH_SECRET_KEY, algorithm=ALGORITHM)
 
 

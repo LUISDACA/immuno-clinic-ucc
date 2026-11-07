@@ -1,0 +1,56 @@
+{
+  "stage": "diagnosis-only-not-a-passing-gate",
+  "data": "synthetic fixtures only",
+  "requested_viewport": {
+    "width": 390,
+    "height": 844,
+    "mobile": true
+  },
+  "keyboard": {
+    "original_sequence": {
+      "events": [
+        "keydown",
+        "keyup"
+      ],
+      "theme": "system",
+      "activated": false
+    },
+    "char_probe": {
+      "events_added": [
+        "keypress",
+        "click"
+      ],
+      "theme": "light",
+      "activated": true
+    },
+    "repository_runner_modified": false
+  },
+  "mobile": {
+    "original": {
+      "innerWidth": 446,
+      "clientWidth": 390,
+      "scrollWidth": 446,
+      "visualViewportWidth": 429.3048095703125,
+      "visualViewportScale": 0.9084454774856567
+    },
+    "after_500ms": {
+      "innerWidth": 446,
+      "clientWidth": 390,
+      "scrollWidth": 446
+    },
+    "decorative_layer_dom_probe": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "visualViewportWidth": 390,
+      "visualViewportScale": 1
+    },
+    "repository_layout_modified": false
+  },
+  "checks": {
+    "original_e2e": "FAILED",
+    "diagnostic_runs": "FAILED; original assertions retained",
+    "production_fix": "NOT_IMPLEMENTED",
+    "full_screen_flutter_parity": "UNKNOWN"
+  }
+}

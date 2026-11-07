@@ -23,6 +23,9 @@ class _FakeAuthNotifier extends StateNotifier<AuthState>
   }
 
   @override
+  void cancelPendingSessionRestore() {}
+
+  @override
   Future<void> login(String email, String password) async {}
 
   @override
@@ -35,8 +38,9 @@ class _FakeAuthNotifier extends StateNotifier<AuthState>
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('App boots and shows the login screen for an anonymous user',
-      (tester) async {
+  testWidgets('App boots and shows the login screen for an anonymous user', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
 

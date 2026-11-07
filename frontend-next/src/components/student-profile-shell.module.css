@@ -1,0 +1,23 @@
+.shell {
+  container: student-profile-shell / inline-size;
+}
+
+/* Respond to available layout space as well as the viewport media breakpoint. */
+@container student-profile-shell (max-width: 48rem) {
+  .layout > aside {
+    display: none;
+  }
+
+  .navigation {
+    display: flex;
+  }
+
+  .header > a > span,
+  .header button[aria-controls] > span + span {
+    display: none;
+  }
+
+  .header {
+    flex-wrap: wrap;
+  }
+}

@@ -16,7 +16,7 @@ function roleAllowed(requireRole: RoleRequirement | undefined, role: string | nu
   if (!requireRole) return true;
   switch (requireRole) {
     case "student":
-      return !isAdminRole(role);
+      return role === "student";
     case "admin":
       return isAdminRole(role);
     case "app_admin":
@@ -62,7 +62,11 @@ export function AuthGate({ children, requireRole }: AuthGateProps) {
     }
   }, [isHydrated, isAuthenticated, mustChangePassword, role, requireRole, pathname, router]);
 
-  if (!isHydrated || !isAuthenticated) {
+  const passwordTarget = isAdminRole(role)
+    ? "/admin/change-password"
+    : "/student/change-password";
+  if (!isHydrated || !isAuthenticated || !roleAllowed(requireRole, role)
+    || (mustChangePassword && pathname !== passwordTarget)) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center text-muted-foreground">
         Cargando…

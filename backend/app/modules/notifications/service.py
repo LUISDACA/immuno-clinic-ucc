@@ -5,6 +5,9 @@ import logging
 import uuid
 from datetime import datetime, timezone
 
+from app.core.config import settings
+from app.db.session import AsyncSessionLocal
+from app.modules.auth.sessions import active, invalid, lock_session, lock_user
 from app.modules.notifications.models import Notification
 from app.modules.notifications.push import PushNotificationSender
 from app.modules.notifications.repository import NotificationRepository
@@ -35,13 +38,7 @@ class NotificationService:
             created_at=datetime.now(timezone.utc),
         )
         notification = await self.repo.create(notification)
-        tokens = await self.repo.get_active_tokens_by_user(user_id)
-        self._send_push_after_commit(
-            tokens,
-            title=title,
-            message=message,
-            category=category,
-        )
+        self._send_push_after_commit(user_id)
         return notification
 
     async def get_user_notifications(self, user_id: uuid.UUID) -> list[Notification]:
@@ -60,54 +57,39 @@ class NotificationService:
         user_id: uuid.UUID,
         token: str,
         platform: str,
+        session_id: uuid.UUID,
     ) -> None:
+        user = await lock_user(self.repo.db, user_id)
+        session = await lock_session(self.repo.db, session_id)
+        if not active(session, user):
+            raise invalid()
         await self.repo.upsert_device_token(
             user_id=user_id,
             token=token,
             platform=platform,
+            session_id=session_id,
         )
         await self.repo.commit()
 
-    async def unregister_device_token(self, user_id: uuid.UUID, token: str) -> None:
-        await self.repo.deactivate_device_token(user_id=user_id, token=token)
+    async def unregister_device_token(
+        self, user_id: uuid.UUID, token: str, session_id: uuid.UUID
+    ) -> None:
+        await self.repo.deactivate_device_token(user_id=user_id, token=token, session_id=session_id)
         await self.repo.commit()
 
-    def _send_push_after_commit(
-        self,
-        tokens: list[str],
-        *,
-        title: str,
-        message: str,
-        category: str | None,
-    ) -> None:
-        if not tokens:
+    def _send_push_after_commit(self, user_id: uuid.UUID) -> None:
+        if not settings.FCM_ENABLED:
             return
 
         @event.listens_for(self.repo.db.sync_session, "after_commit", once=True)
         def _after_commit(_session):
-            asyncio.create_task(
-                self._send_push_to_tokens(
-                    tokens,
-                    title=title,
-                    message=message,
-                    category=category,
-                )
-            )
+            asyncio.create_task(self._send_push_to_user(user_id))
 
-    async def _send_push_to_tokens(
-        self,
-        tokens: list[str],
-        *,
-        title: str,
-        message: str,
-        category: str | None,
-    ) -> None:
+    @staticmethod
+    async def _send_push_to_user(user_id: uuid.UUID) -> None:
         try:
-            await PushNotificationSender().send_to_tokens(
-                tokens,
-                title=title,
-                body=message,
-                data={"category": category or ""},
-            )
+            async with AsyncSessionLocal() as db:
+                tokens = await NotificationRepository(db).get_active_tokens_by_user(user_id)
+            await PushNotificationSender().send_to_tokens(tokens, title="", body="")
         except Exception:
-            logger.exception("Failed to send push notification")
+            logger.warning("Push delivery failed")

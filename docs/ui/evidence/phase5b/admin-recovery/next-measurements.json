@@ -1,0 +1,93 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "actual_backend": true,
+  "measurements": [
+    {
+      "theme": "light",
+      "case": "read_error",
+      "status": 403,
+      "retry_gets": 1,
+      "writes_on_retry": 0
+    },
+    {
+      "theme": "light",
+      "case": "read_error",
+      "status": 503,
+      "retry_gets": 1,
+      "writes_on_retry": 0
+    },
+    {
+      "theme": "light",
+      "case": "empty_success_and_busy",
+      "readable_empty": true,
+      "writes_blocked_while_fetching": true
+    },
+    {
+      "theme": "light",
+      "case": "confirmed_creation",
+      "real_posts": 1,
+      "failed_read": 503,
+      "retry_gets": 1,
+      "writes_on_retry": 0
+    },
+    {
+      "theme": "light",
+      "case": "confirmed_removal",
+      "real_deletes": 1,
+      "failed_read": 503,
+      "retry_gets": 1,
+      "writes_on_retry": 0
+    },
+    {
+      "theme": "dark",
+      "case": "read_error",
+      "status": 403,
+      "retry_gets": 1,
+      "writes_on_retry": 0
+    },
+    {
+      "theme": "dark",
+      "case": "read_error",
+      "status": 503,
+      "retry_gets": 1,
+      "writes_on_retry": 0
+    },
+    {
+      "theme": "dark",
+      "case": "empty_success_and_busy",
+      "readable_empty": true,
+      "writes_blocked_while_fetching": true
+    },
+    {
+      "theme": "dark",
+      "case": "confirmed_creation",
+      "real_posts": 1,
+      "failed_read": 503,
+      "retry_gets": 1,
+      "writes_on_retry": 0
+    },
+    {
+      "theme": "dark",
+      "case": "confirmed_removal",
+      "real_deletes": 1,
+      "failed_read": 503,
+      "retry_gets": 1,
+      "writes_on_retry": 0
+    },
+    {
+      "case": "existing_expiration",
+      "status": 401
+    },
+    {
+      "role": "student",
+      "case": "list_permission",
+      "status": 403
+    },
+    {
+      "role": "admin",
+      "case": "list_permission",
+      "status": 403
+    }
+  ]
+}

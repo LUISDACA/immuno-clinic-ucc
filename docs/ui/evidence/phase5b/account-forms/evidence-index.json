@@ -1,0 +1,78 @@
+{
+  "scope": "R02A S02/S03/S09 account-form presentation only; R02 remains PARTIAL",
+  "institutional_data": false,
+  "production_ready": false,
+  "new_next_form_tests": 32,
+  "new_flutter_tests": 37,
+  "additional_shell_regressions": 4,
+  "flutter_references": 6,
+  "next_screenshots": 6,
+  "web_cases": 8,
+  "form_responses_controlled": true,
+  "real_passwords_changed": false,
+  "real_emails_sent": false,
+  "notes": [
+    "Authentication services/stores, HTTP payloads, password rules, reset normalization and logout order remain unchanged.",
+    "Native logout uses the same notifier captured before await, so widget disposal does not invalidate the ref access; no protocol or FCM change.",
+    "Final web images are from the post-layer E2E on rebuilt webpack; initial overlay captures were replaced only within this new block. Full backend used pre-layer build, final scoped E2E and full Next verify the subsequent visual change.",
+    "Physical keyboard/reader/device, full visual equality and all account-screen states remain UNKNOWN/PARTIAL."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "614a663bbfc80f4041f49f8a9752b28ee3a40a8f9f2750348b8760255ef89ac1"
+    },
+    {
+      "file": "flutter-change-503-dark-390.png",
+      "sha256": "f5ae8f749dfd21af2a852407a67e644dbbbb2b16ffac8c4e59e8b0c99e679388"
+    },
+    {
+      "file": "flutter-change-503-light-390.png",
+      "sha256": "a0dfee0e2ffd9802a9d2f0317faf764cb2331b51175e461d0ebd3bafa464690d"
+    },
+    {
+      "file": "flutter-forgot-503-dark-390.png",
+      "sha256": "d18cee00cee65492909d12841e315ce7f8f42caefc64e1f1d247c24265f7e080"
+    },
+    {
+      "file": "flutter-forgot-503-light-390.png",
+      "sha256": "5ed8b885906f78b9568bbcb768044ae231f7f959cb1db053373b1d4cbd3d0931"
+    },
+    {
+      "file": "flutter-reset-503-dark-390.png",
+      "sha256": "594f259aa834baaf45dbae9062b8bccd24d27724d94a3a05dd6db78b9458499a"
+    },
+    {
+      "file": "flutter-reset-503-light-390.png",
+      "sha256": "56078df0cc0f6dcafdfddf2c5883f11e3a024bd6275ec0180706a01434e1b61c"
+    },
+    {
+      "file": "next-change-503-dark-390.png",
+      "sha256": "9286041f55f574e9b5dd801620695df65c32b32b5512b209dcd67fd74a7bdf5c"
+    },
+    {
+      "file": "next-change-503-light-390.png",
+      "sha256": "fdd3436a67c215ae24c6e75c9bbb48ee810dec546d4a34b89d47747678dec2c1"
+    },
+    {
+      "file": "next-forgot-503-dark-390.png",
+      "sha256": "bd94be88d269a17482e535bd5bed842a78e3e67848676a04b13c71eddb461ce5"
+    },
+    {
+      "file": "next-forgot-503-light-390.png",
+      "sha256": "1db73cf62e62a8b03bbc88682efc54eaf04c187ca0b85db668bc9b85c28ee549"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "bee0a7144ef1079cc26f008108482d9b7c358dc91c35bfa79773c8a84dc61ef0"
+    },
+    {
+      "file": "next-reset-503-dark-390.png",
+      "sha256": "b4217e6267e8be2fc032fcceaa8f639115be24597ed08e911bc054a85caa0ea0"
+    },
+    {
+      "file": "next-reset-503-light-390.png",
+      "sha256": "406c93906bc26e837b6d2703e4cdf2b148716d5895147b2252a7eee43c310fee"
+    }
+  ]
+}

@@ -3,6 +3,23 @@
 /// Typed models for admin dashboard, student lists, and statistics.
 library;
 
+class AcademicOptions {
+  final List<String> programs;
+  final List<String> campuses;
+
+  const AcademicOptions({required this.programs, required this.campuses});
+
+  factory AcademicOptions.fromJson(Map<String, dynamic> json) =>
+      AcademicOptions(
+        programs: List<String>.unmodifiable(
+          (json['programs'] as List<dynamic>).cast<String>(),
+        ),
+        campuses: List<String>.unmodifiable(
+          (json['campuses'] as List<dynamic>).cast<String>(),
+        ),
+      );
+}
+
 class AdminStudentListItem {
   final String id;
   final String email;
@@ -70,6 +87,8 @@ class PaginatedResponse<T> {
   final int page;
   final int pageSize;
   final int totalPages;
+  final bool hasNext;
+  final bool hasPrevious;
 
   const PaginatedResponse({
     required this.items,
@@ -77,6 +96,8 @@ class PaginatedResponse<T> {
     required this.page,
     required this.pageSize,
     required this.totalPages,
+    this.hasNext = false,
+    this.hasPrevious = false,
   });
 
   factory PaginatedResponse.fromJson(
@@ -89,8 +110,14 @@ class PaginatedResponse<T> {
           .toList(),
       total: json['total'] as int? ?? 0,
       page: json['page'] as int? ?? 1,
-      pageSize: json['page_size'] as int? ?? 20,
-      totalPages: json['total_pages'] as int? ?? 1,
+      pageSize: json['size'] as int? ?? json['page_size'] as int? ?? 20,
+      totalPages: json['pages'] as int? ?? json['total_pages'] as int? ?? 1,
+      hasNext:
+          json['has_next'] as bool? ??
+          ((json['pages'] as int? ?? json['total_pages'] as int? ?? 1) >
+              (json['page'] as int? ?? 1)),
+      hasPrevious:
+          json['has_previous'] as bool? ?? ((json['page'] as int? ?? 1) > 1),
     );
   }
 }

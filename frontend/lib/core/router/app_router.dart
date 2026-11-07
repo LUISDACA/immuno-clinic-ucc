@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,8 +25,16 @@ import '../../features/admin/presentation/screens/admin_management_screen.dart';
 import '../../features/admin/presentation/screens/vaccine_catalog_screen.dart';
 import '../utils/role_utils.dart';
 
+class _AuthRouterRefresh extends ChangeNotifier {
+  void refresh() => notifyListeners();
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
-  return GoRouter(
+  final authChanges = _AuthRouterRefresh();
+  ref.listen(authStateProvider, (_, _) => authChanges.refresh());
+  ref.onDispose(authChanges.dispose);
+  final router = GoRouter(
+    refreshListenable: authChanges,
     debugLogDiagnostics: false,
     redirect: (context, state) {
       final uri = state.uri;
@@ -193,7 +202,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/admin/communications',
         builder: (context, state) => CommunicationsScreen(
           initialStudentId: state.uri.queryParameters['studentId'],
-          initialStudentName: state.uri.queryParameters['studentName'],
         ),
       ),
       GoRoute(
@@ -207,4 +215,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
+  ref.onDispose(router.dispose);
+  return router;
 });

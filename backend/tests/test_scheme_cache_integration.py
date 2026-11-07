@@ -50,6 +50,8 @@ def _build_dose_and_vaccine(
         name="Hepatitis B",
         code="HEP_B",
         has_titer=False,
+        is_annual=False,
+        rules=[],
         base_doses=1,
     )
     dose = SimpleNamespace(
@@ -161,8 +163,8 @@ async def test_review_dose_without_commit_keeps_cache():
 
 
 @pytest.mark.asyncio
-async def test_evidence_upload_invalidates_student_scheme_cache():
-    """Uploading evidence must invalidate the student's scheme cache."""
+async def test_evidence_upload_does_not_invalidate_clinical_scheme_cache():
+    """Evidence state is separate from the clinical scheme and must not mutate it."""
     student_user_id = uuid.uuid4()
     batch_id = uuid.uuid4()
 
@@ -208,4 +210,4 @@ async def test_evidence_upload_invalidates_student_scheme_cache():
     finally:
         evidence_service_module.validate_pdf_file = original_validator
 
-    assert student_user_id not in cache_module.student_scheme_cache
+    assert cache_module.student_scheme_cache.get(student_user_id) == "stale-after-upload"

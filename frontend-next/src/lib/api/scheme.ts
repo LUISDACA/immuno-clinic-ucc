@@ -24,7 +24,11 @@ export async function getStudentScheme(
 
 export async function reviewDose(
   doseId: string,
-  payload: { status: string; admin_notes?: string | null },
+  payload: { status: "approved" | "denied" | "in_review"; admin_notes?: string | null },
 ): Promise<void> {
   await apiClient.put(`/admin/doses/${doseId}/review`, payload);
+}
+
+export async function updateDoseComment(doseId: string, adminNotes: string | null): Promise<void> {
+  await apiClient.patch(`/admin/doses/${doseId}/comment`, { admin_notes: adminNotes });
 }

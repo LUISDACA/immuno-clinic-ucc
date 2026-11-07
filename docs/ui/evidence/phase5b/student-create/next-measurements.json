@@ -1,0 +1,37 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "email_delivery": "disabled by test fixture",
+  "actual_login_backend": true,
+  "actual_manual_and_import_postgresql": true,
+  "measurements": [
+    {
+      "case": "manual",
+      "actual_postgresql_write": true,
+      "native_invalid_blocked": true,
+      "trusted_enter": true,
+      "duplicate_posts": 1,
+      "calendar_date": "2001-02-28"
+    },
+    {
+      "case": "preview",
+      "theme": "light",
+      "actual_backend_csv": true,
+      "fields_frozen": true
+    },
+    {
+      "case": "preview",
+      "theme": "dark",
+      "actual_backend_csv": true,
+      "fields_frozen": true
+    },
+    {
+      "case": "import",
+      "actual_postgresql_write": true,
+      "duplicate_posts": 1,
+      "preview_consumed": true,
+      "failed_repreview_controlled_503": true,
+      "existing_row_not_confirmable": true
+    }
+  ]
+}

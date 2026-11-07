@@ -3,28 +3,34 @@ import { formatDate } from "@/lib/format";
 export function VaccineDueBadge({
   dueDate,
   days,
+  isOverdue,
+  isDueToday,
 }: {
   dueDate?: string | null;
   days?: number | null;
+  isOverdue?: boolean | null;
+  isDueToday?: boolean | null;
 }) {
   if (!dueDate) return null;
 
   const tone =
     days == null
       ? "var(--info)"
-      : days < 0
+      : isOverdue
         ? "var(--destructive)"
-        : days <= 7
+        : days >= 0 && days <= 7
           ? "var(--warning)"
           : "var(--info)";
   const detail =
     days == null
       ? ""
-      : days === 0
+      : isDueToday
         ? "vence hoy"
         : days > 0
           ? `faltan ${days} dias`
-          : `${Math.abs(days)} dias vencida`;
+          : isOverdue
+            ? `${Math.abs(days)} dias vencida`
+            : "";
 
   return (
     <span

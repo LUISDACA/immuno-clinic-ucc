@@ -18,12 +18,21 @@ Replica la estructura del frontend Flutter (`/frontend`) y consume el mismo back
 
 ```bash
 cd frontend-next
-cp .env.local.example .env.local      # ajusta NEXT_PUBLIC_API_BASE_URL si hace falta
+cp .env.example .env.local            # configura el BFF local
 npm install                            # ya ejecutado durante el scaffold
 npm run dev                            # levanta http://localhost:3000
 ```
 
 El backend debe estar corriendo en `http://localhost:8000` (ver `/backend/README` y la secciÃ³n "Backend" del README raÃ­z).
+
+El navegador solo llama al BFF de Next en `/api`; no configura la URL FastAPI ni
+almacena tokens. El servidor Next necesita `API_INTERNAL_URL`, `BFF_ORIGIN`,
+`BFF_DATABASE_URL` (acceso restringido a `web_sessions`) y `BFF_SESSION_KEY` (32
+bytes aleatorios en base64, distintos de las claves JWT). La migración FastAPI crea
+`web_sessions`; ejecutar las migraciones antes de iniciar el BFF. La cookie de sesión
+es opaca, HttpOnly, SameSite=Lax y Secure en producción. Las mutaciones exigen origen
+esperado y `X-CSRF-Token` obtenido desde `GET /api/auth/csrf`. FastAPI conserva
+autoridad sobre identidad, autorización, rotación y revocación.
 
 ### Scripts
 
@@ -90,7 +99,7 @@ Las 26 rutas del frontend Flutter estÃ¡n funcionales contra el backend FastAPI
 - `/admin/students/[id]` â€” tabs Datos / Esquema / Evidencias; revisiÃ³n de dosis (`PUT /admin/doses/{id}/review`), descarga de certificado, activar/desactivar/eliminar.
 - `/admin/admins` â€” solo `app_admin`: listar/crear/eliminar admins por programa+sede.
 - `/admin/vaccines` â€” solo `app_admin`: catÃ¡logo, crear, activar/desactivar.
-- `/admin/communications` + `/admin/communications/[id]` â€” buscar estudiantes (`GET /communications/recipients`), crear hilo, responder. Soporta `?studentId=&studentName=` para iniciar pre-poblado.
+- `/admin/communications` + `/admin/communications/[id]` â€” buscar estudiantes (`GET /communications/recipients`), crear hilo, responder. Soporta `?studentId=` para iniciar con un estudiante seleccionado; no incluir nombres, correos ni datos clínicos en la URL.
 - `/admin/notifications` â€” `GET /notifications/`.
 - `/admin/profile` â€” perfil propio.
 - `/admin/history` â€” `GET /audit/admin`.

@@ -1,0 +1,53 @@
+{
+  "scope": "B5-M03 Flutter administrator read/write recovery; S20 remains PARTIAL",
+  "institutional_data": false,
+  "production_ready": false,
+  "new_flutter_tests": 26,
+  "new_next_tests": 0,
+  "flutter_golden_references": 4,
+  "reused_next_screenshots": 4,
+  "notes": [
+    "Only one Flutter runtime source changed; no backend, Next runtime, auth, permissions, dependencies, migrations or clinical changes.",
+    "Native widget tests use real screen/datasource plus controlled Dio, not real device transport. Existing 18 Chrome E2E exercise backend/Next regression only.",
+    "Confirmation remains explicit, writes mutually exclusive, stale/error UI is hidden and existing request generation guards remain unchanged.",
+    "Form validation and academic option values remain unchanged; no claim of full S20 equivalence or resolution of optional-name representation difference."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "a23b3b9b2463c711d231dd0d6b9411778747edfe67b7b9fed88b616e68580a87"
+    },
+    {
+      "file": "flutter-get403-dark-390.png",
+      "sha256": "209d594cdc2f28ddac68c1dd3cdff65d0c05466f21723fa93e4201e46433c261"
+    },
+    {
+      "file": "flutter-get403-light-390.png",
+      "sha256": "ad660b81352f1ee1837a36da1a0d3e484b5bba7deb770883686ebaeb93550d65"
+    },
+    {
+      "file": "flutter-get503-dark-390.png",
+      "sha256": "fa81a114de8af9270d87ec62292c12b96657f5ec4417b7c360d3446d6f573c66"
+    },
+    {
+      "file": "flutter-get503-light-390.png",
+      "sha256": "37c5ee646afbea891b6b2a83ff66ffaffd3afe1dafd58e872c18b403efe42bf7"
+    },
+    {
+      "file": "../admin-recovery/next-get403-light-390.png",
+      "sha256": "7e0207dfcc56d391fc006a047c72c89a2d1413c35964ae4f647ec32842b372de"
+    },
+    {
+      "file": "../admin-recovery/next-get503-light-390.png",
+      "sha256": "f3753c50debf3d6f6bb746c13bf14ddc4a7cd352c1e0ff4813e14a99aeb33c68"
+    },
+    {
+      "file": "../admin-recovery/next-get403-dark-390.png",
+      "sha256": "55b840e6250100204568b50caf1c56ba1e0af8ea7cb9b12a540181b47a8eaf41"
+    },
+    {
+      "file": "../admin-recovery/next-get503-dark-390.png",
+      "sha256": "505eedd4fed4b817fe8b6d7e64782fba1f0ff08687ab90e0d2e1ca4d15bb2b00"
+    }
+  ]
+}

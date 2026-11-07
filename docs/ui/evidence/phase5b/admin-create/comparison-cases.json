@@ -1,0 +1,28 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "viewport_width": 390,
+  "pixel_equality_claimed": false,
+  "pairs": [
+    {
+      "role": "app_admin",
+      "theme": "light",
+      "scenario": "Administrator creation form, empty draft",
+      "flutter": "flutter-form-light-390.png",
+      "next": "next-form-light-390.png",
+      "note": "Existing Flutter form uses program/campus dropdowns and requires names; FastAPI names are optional and remain optional in Next. Different platform shell and form height; not full visual parity. Flutter widget has no live backend; web list uses real synthetic PostgreSQL."
+    },
+    {
+      "role": "app_admin",
+      "theme": "dark",
+      "scenario": "Administrator creation form, empty draft",
+      "flutter": "flutter-form-dark-390.png",
+      "next": "next-form-dark-390.png",
+      "note": "Existing Flutter form uses program/campus dropdowns and requires names; FastAPI names are optional and remain optional in Next. Different platform shell and form height; not full visual parity. Flutter widget has no live backend; web list uses real synthetic PostgreSQL."
+    }
+  ],
+  "unpaired_next_states": [
+    "pending-dark",
+    "success-dark"
+  ]
+}

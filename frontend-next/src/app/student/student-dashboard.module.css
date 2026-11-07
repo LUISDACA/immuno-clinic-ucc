@@ -1,0 +1,62 @@
+.dashboard {
+  container-type: inline-size;
+  position: relative;
+  z-index: 0;
+}
+
+@container (max-width: 22rem) {
+  .hero > div > div:last-child {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .hero > div > div:last-child > div:nth-child(2) {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  .hero > div > div:last-child > div:last-child {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .hero img {
+    width: 3rem;
+    height: auto;
+  }
+
+  .hero :is(h1, p),
+  .statsHeading h2,
+  .action :is(h3, p) {
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .statsHeading > div {
+    flex-wrap: wrap;
+  }
+
+  .statsHeading h2 {
+    flex-basis: calc(100% - 2rem);
+  }
+
+  .statsHeading > div > div {
+    margin-left: auto;
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .action > div > div > div {
+    flex-direction: column;
+  }
+
+  .action > div > div > div > div {
+    width: 100%;
+  }
+
+  .action p {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+  }
+}

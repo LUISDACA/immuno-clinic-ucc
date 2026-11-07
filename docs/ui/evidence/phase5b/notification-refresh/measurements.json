@@ -1,0 +1,50 @@
+[
+  {
+    "role": "student",
+    "theme": "light",
+    "width": 390,
+    "source": "controlled-CDP-503-delayed-retry-200-403-503-navigation-200",
+    "retained": true,
+    "retry_requests": 1,
+    "forbidden_hides_data": true,
+    "denial_survives_transient_error": true,
+    "navigation_preserves_denial": true,
+    "css_zoom_is_not_native_zoom": true
+  },
+  {
+    "role": "student",
+    "theme": "dark",
+    "width": 390,
+    "source": "controlled-CDP-503-delayed-retry-200-403-503-navigation-200",
+    "retained": true,
+    "retry_requests": 1,
+    "forbidden_hides_data": true,
+    "denial_survives_transient_error": true,
+    "navigation_preserves_denial": true,
+    "css_zoom_is_not_native_zoom": true
+  },
+  {
+    "role": "admin",
+    "theme": "light",
+    "width": 390,
+    "source": "controlled-CDP-503-delayed-retry-200-403-503-navigation-200",
+    "retained": true,
+    "retry_requests": 1,
+    "forbidden_hides_data": true,
+    "denial_survives_transient_error": true,
+    "navigation_preserves_denial": true,
+    "css_zoom_is_not_native_zoom": true
+  },
+  {
+    "role": "admin",
+    "theme": "dark",
+    "width": 390,
+    "source": "controlled-CDP-503-delayed-retry-200-403-503-navigation-200",
+    "retained": true,
+    "retry_requests": 1,
+    "forbidden_hides_data": true,
+    "denial_survives_transient_error": true,
+    "navigation_preserves_denial": true,
+    "css_zoom_is_not_native_zoom": true
+  }
+]

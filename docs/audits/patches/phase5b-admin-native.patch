@@ -1,0 +1,238 @@
+--- a/frontend/lib/features/admin/presentation/screens/admin_management_screen.dart
++++ b/frontend/lib/features/admin/presentation/screens/admin_management_screen.dart
+@@ -7 +6,0 @@
+-import '../../../../core/error/api_error_message.dart';
+@@ -20 +19 @@
+-  final _formKey = GlobalKey<FormState>();
++  var _formKey = GlobalKey<FormState>();
+@@ -30 +29,7 @@
+-  String? _error;
++  bool _deleting = false;
++  bool _hasLoaded = false;
++  String? _readError;
++  String? _writeError;
++  String? _confirmedChange;
++  Future<void>? _inFlightLoad;
++  bool get _busy => _loading || _saving || _deleting;
+@@ -49,4 +54,9 @@
+-  Future<void> _load() async {
+-    setState(() {
+-      _loading = true;
+-      _error = null;
++  Future<void> _load({bool afterWrite = false}) {
++    if (!mounted || (!afterWrite && (_saving || _deleting))) {
++      return Future.value();
++    }
++    if (_inFlightLoad != null) return _inFlightLoad!;
++    final load = _performLoad();
++    _inFlightLoad = load;
++    load.whenComplete(() {
++      if (identical(_inFlightLoad, load)) _inFlightLoad = null;
+@@ -53,0 +64,5 @@
++    return load;
++  }
++
++  Future<void> _performLoad() async {
++    setState(() => _loading = true);
+@@ -58,0 +74,3 @@
++        _hasLoaded = true;
++        _readError = null;
++        _confirmedChange = null;
+@@ -62,0 +81 @@
++      final status = e is DioException ? e.response?.statusCode : null;
+@@ -64 +83,10 @@
+-        _error = 'No se pudieron cargar los administradores';
++        _readError = switch (status) {
++          401 => 'Tu sesión expiró. Inicia sesión nuevamente.',
++          403 => 'No tienes permiso para consultar esta información.',
++          404 => 'No se encontró la información solicitada.',
++          429 => 'Demasiadas solicitudes. Espera antes de reintentar.',
++          500 => 'Ocurrió un error en el servidor. Intenta nuevamente.',
++          503 => 'El servicio no está disponible temporalmente.',
++          _ =>
++            'No se pudo cargar la información. Comprueba la conexión y reintenta.',
++        };
+@@ -71 +99,14 @@
+-    if (!_formKey.currentState!.validate()) return;
++    if (_busy ||
++        _readError != null ||
++        _formKey.currentState?.validate() != true) {
++      return;
++    }
++    final payload = <String, dynamic>{
++      'email': _email.text.trim(),
++      'password': _password.text,
++      'first_name': _firstName.text.trim(),
++      'last_name': _lastName.text.trim(),
++      'job_title': _jobTitle.text.trim().isEmpty ? null : _jobTitle.text.trim(),
++      'program': _program,
++      'campus': _campus,
++    };
+@@ -74 +115,2 @@
+-      _error = null;
++      _writeError = null;
++      _confirmedChange = null;
+@@ -77,11 +119,2 @@
+-      await ref.read(adminRemoteDataSourceProvider).createAdmin({
+-        'email': _email.text.trim(),
+-        'password': _password.text,
+-        'first_name': _firstName.text.trim(),
+-        'last_name': _lastName.text.trim(),
+-        'job_title': _jobTitle.text.trim().isEmpty
+-            ? null
+-            : _jobTitle.text.trim(),
+-        'program': _program,
+-        'campus': _campus,
+-      });
++      await ref.read(adminRemoteDataSourceProvider).createAdmin(payload);
++      if (!mounted) return;
+@@ -95,0 +129,3 @@
++        _formKey = GlobalKey<FormState>();
++        _confirmedChange =
++            'El administrador se creó, pero no se pudo actualizar la lista.';
+@@ -97,5 +133,5 @@
+-      await _load();
+-    } on DioException catch (e) {
+-      setState(() {
+-        _error = apiErrorMessageFromData(e.response?.data) ?? 'Error';
+-      });
++      await _load(afterWrite: true);
++    } catch (_) {
++      if (mounted) {
++        setState(() => _writeError = 'No se pudo crear el administrador.');
++      }
+@@ -108,20 +144,2 @@
+-    final confirm = await showDialog<bool>(
+-      context: context,
+-      builder: (ctx) => AlertDialog(
+-        title: const Text('Eliminar administrador'),
+-        content: const Text('Esta cuenta de administrador sera eliminada.'),
+-        actions: [
+-          TextButton(
+-            onPressed: () => Navigator.pop(ctx, false),
+-            child: const Text('Cancelar'),
+-          ),
+-          FilledButton(
+-            onPressed: () => Navigator.pop(ctx, true),
+-            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
+-            child: const Text('Eliminar'),
+-          ),
+-        ],
+-      ),
+-    );
+-    if (confirm != true) return;
+-
++    if (_busy || _readError != null || adminId.isEmpty) return;
++    setState(() => _deleting = true);
+@@ -128,0 +147,23 @@
++      final confirm = await showDialog<bool>(
++        context: context,
++        builder: (ctx) => AlertDialog(
++          title: const Text('Eliminar administrador'),
++          content: const Text('Esta cuenta de administrador sera eliminada.'),
++          actions: [
++            TextButton(
++              onPressed: () => Navigator.pop(ctx, false),
++              child: const Text('Cancelar'),
++            ),
++            FilledButton(
++              onPressed: () => Navigator.pop(ctx, true),
++              style: FilledButton.styleFrom(backgroundColor: AppColors.error),
++              child: const Text('Eliminar'),
++            ),
++          ],
++        ),
++      );
++      if (!mounted || confirm != true) return;
++      setState(() {
++        _writeError = null;
++        _confirmedChange = null;
++      });
+@@ -130,2 +170,0 @@
+-      await _load();
+-    } catch (e) {
+@@ -133,3 +172,11 @@
+-      ScaffoldMessenger.of(
+-        context,
+-      ).showSnackBar(SnackBar(content: Text('No se pudo eliminar: $e')));
++      setState(() {
++        _confirmedChange =
++            'El administrador se eliminó, pero no se pudo actualizar la lista.';
++      });
++      await _load(afterWrite: true);
++    } catch (_) {
++      if (mounted) {
++        setState(() => _writeError = 'No se pudo eliminar el administrador.');
++      }
++    } finally {
++      if (mounted) setState(() => _deleting = false);
+@@ -139,0 +187 @@
++    if (_busy || _readError != null) return;
+@@ -253 +301,27 @@
+-      body: _loading
++      body: _readError != null
++          ? Center(
++              child: Padding(
++                padding: const EdgeInsets.all(16),
++                child: Column(
++                  mainAxisSize: MainAxisSize.min,
++                  children: [
++                    if (_confirmedChange != null)
++                      Semantics(
++                        liveRegion: true,
++                        child: Text(_confirmedChange!),
++                      ),
++                    if (_writeError != null)
++                      Semantics(liveRegion: true, child: Text(_writeError!)),
++                    Semantics(liveRegion: true, child: Text(_readError!)),
++                    TextButton(
++                      style: TextButton.styleFrom(
++                        foregroundColor: colorScheme.onSurface,
++                      ),
++                      onPressed: _loading ? null : () => _load(),
++                      child: const Text('Reintentar'),
++                    ),
++                  ],
++                ),
++              ),
++            )
++          : _loading && !_hasLoaded
+@@ -257,0 +332 @@
++                physics: const AlwaysScrollableScrollPhysics(),
+@@ -274,0 +350 @@
++                              enabled: !_busy,
+@@ -284,0 +361 @@
++                              enabled: !_busy,
+@@ -298,0 +376 @@
++                                    enabled: !_busy,
+@@ -310,0 +389 @@
++                                    enabled: !_busy,
+@@ -323,0 +403 @@
++                              enabled: !_busy,
+@@ -343,2 +423,3 @@
+-                              onChanged: (value) =>
+-                                  setState(() => _program = value),
++                              onChanged: _busy
++                                  ? null
++                                  : (value) => setState(() => _program = value),
+@@ -362,2 +443,3 @@
+-                              onChanged: (value) =>
+-                                  setState(() => _campus = value),
++                              onChanged: _busy
++                                  ? null
++                                  : (value) => setState(() => _campus = value),
+@@ -367 +449 @@
+-                            if (_error != null) ...[
++                            if (_writeError != null) ...[
+@@ -370 +452 @@
+-                                _error!,
++                                _writeError!,
+@@ -376 +458 @@
+-                              onPressed: _saving ? null : _create,
++                              onPressed: _busy ? null : _create,
+@@ -448 +530 @@
+-                                onPressed: adminId.isEmpty
++                                onPressed: _busy || adminId.isEmpty
+@@ -458 +540 @@
+-                                onPressed: adminId.isEmpty
++                                onPressed: _busy || adminId.isEmpty

@@ -32,7 +32,7 @@ const themeInitScript = `
     var mode = 'system';
     if (raw) {
       var parsed = JSON.parse(raw);
-      if (parsed && parsed.state && parsed.state.mode) mode = parsed.state.mode;
+      if (parsed && parsed.state && ['system', 'light', 'dark'].indexOf(parsed.state.mode) >= 0) mode = parsed.state.mode;
     }
     document.documentElement.setAttribute('data-theme', mode);
   } catch (e) {

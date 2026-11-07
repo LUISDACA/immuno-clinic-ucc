@@ -1,0 +1,314 @@
+{
+  "scope": "B5-P01 profile initial load; B5-P02 student-profile text/reflow/query retry",
+  "institutional_data": false,
+  "production_ready": false,
+  "flutter_golden_references": 24,
+  "next_after_screenshots": 44,
+  "next_before_screenshots": 1,
+  "next_cases": 46,
+  "flutter_scale": "TextScaler 1/2",
+  "next_scale": "CSS zoom 1/2; not native browser zoom",
+  "next_widths": [
+    320,
+    390,
+    768,
+    1440
+  ],
+  "next_reflow_scenes": 32,
+  "notes": [
+    "Native device accessibility, virtual keyboard, real browser zoom and overall gradient contrast remain unverified.",
+    "Only student profile presentation and its exact-route shell layout changed.",
+    "Admin signature/certificate features untouched.",
+    "Profile background-refresh and failed-post-read draft behavior are not closed by these initial-state/reflow tests."
+  ],
+  "references": [
+    {
+      "file": "after-next-403-dark-390.png",
+      "sha256": "5c1a28e60c4039701389b2f863b2cf0eb14857824185eed0ad91e7e8a71e4253"
+    },
+    {
+      "file": "after-next-403-light-390.png",
+      "sha256": "814410565e189219813f168acc5f819b1cb1fe0cb4bc034fcc63c2663d08caf1"
+    },
+    {
+      "file": "after-next-404-dark-390.png",
+      "sha256": "1218ac71bf44521710045cc094c6bb4a3c43b25c0837d92baa8556f6005ed468"
+    },
+    {
+      "file": "after-next-404-light-390.png",
+      "sha256": "19019202ea5bb366401da9c738c002e29934dafc46b3a961dc12f1ffa2c2eddb"
+    },
+    {
+      "file": "after-next-429-dark-390.png",
+      "sha256": "c43f38af5df00952bde8f35e2e5f8be4aef65d1ab6adcfd2869f8754bc17356b"
+    },
+    {
+      "file": "after-next-429-light-390.png",
+      "sha256": "95a2143916e2307ed58d3b34ce9e0ae424518cddf96f4337ee46511e80508333"
+    },
+    {
+      "file": "after-next-503-dark-390.png",
+      "sha256": "db5a8b479602e37e413c1ed76a0c21c1b0a17b2ec5364f9bca1a6fd9c671a322"
+    },
+    {
+      "file": "after-next-503-light-390.png",
+      "sha256": "f21f194580e1cecf1e041dde2ef383531712a38dd75cae478c835febc0f83a96"
+    },
+    {
+      "file": "after-next-absent-dark-390.png",
+      "sha256": "eb2498164b506e9dc9b133c70f33596ad74c53cb496b7f00933eea839faf16d7"
+    },
+    {
+      "file": "after-next-absent-light-390.png",
+      "sha256": "532067246105f8e7cfddac6f6490178be080038862b16111e051e554e68d5df8"
+    },
+    {
+      "file": "after-next-data-dark-1440-csszoom1.png",
+      "sha256": "5f21f89c9c6aed52311e31ccd6bcb739932f9d1629dc41fa1c0954951e1ce310"
+    },
+    {
+      "file": "after-next-data-dark-1440-csszoom2.png",
+      "sha256": "9f85a840e81be6cfd463f36b4a96e113a787247f0268bb27062bc82875bf3dd2"
+    },
+    {
+      "file": "after-next-data-dark-320-csszoom1.png",
+      "sha256": "b864a817d71071eead99e04fd52e26d7e94768c45205dd14aa938e98016ffc58"
+    },
+    {
+      "file": "after-next-data-dark-320-csszoom2.png",
+      "sha256": "8c74a375a2bb1b3ed9a4eb171da32ab7633e171fd4c3b02841d89caa3561b345"
+    },
+    {
+      "file": "after-next-data-dark-390-csszoom1.png",
+      "sha256": "2be1ba3c00cfd05fcf5c5c66bb48266d7319209e6b8ad736618b2ddb91595c2c"
+    },
+    {
+      "file": "after-next-data-dark-390-csszoom2.png",
+      "sha256": "248019225262f2647279306af47388509838e04d2f7c67a7584ec6696b725f3c"
+    },
+    {
+      "file": "after-next-data-dark-768-csszoom1.png",
+      "sha256": "a74aadc086ad6c66e780dca192ad402bcaefdcaf578a58f280248da1fdafa5fb"
+    },
+    {
+      "file": "after-next-data-dark-768-csszoom2.png",
+      "sha256": "62aff5b959aadcc86cb3e95136c728ff802731370b28f27ce836ae42cc3a0d7c"
+    },
+    {
+      "file": "after-next-data-light-1440-csszoom1.png",
+      "sha256": "1eb682cee9f31c3ded3cc6e71787bc6b6653df035470a32e71a95e7450f8c304"
+    },
+    {
+      "file": "after-next-data-light-1440-csszoom2.png",
+      "sha256": "db37481f66adff3344fe190623ed3cb95a553f0421f16d12b989962c8a11c950"
+    },
+    {
+      "file": "after-next-data-light-320-csszoom1.png",
+      "sha256": "404e9223f810e9d30952c435f37eb2b5a3bfdfcf67d20c1c459420c3b7e68d75"
+    },
+    {
+      "file": "after-next-data-light-320-csszoom2.png",
+      "sha256": "da48be983e7542cd17ab08e049905bc340989f8a44b1584bc8736a6f9faed434"
+    },
+    {
+      "file": "after-next-data-light-390-csszoom1.png",
+      "sha256": "8b642b85311c472242da86475aefa2a1c5b58805297728502e91f28263e0c07f"
+    },
+    {
+      "file": "after-next-data-light-390-csszoom2.png",
+      "sha256": "21d28380783165a3ff159176b34d4c517bb3edb44ac7975d0a0015e997ccd170"
+    },
+    {
+      "file": "after-next-data-light-768-csszoom1.png",
+      "sha256": "7dd257e53accf924f23b2aac2d049a0539478b15318b7e093ae5ace92268e8de"
+    },
+    {
+      "file": "after-next-data-light-768-csszoom2.png",
+      "sha256": "04f566ecfb65b815212abfa97518ebcca7c3faaf08cf3d509fc20c4d437cb1ce"
+    },
+    {
+      "file": "after-next-editing-dark-1440-csszoom1.png",
+      "sha256": "c2a7d80bcaeec265f7be7fbc1aa78f19e428d5d9828323abb6186ed0b103a0b0"
+    },
+    {
+      "file": "after-next-editing-dark-1440-csszoom2.png",
+      "sha256": "57794fb6069abfa4889303e0c882295e9fdeb03e8ae0f21d2fc82254fd522ce5"
+    },
+    {
+      "file": "after-next-editing-dark-320-csszoom1.png",
+      "sha256": "a4d138e670e02d37375a7fb144ce3e641ce579d76ce1180060e46c8e39d2e300"
+    },
+    {
+      "file": "after-next-editing-dark-320-csszoom2.png",
+      "sha256": "a5329ad88d970b1623c494aa6942b731708c4f52b170fb757e1718f3ba0883d0"
+    },
+    {
+      "file": "after-next-editing-dark-390-csszoom1.png",
+      "sha256": "7e354190396f475d8acc340820dc58fd256afe02e625ce6fa515188bb26f5c44"
+    },
+    {
+      "file": "after-next-editing-dark-390-csszoom2.png",
+      "sha256": "2c07cd808be233cc68be16f7859961d3ddea7e3e904a33638cc5bd3ad955058e"
+    },
+    {
+      "file": "after-next-editing-dark-768-csszoom1.png",
+      "sha256": "82430ac38cdf877cd465334444f2c0445d88c261d2a878a558f78708b8016edf"
+    },
+    {
+      "file": "after-next-editing-dark-768-csszoom2.png",
+      "sha256": "e620742992dade875ca11e9be2f6b1310fc845b8ebfd450cedd44daece8cfaf1"
+    },
+    {
+      "file": "after-next-editing-light-1440-csszoom1.png",
+      "sha256": "4462ec005c5890b9b0c7ee5912de74317a672dacd3a4642b3de463c59131b919"
+    },
+    {
+      "file": "after-next-editing-light-1440-csszoom2.png",
+      "sha256": "acc1e92c7e472f99c2cef18cf62449edd039505c4d6ea8155a8f920edc579aaf"
+    },
+    {
+      "file": "after-next-editing-light-320-csszoom1.png",
+      "sha256": "807019b0238871c9cd5c3fd11d04e7819818794245475e64323b39a322e0a1f8"
+    },
+    {
+      "file": "after-next-editing-light-320-csszoom2.png",
+      "sha256": "2ffacf376f03e4d48f534b3c690a031da2a355b1ea45f7c63d97d31a19c82536"
+    },
+    {
+      "file": "after-next-editing-light-390-csszoom1.png",
+      "sha256": "1a02b862fe2f29f98b1699aba52a79cc8df33f2722e31c3d83bf8ace1138fa1e"
+    },
+    {
+      "file": "after-next-editing-light-390-csszoom2.png",
+      "sha256": "a6fe11b4ecc543b113210bacd5cc56791b5620e68df9a0f66b5af8436cd97e90"
+    },
+    {
+      "file": "after-next-editing-light-768-csszoom1.png",
+      "sha256": "6143d55ec1bc8657845c08f96571ca7043c083ebeaf8352f55e628716958bcd2"
+    },
+    {
+      "file": "after-next-editing-light-768-csszoom2.png",
+      "sha256": "19286f5a6b1563b035a115d51df756c5e5903e17db29212c9bd60f3293e5d8bb"
+    },
+    {
+      "file": "after-next-loading-dark-390.png",
+      "sha256": "8726397572e7a489d6fd632fac4a5a3422808b8f1e0c18cb7d703405f056ccb9"
+    },
+    {
+      "file": "after-next-loading-light-390.png",
+      "sha256": "41762ccfba4a281e028a1d2c98762c75028b7dad013e4550aa555351dc43e40f"
+    },
+    {
+      "file": "after-next-measurements.json",
+      "sha256": "9a91165515b64568a2453bc4ddfeb105f13c53b46b7198365e14e9e81e6d55ac"
+    },
+    {
+      "file": "before-next-data-light-320-csszoom1.png",
+      "sha256": "e74fc5e8f11c2a60807c1d2113048b052385215f7706f5cb7f0734ec18c4d773"
+    },
+    {
+      "file": "before-next-measurements.json",
+      "sha256": "05999315de6b3bf376632b5cc858bc8ae651a463b8334cf85627d9c93c825330"
+    },
+    {
+      "file": "comparison-cases.json",
+      "sha256": "e2e348fdfbff859e4e2cf09f6f3f51c2ad2cdddd8d504f9d8385f9292f9da568"
+    },
+    {
+      "file": "flutter-dark-absent-390.png",
+      "sha256": "7cbe8dfd93feede534b7ebecc99d64b7aa7e55859b1135a6c95a3303511fd1c0"
+    },
+    {
+      "file": "flutter-dark-data-320-text1.png",
+      "sha256": "c95e221ba4483458701644b310e5719d90753f81fa0904f7b93d87a2f32fd05e"
+    },
+    {
+      "file": "flutter-dark-data-320-text2.png",
+      "sha256": "36b836505f9377e0be6c4219c350a174712164f9c405132bcab1bca7507cd724"
+    },
+    {
+      "file": "flutter-dark-data-390-text1.png",
+      "sha256": "fdc45cf48334c494683f8f5d909dce8fb9ecae2624ae9b340dcd6297c59d93f3"
+    },
+    {
+      "file": "flutter-dark-data-390-text2.png",
+      "sha256": "1f5de8409ce9610fca85a04550d427e052ee718f3e916c95990aac12b45a9619"
+    },
+    {
+      "file": "flutter-dark-details-320-text1.png",
+      "sha256": "17d726dd9dff97f28adceb8fd4ab79c384a4cf2f2cded4a91b754a5e078d021c"
+    },
+    {
+      "file": "flutter-dark-details-320-text2.png",
+      "sha256": "ead385daa79636ba9d7f4fc73ac0785b5721270bbe344d9381ead2ec2ff01e88"
+    },
+    {
+      "file": "flutter-dark-details-390-text1.png",
+      "sha256": "41bc8f4376fff27e48e0efdef9fd4a1ed3bd57f4998668cc91df0ae2b3fe129f"
+    },
+    {
+      "file": "flutter-dark-details-390-text2.png",
+      "sha256": "6357207cbbd620fad90056f0b99dafd95238ee8f45695e27a7e3cdec5ec3eee6"
+    },
+    {
+      "file": "flutter-dark-error-390.png",
+      "sha256": "cf3ee0fa43ee06a2335abd75dc9d89c78417cb8233712ca665d9743632e20e88"
+    },
+    {
+      "file": "flutter-dark-loading-390.png",
+      "sha256": "6c4ce6a8f29677b17569b8b7384af2fdf954e152c13759e9e2e44507d4f7889a"
+    },
+    {
+      "file": "flutter-dark-retrying-390.png",
+      "sha256": "dd2c225af230ecb761ce5ddda101aa385e0166c65d84fef853608592fcde0564"
+    },
+    {
+      "file": "flutter-light-absent-390.png",
+      "sha256": "c63b185202bb8ebf36e2e988965f583f2880a0a256437e8e0bc49ec1be5a8e7c"
+    },
+    {
+      "file": "flutter-light-data-320-text1.png",
+      "sha256": "5fa3d7a0a8dfa7e0b8d2ea1e9c7d97cbeb59ac50d4cc3bb1e460d9cd65318eb8"
+    },
+    {
+      "file": "flutter-light-data-320-text2.png",
+      "sha256": "3effb92d5061e693bdbaeb0606e8c00444605a29aba9a2b40e3da0c0529a64e2"
+    },
+    {
+      "file": "flutter-light-data-390-text1.png",
+      "sha256": "c9ef0a28148fd764e7393da6a975f85e57f78a857ac4f94929eaaab9480e0639"
+    },
+    {
+      "file": "flutter-light-data-390-text2.png",
+      "sha256": "8ea7f467aeceb173aefa110827300bc1a983b3f1e5bc4321683ed09d43da7a9c"
+    },
+    {
+      "file": "flutter-light-details-320-text1.png",
+      "sha256": "0df113f0ea7ec1fa861c911d7a3fa6f5dda16e2f3cae46f0e9e7321530101ae5"
+    },
+    {
+      "file": "flutter-light-details-320-text2.png",
+      "sha256": "46650dbec0ad40218635a582dca7ed4ce85789a80e85050391c901a8e0790a21"
+    },
+    {
+      "file": "flutter-light-details-390-text1.png",
+      "sha256": "3c22b0d429168162c243b3c922b549d8fe1369814112a81627f51d63e55b0ce0"
+    },
+    {
+      "file": "flutter-light-details-390-text2.png",
+      "sha256": "1c44e4ca7d072a89bd7e1423b72fb6a392739e66fc5b85ee5207653607d3fd1c"
+    },
+    {
+      "file": "flutter-light-error-390.png",
+      "sha256": "d238b545d2c8052485bd778b93771a4f86f9706f1ba56b9279dfb5fe39a21a86"
+    },
+    {
+      "file": "flutter-light-loading-390.png",
+      "sha256": "991440f03be2ad2507c7ef1a7c65b8c4ecce009ef141bb316ee61bb4598c24d6"
+    },
+    {
+      "file": "flutter-light-retrying-390.png",
+      "sha256": "8bc5d56d687cae849255b004f6d37ab76e95e03510e5938aa110e5f777593881"
+    }
+  ]
+}

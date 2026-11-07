@@ -1,13 +1,17 @@
 "use client";
+import { Pagination } from "@/components/pagination";
+import { usePrivateSearch, useDebounced } from "@/lib/ui/list-state";
+import { QueryError } from "@/components/query-error";
 
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { cloneElement, ReactElement, Suspense, createContext, useContext, useId, useMemo, useState } from "react";
 import { ChevronDown, FileSpreadsheet, Users } from "lucide-react";
 import { toast } from "sonner";
 import {
   downloadStudentsExport,
-  listAllStudents,
+  getAcademicOptions,
+  listStudents,
   ListStudentsParams,
 } from "@/lib/api/admin";
 import { AdminStudentListItem } from "@/lib/api/types";
@@ -21,9 +25,13 @@ import {
   DataState,
   PageSurface,
   PageToolbar,
-  RetryButton,
   SkeletonCard,
 } from "@/components/ui/page";
+
+import { useRouter, useSearchParams } from "next/navigation";
+import { studentListFilters, studentListUrl } from "@/lib/navigation";
+
+const ListLocation = createContext("/admin/students");
 
 interface Filters {
   search: string;
@@ -31,6 +39,8 @@ interface Filters {
   vaccination_status: string;
   semester: string;
   sex: string;
+  page: string;
+  context?: string;
 }
 
 const EMPTY_FILTERS: Filters = {
@@ -39,14 +49,29 @@ const EMPTY_FILTERS: Filters = {
   vaccination_status: "",
   semester: "",
   sex: "",
+  page: "1",
 };
 
-export default function AdminStudentsPage() {
-  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+export default function Page() { return <Suspense fallback={<p>Cargando…</p>}><StudentsFromUrl /></Suspense>; }
+function StudentsFromUrl() {
+  const params = useSearchParams();
+  const initial = studentListFilters(params);
+  return <AdminStudentsPage initial={initial} />;
+}
+function AdminStudentsPage({ initial }: { initial: Filters }) {
+  const router = useRouter();
+  const [search, setSearch, context] = usePrivateSearch("students");
+  const debouncedSearch = useDebounced(search);
+  const filters = { ...initial, search, context };
+  const setFilters = (next: Filters, resetPage = true) => { const context=setSearch(next.search); router.push(studentListUrl({...next,context,page:resetPage ? "1" : next.page}), {scroll:false}); };
   const [exporting, setExporting] = useState(false);
+  const academicOptions = useQuery({
+    queryKey: ["academic-options"],
+    queryFn: getAcademicOptions,
+  });
 
   const params: Omit<ListStudentsParams, "page" | "page_size"> = {
-    search: filters.search || undefined,
+    search: debouncedSearch || undefined,
     is_active:
       filters.is_active === "true"
         ? true
@@ -58,15 +83,15 @@ export default function AdminStudentsPage() {
       | "pending"
       | undefined,
     semester: filters.semester ? Number(filters.semester) : undefined,
-    sex: (filters.sex || undefined) as "male" | "female" | "other" | undefined,
+    sex: (filters.sex || undefined) as "male" | "female" | undefined,
   };
 
-  const { data, isError, isLoading, refetch } = useQuery({
-    queryKey: ["admin", "students", "grouped", params],
-    queryFn: () => listAllStudents(params),
+  const { data, error, isError, isLoading, refetch } = useQuery({
+    queryKey: ["admin", "students", "page", params, initial.page],
+    queryFn: () => listStudents({...params, page:Number(initial.page), page_size:20}),
   });
 
-  const groups = useMemo(() => groupBySemester(data ?? []), [data]);
+  const groups = useMemo(() => groupBySemester(data?.items ?? []), [data]);
 
   async function onExport() {
     setExporting(true);
@@ -90,7 +115,7 @@ export default function AdminStudentsPage() {
   }
 
   return (
-    <PageSurface>
+    <ListLocation.Provider value={studentListUrl(filters)}><PageSurface>
       <PageToolbar
         title="Estudiantes"
         description="Listado agrupado por semestre con filtros rapidos."
@@ -115,6 +140,7 @@ export default function AdminStudentsPage() {
           <Field label="Buscar">
             <Input
               value={filters.search}
+              aria-label="Buscar estudiantes"
               placeholder="Nombre, email..."
               onChange={(e) =>
                 setFilters({ ...filters, search: e.target.value })
@@ -153,11 +179,14 @@ export default function AdminStudentsPage() {
               }
             >
               <option value="">Todos</option>
-              {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => (
+              {academicOptions.data?.semesters.map((n) => (
                 <option key={n} value={n}>
                   {n}
                 </option>
               ))}
+              {filters.semester && !academicOptions.data?.semesters.includes(Number(filters.semester)) && (
+                <option value={filters.semester}>Semestre actual ({filters.semester})</option>
+              )}
             </Select>
           </Field>
           <Field label="Sexo">
@@ -168,7 +197,6 @@ export default function AdminStudentsPage() {
               <option value="">Todos</option>
               <option value="male">Masculino</option>
               <option value="female">Femenino</option>
-              <option value="other">Otro</option>
             </Select>
           </Field>
           <div className="sm:col-span-2 lg:col-span-5">
@@ -181,8 +209,11 @@ export default function AdminStudentsPage() {
             </Button>
           </div>
         </CardContent>
+        {academicOptions.isLoading && <p role="status" className="px-6 pb-4 text-sm text-muted-foreground">Cargando opciones académicas…</p>}
+        {academicOptions.error && <div className="px-6 pb-4"><QueryError error={academicOptions.error} retry={() => academicOptions.refetch({ cancelRefetch: false })} retrying={academicOptions.isFetching} /></div>}
       </Card>
 
+      <Pagination data={data} page={Number(initial.page)} onPage={page=>setFilters({...filters,page:String(page)},false)} refresh={refetch} busy={isLoading} />
       {isLoading ? (
         <div className="grid gap-3">
           <SkeletonCard rows={4} />
@@ -190,12 +221,7 @@ export default function AdminStudentsPage() {
           <SkeletonCard rows={4} />
         </div>
       ) : isError ? (
-        <DataState
-          type="error"
-          title="No se pudo cargar la lista"
-          description="Revisa la conexion con el servidor e intenta de nuevo."
-          action={<RetryButton onClick={() => refetch()} />}
-        />
+        <QueryError error={error} retry={refetch} />
       ) : groups.length === 0 ? (
         <DataState
           type="empty"
@@ -218,7 +244,7 @@ export default function AdminStudentsPage() {
           ))}
         </div>
       )}
-    </PageSurface>
+    </PageSurface></ListLocation.Provider>
   );
 }
 
@@ -232,7 +258,14 @@ function SemesterGroup({
   const approved = group.students.filter(
     (student) => student.vaccination_status === "approved",
   ).length;
-  const pending = group.students.length - approved;
+  const pending = group.students.filter(
+    (student) =>
+      student.vaccination_status === "pending" ||
+      student.vaccination_status === "in_review",
+  ).length;
+  const denied = group.students.filter(
+    (student) => student.vaccination_status === "denied",
+  ).length;
 
   return (
     <details
@@ -251,10 +284,13 @@ function SemesterGroup({
             </p>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <Badge variant="success">{approved} completos</Badge>
+        <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
+          <Badge variant="success">{approved} aprobados</Badge>
           <Badge variant={pending > 0 ? "warning" : "muted"}>
             {pending} pendientes
+          </Badge>
+          <Badge variant={denied > 0 ? "destructive" : "muted"}>
+            {denied} denegados
           </Badge>
           <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
         </div>
@@ -290,16 +326,17 @@ function SemesterGroup({
 }
 
 function StudentMobileCard({ student }: { student: AdminStudentListItem }) {
+  const returnTo = useContext(ListLocation);
   const fullName = studentName(student) || "-";
-  const complete = student.vaccination_status === "approved";
+  const status = studentStatus(student.vaccination_status);
 
   return (
-    <Link href={`/admin/students/${student.id}`} className="block">
+    <Link href={`/admin/students/${student.id}?returnTo=${encodeURIComponent(returnTo)}`} className="block">
       <div className="rounded-lg border border-[color:var(--divider)] bg-[color:var(--surface-variant)]/60 p-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="truncate text-sm font-bold">{fullName}</p>
-            <p className="truncate text-xs text-muted-foreground">
+            <p className="break-words text-sm font-bold">{fullName}</p>
+            <p className="break-words text-xs text-muted-foreground">
               {student.email}
             </p>
           </div>
@@ -313,9 +350,7 @@ function StudentMobileCard({ student }: { student: AdminStudentListItem }) {
               {student.profile.program}
             </span>
           )}
-          <Badge variant={complete ? "success" : "warning"}>
-            {complete ? "Completo" : "Pendiente"}
-          </Badge>
+          <Badge variant={status.variant}>{status.label}</Badge>
         </div>
       </div>
     </Link>
@@ -323,9 +358,11 @@ function StudentMobileCard({ student }: { student: AdminStudentListItem }) {
 }
 
 function StudentRow({ student }: { student: AdminStudentListItem }) {
+  const returnTo = useContext(ListLocation);
   const fullName = student.profile
     ? `${student.profile.first_name} ${student.profile.last_name}`.trim()
     : "-";
+  const status = studentStatus(student.vaccination_status);
 
   return (
     <tr className="border-t border-[color:var(--divider)] first:border-t-0">
@@ -340,16 +377,10 @@ function StudentRow({ student }: { student: AdminStudentListItem }) {
         </Badge>
       </td>
       <td className="px-3 py-2">
-        <Badge
-          variant={
-            student.vaccination_status === "approved" ? "success" : "warning"
-          }
-        >
-          {student.vaccination_status === "approved" ? "Completo" : "Pendiente"}
-        </Badge>
+        <Badge variant={status.variant}>{status.label}</Badge>
       </td>
       <td className="px-3 py-2 text-right">
-        <Link href={`/admin/students/${student.id}`}>
+        <Link href={`/admin/students/${student.id}?returnTo=${encodeURIComponent(returnTo)}`}>
           <Button size="sm" variant="outline">
             Ver
           </Button>
@@ -357,6 +388,18 @@ function StudentRow({ student }: { student: AdminStudentListItem }) {
       </td>
     </tr>
   );
+}
+
+function studentStatus(status: AdminStudentListItem["vaccination_status"]) {
+  switch (status) {
+    case "approved":
+      return { label: "Aprobado", variant: "success" as const };
+    case "denied":
+      return { label: "Denegado", variant: "destructive" as const };
+    case "pending":
+    case "in_review":
+      return { label: "Pendiente", variant: "warning" as const };
+  }
 }
 
 interface StudentSemesterGroup {
@@ -394,11 +437,13 @@ function studentName(student: AdminStudentListItem) {
     : student.email;
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children }: { label: string; children: ReactElement<{ id?: string }> }) {
+  const generatedId = useId();
+  const id = children.props.id ?? generatedId;
   return (
     <div className="flex flex-col gap-1.5">
-      <Label>{label}</Label>
-      {children}
+      <Label htmlFor={id}>{label}</Label>
+      {cloneElement(children, { id })}
     </div>
   );
 }

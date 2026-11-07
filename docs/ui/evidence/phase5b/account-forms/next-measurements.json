@@ -1,0 +1,74 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "actual_login_backend": true,
+  "form_responses_controlled": true,
+  "real_passwords_changed": false,
+  "real_emails_sent": false,
+  "measurements": [
+    {
+      "kind": "forgot",
+      "theme": "light",
+      "status": 503,
+      "posts_on_double_submit": 1,
+      "draft_retained": true,
+      "fields_frozen_while_pending": true,
+      "error_safe": true
+    },
+    {
+      "kind": "forgot",
+      "theme": "dark",
+      "status": 503,
+      "posts_on_double_submit": 1,
+      "draft_retained": true,
+      "fields_frozen_while_pending": true,
+      "error_safe": true
+    },
+    {
+      "kind": "reset",
+      "theme": "light",
+      "status": 503,
+      "posts_on_double_submit": 1,
+      "draft_retained": true,
+      "fields_frozen_while_pending": true,
+      "error_safe": true
+    },
+    {
+      "kind": "reset",
+      "theme": "dark",
+      "status": 503,
+      "posts_on_double_submit": 1,
+      "draft_retained": true,
+      "fields_frozen_while_pending": true,
+      "error_safe": true
+    },
+    {
+      "kind": "change",
+      "theme": "light",
+      "status": 503,
+      "posts_on_double_submit": 1,
+      "draft_retained": true,
+      "fields_frozen_while_pending": true,
+      "error_safe": true
+    },
+    {
+      "kind": "change",
+      "theme": "dark",
+      "status": 503,
+      "posts_on_double_submit": 1,
+      "draft_retained": true,
+      "fields_frozen_while_pending": true,
+      "error_safe": true
+    },
+    {
+      "kind": "reset",
+      "status": 400,
+      "invalid_token_copy": true
+    },
+    {
+      "kind": "forgot",
+      "status": 429,
+      "rate_limit_copy": true
+    }
+  ]
+}

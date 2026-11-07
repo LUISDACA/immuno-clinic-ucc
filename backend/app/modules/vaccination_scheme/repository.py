@@ -42,9 +42,10 @@ class SchemeRepository:
     async def get_student_vaccines(self, user_id: uuid.UUID) -> list[StudentVaccine]:
         result = await self.db.execute(
             select(StudentVaccine)
-            .where(StudentVaccine.user_id == user_id)
+            .where(StudentVaccine.user_id == user_id, StudentVaccine.is_active.is_(True))
             .options(
                 joinedload(StudentVaccine.vaccine).selectinload(Vaccine.dose_configs),
+                joinedload(StudentVaccine.vaccine).selectinload(Vaccine.rules),
                 selectinload(StudentVaccine.doses).joinedload(StudentVaccineDose.dose_config),
             )
             .order_by(StudentVaccine.created_at)
@@ -65,7 +66,13 @@ class SchemeRepository:
     async def get_dose_by_id(self, dose_id: uuid.UUID) -> StudentVaccineDose | None:
         result = await self.db.execute(
             select(StudentVaccineDose)
-            .where(StudentVaccineDose.id == dose_id)
+            .with_for_update(of=StudentVaccineDose)
+            .execution_options(populate_existing=True)
+            .where(
+                StudentVaccineDose.id == dose_id,
+                StudentVaccineDose.is_active.is_(True),
+                StudentVaccineDose.student_vaccine.has(StudentVaccine.is_active.is_(True)),
+            )
             .options(
                 joinedload(StudentVaccineDose.student_vaccine).joinedload(StudentVaccine.vaccine),
                 joinedload(StudentVaccineDose.dose_config),

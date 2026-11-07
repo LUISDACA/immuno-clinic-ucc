@@ -1,6 +1,8 @@
 "use client";
+import { useSafeMutation as useMutation } from "@/lib/query/safe-mutation";
+import { QueryError } from "@/components/query-error";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
   AlertCircle,
@@ -30,15 +32,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoadingState, PageHeader } from "@/components/page-header";
 import { UccLogo } from "@/components/brand";
+import { Alert } from "@/components/ui/alert";
+import styles from "./student-profile.module.css";
 
 export default function ProfilePage() {
-  const { data: user, isLoading } = useQuery({
+  const { data: user, isFetching, error, refetch } = useQuery({
     queryKey: ["user", "me"],
     queryFn: getMe,
   });
 
-  if (isLoading || !user) return <LoadingState />;
-  return <ProfileView key={user.id} user={user} />;
+  const retry = () => refetch({ cancelRefetch: false });
+  if (!user) {
+    if (error) return <QueryError error={error} retrying={isFetching} retry={retry} />;
+    return <LoadingState />;
+  }
+  return <ProfileView key={user.id} user={user} readError={error} retrying={isFetching} retry={retry} />;
 }
 
 interface EditableState {
@@ -48,9 +56,20 @@ interface EditableState {
   emergency_contact_phone: string;
 }
 
-function ProfileView({ user }: { user: User }) {
+function ProfileView({ user, readError, retrying, retry }: {
+  user: User;
+  readError: unknown;
+  retrying: boolean;
+  retry: () => unknown;
+}) {
   const queryClient = useQueryClient();
   const [editing, setEditing] = useState(false);
+  const [confirmedReadVersion, setConfirmedReadVersion] = useState<number | null>(null);
+  const [writeError, setWriteError] = useState(false);
+  // A successful read increments this even when structural sharing keeps the
+  // same User object. A later, unrelated failure must not reuse an old notice.
+  const confirmedSave = confirmedReadVersion !== null &&
+    queryClient.getQueryState(["user", "me"])?.dataUpdateCount === confirmedReadVersion;
   const p = user.profile;
 
   const [form, setForm] = useState<EditableState>({
@@ -61,22 +80,28 @@ function ProfileView({ user }: { user: User }) {
   });
 
   const update = useMutation({
+    affectedQueries: [["user", "me"]],
     mutationFn: () =>
       updateMyProfile({
-        phone: form.phone || undefined,
-        eps_affiliation: form.eps_affiliation || undefined,
-        emergency_contact_name: form.emergency_contact_name || undefined,
-        emergency_contact_phone: form.emergency_contact_phone || undefined,
+        phone: form.phone.trim() || null,
+        eps_affiliation: form.eps_affiliation.trim() || null,
+        emergency_contact_name: form.emergency_contact_name.trim() || null,
+        emergency_contact_phone: form.emergency_contact_phone.trim() || null,
       }),
+    onMutate: () => { setWriteError(false); setConfirmedReadVersion(null); },
     onSuccess: () => {
-      toast.success("Perfil actualizado");
+      const read = queryClient.getQueryState(["user", "me"]);
+      const failedRead = read?.status === "error";
+      setConfirmedReadVersion(failedRead ? read.dataUpdateCount : null);
+      if (failedRead) toast.warning("Los cambios se guardaron, pero no se pudo actualizar el perfil.");
+      else toast.success("Perfil actualizado");
       setEditing(false);
-      queryClient.invalidateQueries({ queryKey: ["user", "me"] });
     },
-    onError: () => toast.error("No se pudo guardar"),
+    onError: () => { setWriteError(true); toast.error("No se pudo guardar"); },
   });
 
   function startEdit() {
+    setWriteError(false);
     setForm({
       phone: p?.phone ?? "",
       eps_affiliation: p?.eps_affiliation ?? "",
@@ -103,8 +128,17 @@ function ProfileView({ user }: { user: User }) {
         ? "Femenino"
         : (p?.sex ?? "—");
 
+  // Keep this view's draft/hooks mounted, but never render retained profile data
+  // while a failed query is unresolved. Recovery reads never submit the form.
+  if (readError) return <div className="flex flex-col gap-3">
+    {confirmedSave && <p role="status">Los cambios se guardaron, pero no se pudo actualizar el perfil.</p>}
+    {writeError && <p role="status">No se pudo guardar el perfil. Intenta nuevamente.</p>}
+    <QueryError error={readError} retrying={retrying} retry={retry} />
+  </div>;
+
   return (
-    <div className="flex flex-col gap-5">
+    <div className={`flex flex-col gap-5 ${styles.profile}`}>
+      {editing && writeError && <Alert tone="error">No se pudo guardar el perfil. Intenta nuevamente.</Alert>}
       <PageHeader
         title="Mi perfil"
         description="Datos personales y contacto."
@@ -124,15 +158,15 @@ function ProfileView({ user }: { user: User }) {
           aria-hidden
           className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[16px] border-white/20"
         />
-        <div className="relative flex items-center gap-5">
+        <div className={`relative flex items-center gap-5 ${styles.identity}`}>
           <span className="flex h-20 w-20 items-center justify-center rounded-2xl border border-white/30 bg-white/15 text-2xl font-extrabold">
             {initials}
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xl font-extrabold">{fullName}</p>
-            <p className="flex items-center gap-1.5 text-sm text-white/85">
-              <Mail className="h-3.5 w-3.5" />
-              {user.email}
+            <p className="text-xl font-extrabold">{fullName}</p>
+            <p className="flex items-start gap-1.5 text-sm text-white/85">
+              <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              <span className="min-w-0">{user.email}</span>
             </p>
           </div>
           <UccLogo size={60} className="hidden sm:block" />
@@ -141,7 +175,7 @@ function ProfileView({ user }: { user: User }) {
 
       {!editing ? (
         // ── Vista normal ─────────────────────────────────────────────
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className={`grid gap-3 sm:grid-cols-2 ${styles.tiles}`}>
           <InfoTile
             icon={<IdCard className="h-5 w-5" />}
             label="Documento"
@@ -211,7 +245,7 @@ function ProfileView({ user }: { user: User }) {
             </CardContent>
           </Card>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className={`grid gap-3 sm:grid-cols-2 ${styles.tiles}`}>
             <LockedTile
               icon={<Mail className="h-5 w-5" />}
               label="Correo"
@@ -255,8 +289,9 @@ function ProfileView({ user }: { user: User }) {
           </div>
 
           <Card>
-            <CardContent className="grid gap-4 p-5 sm:grid-cols-2">
+            <CardContent className={`grid gap-4 p-5 sm:grid-cols-2 ${styles.fields}`}>
               <FieldInput
+                disabled={update.isPending}
                 icon={<PhoneCall className="h-4 w-4" />}
                 label="Teléfono"
                 type="tel"
@@ -264,12 +299,14 @@ function ProfileView({ user }: { user: User }) {
                 onChange={(v) => setForm({ ...form, phone: v })}
               />
               <FieldInput
+                disabled={update.isPending}
                 icon={<Stethoscope className="h-4 w-4" />}
                 label="EPS afiliado"
                 value={form.eps_affiliation}
                 onChange={(v) => setForm({ ...form, eps_affiliation: v })}
               />
               <FieldInput
+                disabled={update.isPending}
                 icon={<Heart className="h-4 w-4" />}
                 label="Nombre contacto de emergencia"
                 value={form.emergency_contact_name}
@@ -278,6 +315,7 @@ function ProfileView({ user }: { user: User }) {
                 }
               />
               <FieldInput
+                disabled={update.isPending}
                 icon={<ShieldAlert className="h-4 w-4" />}
                 label="Teléfono contacto de emergencia"
                 type="tel"
@@ -289,7 +327,7 @@ function ProfileView({ user }: { user: User }) {
             </CardContent>
           </Card>
 
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-wrap justify-end gap-2">
             <Button
               variant="ghost"
               onClick={() => setEditing(false)}
@@ -336,7 +374,7 @@ function InfoTile({
         <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
           {label}
         </p>
-        <p className="truncate font-semibold">{value || "No registrado"}</p>
+        <p className="font-semibold">{value || "No registrado"}</p>
       </div>
     </div>
   );
@@ -360,7 +398,7 @@ function LockedTile({
         <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
           {label}
         </p>
-        <p className="truncate font-semibold text-muted-foreground">
+        <p className="font-semibold text-muted-foreground">
           {value || "No registrado"}
         </p>
       </div>
@@ -378,20 +416,24 @@ function FieldInput({
   value,
   onChange,
   type = "text",
+  disabled = false,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
+  disabled?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <Label className="flex items-center gap-1.5 text-xs">
+      <Label htmlFor={label} className="flex items-center gap-1.5 text-xs">
         <span className="text-[color:var(--primary)]">{icon}</span>
         {label}
       </Label>
       <Input
+                id={label}
+        disabled={disabled}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}

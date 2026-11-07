@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     REFRESH_SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    AUTH_V1_ENABLED: bool = True  # Transitional; retire after supported clients use v2.
 
     # ── Storage ───────────────────────────────────────────────────────
     STORAGE_TYPE: str = "local"
@@ -40,6 +41,7 @@ class Settings(BaseSettings):
     # ── Email ─────────────────────────────────────────────────────────
     SMTP_HOST: str = "localhost"
     SMTP_PORT: int = 587
+    SMTP_TIMEOUT_SECONDS: float = 10.0
     SMTP_USER: str = ""
     SMTP_PASSWORD: str = ""
     SMTP_FROM: str = "noreply@immunoclinic.local"
@@ -60,6 +62,7 @@ class Settings(BaseSettings):
     APP_VERSION: str = "2.0.0"
     DEBUG: bool = False
     FRONTEND_URL: str = "http://localhost:3000"
+    CERTIFICATE_VERIFY_BASE_URL: str | None = None
     PASSWORD_RESET_URL_BASE: str | None = None
     APP_DEEP_LINK_BASE: str = "immunoclinic://auth"
     ANDROID_PACKAGE_NAME: str = "com.immunoclinic.immuno_clinic_app"
@@ -73,6 +76,7 @@ class Settings(BaseSettings):
     # ── Rate Limiting ─────────────────────────────────────────────────
     RATE_LIMIT_LOGIN: str = "5/minute"
     RATE_LIMIT_FORGOT_PASSWORD: str = "3/minute"
+    TRUSTED_PROXY_CIDRS: list[str] = []
 
     # ── Logging ───────────────────────────────────────────────────────
     LOG_LEVEL: str = "INFO"
@@ -113,6 +117,19 @@ class Settings(BaseSettings):
             # CSV fallback
             return [item.strip() for item in stripped.split(",") if item.strip()]
         return v
+
+    @field_validator("TRUSTED_PROXY_CIDRS", mode="before")
+    @classmethod
+    def parse_trusted_proxy_cidrs(cls, value: str | list[str]) -> list[str]:
+        if isinstance(value, list):
+            return value
+        if not value or not value.strip():
+            return []
+        if value.lstrip().startswith("["):
+            import json
+
+            return json.loads(value)
+        return [item.strip() for item in value.split(",") if item.strip()]
 
     @field_validator("DEBUG", mode="before")
     @classmethod

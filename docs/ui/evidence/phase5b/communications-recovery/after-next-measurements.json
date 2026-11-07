@@ -1,0 +1,454 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "measurements": [
+    {
+      "case": "own_message_contrast",
+      "role": "admin",
+      "theme": "light",
+      "foreground": [
+        0,
+        0,
+        0
+      ],
+      "background": [
+        0,
+        175,
+        198
+      ],
+      "ratio": 7.947432277803237,
+      "source": "real-backend"
+    },
+    {
+      "case": "own_message_contrast",
+      "role": "admin",
+      "theme": "dark",
+      "foreground": [
+        0,
+        0,
+        0
+      ],
+      "background": [
+        69,
+        210,
+        223
+      ],
+      "ratio": 11.537221785844027,
+      "source": "real-backend"
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "hold",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "empty",
+      "controlled_response": true,
+      "real_recovery": false
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "403",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "404",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "list",
+      "state": "503",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "hold",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "empty",
+      "controlled_response": true,
+      "real_recovery": false
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "403",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "404",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "light",
+      "screen": "detail",
+      "state": "503",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "hold",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "empty",
+      "controlled_response": true,
+      "real_recovery": false
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "403",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "404",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "list",
+      "state": "503",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "hold",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "empty",
+      "controlled_response": true,
+      "real_recovery": false
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "403",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "404",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "admin",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "503",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "read_retry",
+      "role": "admin",
+      "double_click_writes": 1,
+      "draft_retained": true,
+      "real_backend_success": true
+    },
+    {
+      "case": "own_message_contrast",
+      "role": "student",
+      "theme": "light",
+      "foreground": [
+        0,
+        0,
+        0
+      ],
+      "background": [
+        0,
+        175,
+        198
+      ],
+      "ratio": 7.947432277803237,
+      "source": "real-backend"
+    },
+    {
+      "case": "own_message_contrast",
+      "role": "student",
+      "theme": "dark",
+      "foreground": [
+        0,
+        0,
+        0
+      ],
+      "background": [
+        69,
+        210,
+        223
+      ],
+      "ratio": 11.537221785844027,
+      "source": "real-backend"
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "hold",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "empty",
+      "controlled_response": true,
+      "real_recovery": false
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "403",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "404",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "list",
+      "state": "503",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "hold",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "empty",
+      "controlled_response": true,
+      "real_recovery": false
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "403",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "404",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "light",
+      "screen": "detail",
+      "state": "503",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "hold",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "empty",
+      "controlled_response": true,
+      "real_recovery": false
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "403",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "404",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "list",
+      "state": "503",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "hold",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "empty",
+      "controlled_response": true,
+      "real_recovery": false
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "403",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "404",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "query_state",
+      "role": "student",
+      "theme": "dark",
+      "screen": "detail",
+      "state": "503",
+      "controlled_response": true,
+      "real_recovery": true
+    },
+    {
+      "case": "read_retry",
+      "role": "student",
+      "double_click_writes": 1,
+      "draft_retained": true,
+      "real_backend_success": true
+    },
+    {
+      "case": "permissions_and_expiration",
+      "actual_admin_status": 403,
+      "controlled_session_status": 401,
+      "unintended_writes": 0
+    }
+  ]
+}

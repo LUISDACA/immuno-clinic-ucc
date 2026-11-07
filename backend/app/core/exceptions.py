@@ -57,6 +57,15 @@ class ConflictException(AppException):
         )
 
 
+class CertificateSignerException(AppException):
+    """Safe, stable errors for fail-closed certificate signer resolution."""
+
+    def __init__(self, code: str, detail: str):
+        self.code = code
+        self.safe_message = detail
+        super().__init__(status_code=status.HTTP_409_CONFLICT, detail=detail)
+
+
 class BadRequestException(AppException):
     """Invalid request data."""
 
@@ -64,6 +73,19 @@ class BadRequestException(AppException):
         super().__init__(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=detail,
+        )
+
+
+class CertificateNotEligibleException(AppException):
+    """Safe, stable error returned when the backend eligibility decision is false."""
+
+    code = "CERTIFICATE_NOT_ELIGIBLE"
+    safe_message = "No es posible emitir el certificado."
+
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=self.safe_message,
         )
 
 

@@ -3,7 +3,9 @@
 import uuid
 from datetime import datetime, timezone
 
-from app.modules.auth.models import PasswordResetToken, RefreshToken
+from app.modules.auth.models import AuthSession, PasswordResetToken, RefreshToken
+from app.modules.auth.sessions import lock_user
+from app.modules.notifications.models import DeviceToken
 from app.modules.users.models import User
 from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -25,6 +27,35 @@ class AuthRepository:
     async def get_user_by_id(self, user_id: uuid.UUID) -> User | None:
         result = await self.db.execute(select(User).where(User.id == user_id))
         return result.scalar_one_or_none()
+
+    async def lock_user(self, user_id):
+        return await lock_user(self.db, user_id)
+
+    async def invalidate_credentials(self, user_id, reason):
+        await self.db.execute(
+            update(User).where(User.id == user_id).values(auth_version=User.auth_version + 1)
+        )
+        await self.db.execute(
+            update(AuthSession)
+            .where(AuthSession.user_id == user_id, AuthSession.status == "ACTIVE")
+            .values(
+                status="REVOKED", revoked_at=datetime.now(timezone.utc), revocation_reason=reason
+            )
+        )
+        await self.db.execute(
+            update(DeviceToken).where(DeviceToken.user_id == user_id).values(is_active=False)
+        )
+        await self.revoke_all_user_tokens(user_id)
+        await self.db.execute(
+            update(PasswordResetToken)
+            .where(PasswordResetToken.user_id == user_id, PasswordResetToken.used.is_(False))
+            .values(used=True)
+        )
+
+    async def reset_token_user(self, token_hash):
+        return await self.db.scalar(
+            select(PasswordResetToken.user_id).where(PasswordResetToken.token_hash == token_hash)
+        )
 
     async def update_password(
         self,
@@ -72,6 +103,20 @@ class AuthRepository:
             update(PasswordResetToken).where(PasswordResetToken.id == token_id).values(used=True)
         )
 
+    async def consume_reset_token(self, token_hash: str) -> uuid.UUID | None:
+        """Claim once, atomically; rollback also rolls back consumption."""
+        result = await self.db.execute(
+            update(PasswordResetToken)
+            .where(
+                PasswordResetToken.token_hash == token_hash,
+                PasswordResetToken.used.is_(False),
+                PasswordResetToken.expires_at > datetime.now(timezone.utc),
+            )
+            .values(used=True)
+            .returning(PasswordResetToken.user_id)
+        )
+        return result.scalar_one_or_none()
+
     async def create_refresh_token(
         self, user_id: uuid.UUID, token_hash: str, expires_at: datetime
     ) -> RefreshToken:
@@ -109,11 +154,8 @@ class AuthRepository:
         )
 
     async def delete_expired_tokens(self) -> int:
-        """Delete revoked or expired refresh tokens. Returns number of rows deleted."""
+        """Keep consumed/revoked hashes until their absolute family expiry."""
         result = await self.db.execute(
-            delete(RefreshToken).where(
-                (RefreshToken.revoked.is_(True))
-                | (RefreshToken.expires_at <= datetime.now(timezone.utc))
-            )
+            delete(RefreshToken).where(RefreshToken.expires_at <= datetime.now(timezone.utc))
         )
         return result.rowcount

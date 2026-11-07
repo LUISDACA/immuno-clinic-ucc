@@ -25,12 +25,11 @@ export function UccBrandBackground({ children }: { children: React.ReactNode }) 
     <div className="relative isolate min-h-full ucc-soft-gradient">
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-14 -top-20 h-56 w-56 rounded-full border-[20px] border-[color:var(--primary)]/15"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -left-16 -bottom-24 h-60 w-60 rounded-full border-[20px] border-[color:var(--primary)]/10"
-      />
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="absolute -right-14 -top-20 h-56 w-56 rounded-full border-[20px] border-[color:var(--primary)]/15" />
+        <div className="absolute -left-16 -bottom-24 h-60 w-60 rounded-full border-[20px] border-[color:var(--primary)]/10" />
+      </div>
       {children}
     </div>
   );

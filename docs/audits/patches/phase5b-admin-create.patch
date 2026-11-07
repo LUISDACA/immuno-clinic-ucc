@@ -1,0 +1,143 @@
+--- a/frontend-next/src/app/admin/admins/page.tsx
++++ b/frontend-next/src/app/admin/admins/page.tsx
+@@ -45 +45 @@
+-    mutationFn: () => createAdmin(form),
++    mutationFn: (payload: CreateAdminRequest) => createAdmin(payload),
+@@ -50 +49,0 @@
+-      queryClient.invalidateQueries({ queryKey: ["admins"] });
+@@ -74 +73 @@
+-        <Button onClick={() => setShowForm((s) => !s)}>
++        <Button disabled={create.isPending || remove.isPending} onClick={() => setShowForm((s) => !s)}>
+@@ -84,47 +83,74 @@
+-          <CardContent className="grid gap-4 sm:grid-cols-2">
+-            <Field
+-              label="Correo"
+-              type="email"
+-              required
+-              value={form.email}
+-              onChange={(v) => setForm({ ...form, email: v })}
+-            />
+-            <Field
+-              label="Contraseña"
+-              type="password"
+-              required
+-              value={form.password}
+-              onChange={(v) => setForm({ ...form, password: v })}
+-            />
+-            <Field
+-              label="Nombres"
+-              value={form.first_name ?? ""}
+-              onChange={(v) => setForm({ ...form, first_name: v })}
+-            />
+-            <Field
+-              label="Apellidos"
+-              value={form.last_name ?? ""}
+-              onChange={(v) => setForm({ ...form, last_name: v })}
+-            />
+-            <Field
+-              label="Cargo"
+-              value={form.job_title ?? ""}
+-              onChange={(v) => setForm({ ...form, job_title: v })}
+-            />
+-            <Field
+-              label="Programa"
+-              required
+-              value={form.program}
+-              onChange={(v) => setForm({ ...form, program: v })}
+-            />
+-            <Field
+-              label="Sede"
+-              required
+-              value={form.campus}
+-              onChange={(v) => setForm({ ...form, campus: v })}
+-            />
+-            <div className="sm:col-span-2">
+-              <Button onClick={() => create.mutate()} disabled={create.isPending}>
+-                {create.isPending ? "Creando…" : "Crear"}
+-              </Button>
+-            </div>
++          <CardContent>
++            <form
++              aria-label="Nuevo administrador"
++              onSubmit={(event) => {
++                event.preventDefault();
++                if (create.isPending || remove.isPending || !event.currentTarget.reportValidity()) return;
++                const payload: CreateAdminRequest = {
++                  email: form.email.trim(),
++                  password: form.password,
++                  program: form.program.trim(),
++                  campus: form.campus.trim(),
++                };
++                for (const key of ["first_name", "last_name", "job_title"] as const) {
++                  const value = form[key]?.trim();
++                  if (value) payload[key] = value;
++                }
++                create.mutate(payload);
++              }}
++            >
++              <fieldset disabled={create.isPending || remove.isPending} className="grid gap-4 sm:grid-cols-2">
++                <Field
++                  label="Correo"
++                  type="email"
++                  required
++                  value={form.email}
++                  onChange={(v) => setForm({ ...form, email: v })}
++                />
++                <Field
++                  label="Contraseña"
++                  type="password"
++                  required
++                  minLength={8}
++                  value={form.password}
++                  onChange={(v) => setForm({ ...form, password: v })}
++                />
++                <Field
++                  label="Nombres"
++                  maxLength={100}
++                  value={form.first_name ?? ""}
++                  onChange={(v) => setForm({ ...form, first_name: v })}
++                />
++                <Field
++                  label="Apellidos"
++                  maxLength={100}
++                  value={form.last_name ?? ""}
++                  onChange={(v) => setForm({ ...form, last_name: v })}
++                />
++                <Field
++                  label="Cargo"
++                  maxLength={150}
++                  value={form.job_title ?? ""}
++                  onChange={(v) => setForm({ ...form, job_title: v })}
++                />
++                <Field
++                  label="Programa"
++                  required
++                  maxLength={150}
++                  value={form.program}
++                  onChange={(v) => setForm({ ...form, program: v })}
++                />
++                <Field
++                  label="Sede"
++                  required
++                  maxLength={150}
++                  value={form.campus}
++                  onChange={(v) => setForm({ ...form, campus: v })}
++                />
++                <div className="sm:col-span-2">
++                  <Button type="submit" disabled={create.isPending || remove.isPending}>
++                    {create.isPending ? "Creando…" : "Crear"}
++                  </Button>
++                </div>
++              </fieldset>
++            </form>
+@@ -175,0 +202 @@
++                            disabled={create.isPending || remove.isPending}
+@@ -203,0 +231,2 @@
++  minLength,
++  maxLength,
+@@ -209,0 +239,2 @@
++  minLength?: number;
++  maxLength?: number;
+@@ -222,0 +254,2 @@
++        minLength={minLength}
++        maxLength={maxLength}

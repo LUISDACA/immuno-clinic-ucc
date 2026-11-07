@@ -40,7 +40,7 @@ class CreateStudentRequest(AcademicScopeMixin):
     emergency_contact_phone: str | None = Field(None, max_length=20)
     program: str | None = Field(None, max_length=150)
     campus: str | None = Field(None, max_length=150)
-    semester: int | None = Field(None, ge=1, le=20)
+    semester: int | None = Field(None, ge=1, le=10)
 
 
 class UpdateStudentProfileRequest(AcademicScopeMixin):
@@ -77,6 +77,21 @@ class StudentListParams(AcademicScopeMixin):
     sex: Gender | None = None
     page: int = Field(default=1, ge=1)
     page_size: int = Field(default=20, ge=1, le=100)
+
+
+class StudentSearchRequest(AcademicScopeMixin):
+    """Body-based search keeps names, email and identifiers out of request URLs."""
+
+    search: str | None = Field(None, max_length=100)
+    is_active: bool | None = None
+    program: str | None = None
+    campus: str | None = None
+    sex: Gender | None = None
+    semester: int | None = Field(None, ge=1, le=20)
+    vaccination_status: str | None = Field(None, pattern="^(approved|pending)$")
+    page: int = Field(1, ge=1, le=10_000)
+    page_size: int = Field(20, ge=1, le=100)
+    size: int | None = Field(None, ge=1, le=100)
 
 
 class ImportStudentRowResult(BaseModel):
@@ -120,6 +135,10 @@ class AdminStudentListResponse(BaseModel):
     page: int
     page_size: int
     total_pages: int
+    size: int
+    pages: int
+    has_next: bool
+    has_previous: bool
 
 
 class VaccinationStatusStats(BaseModel):

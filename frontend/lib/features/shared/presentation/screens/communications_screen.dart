@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/role_utils.dart';
@@ -12,6 +11,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/datasources/communication_remote_ds.dart';
 import '../providers/communication_provider.dart';
 import '../providers/notification_provider.dart';
+import '../widgets/communication_query_error.dart';
 
 class CommunicationsScreen extends ConsumerStatefulWidget {
   final String? initialStudentId;
@@ -324,9 +324,9 @@ class _CommunicationsScreenState extends ConsumerState<CommunicationsScreen> {
           ? const Center(child: CircularProgressIndicator())
           : state.error != null
           ? Center(
-              child: Text(
-                state.error!,
-                style: const TextStyle(color: AppColors.error),
+              child: CommunicationQueryError(
+                message: state.error!,
+                onRetry: () => ref.read(communicationProvider.notifier).load(),
               ),
             )
           : state.threads.isEmpty
@@ -380,8 +380,11 @@ class _RecipientSearchFieldState extends ConsumerState<_RecipientSearchField> {
   Timer? _debounce;
   List<dynamic> _options = const [];
   bool _loading = false;
+  bool _hasSearched = false;
   bool _selecting = false;
   String? _selectedId;
+  String? _searchError;
+  int _searchRequest = 0;
 
   @override
   void initState() {
@@ -406,29 +409,64 @@ class _RecipientSearchFieldState extends ConsumerState<_RecipientSearchField> {
     }
     _debounce?.cancel();
     final query = _controller.text.trim();
+    final request = ++_searchRequest;
     if (query.length < 2) {
-      setState(() => _options = const []);
+      setState(() {
+        _options = const [];
+        _loading = false;
+        _hasSearched = false;
+        _searchError = null;
+      });
       return;
     }
-    _debounce = Timer(const Duration(milliseconds: 280), () => _search(query));
+    setState(() {
+      _options = const [];
+      _loading = true;
+      _hasSearched = false;
+      _searchError = null;
+    });
+    _debounce = Timer(
+      const Duration(milliseconds: 280),
+      () => _search(query, request: request),
+    );
   }
 
-  Future<void> _search(String query) async {
-    setState(() => _loading = true);
+  Future<void> _search(String query, {int? request}) async {
+    if (request == null && _loading) return;
+    final requestId = request ?? ++_searchRequest;
+    if (requestId != _searchRequest || _controller.text.trim() != query) {
+      return;
+    }
+    if (request == null) {
+      setState(() {
+        _options = const [];
+        _loading = true;
+        _hasSearched = false;
+        _searchError = null;
+      });
+    }
     try {
       final options = await ref
           .read(communicationRemoteDataSourceProvider)
           .searchRecipients(target: widget.target, search: query);
-      if (!mounted || _controller.text.trim() != query) return;
+      if (!mounted ||
+          requestId != _searchRequest ||
+          _controller.text.trim() != query) {
+        return;
+      }
       setState(() {
         _options = options;
         _loading = false;
+        _hasSearched = true;
+        _searchError = null;
       });
     } catch (_) {
-      if (!mounted) return;
+      if (!mounted || requestId != _searchRequest) return;
       setState(() {
         _options = const [];
         _loading = false;
+        _hasSearched = false;
+        _searchError = 'No se pudieron buscar destinatarios.';
       });
     }
   }
@@ -473,6 +511,37 @@ class _RecipientSearchFieldState extends ConsumerState<_RecipientSearchField> {
                 : null,
           ),
         ),
+        if (_searchError != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Semantics(
+                    liveRegion: true,
+                    child: Text(
+                      _searchError!,
+                      style: const TextStyle(color: AppColors.error),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: _loading
+                      ? null
+                      : () => _search(_controller.text.trim()),
+                  child: const Text('Reintentar búsqueda'),
+                ),
+              ],
+            ),
+          )
+        else if (_hasSearched && !_loading && _options.isEmpty)
+          const Padding(
+            padding: EdgeInsets.only(top: 6),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('No hay destinatarios disponibles.'),
+            ),
+          ),
         if (_options.isNotEmpty) ...[
           const SizedBox(height: 6),
           ConstrainedBox(
@@ -528,7 +597,7 @@ class _RecipientSearchFieldState extends ConsumerState<_RecipientSearchField> {
   }
 }
 
-class _ThreadTile extends StatefulWidget {
+class _ThreadTile extends ConsumerStatefulWidget {
   final dynamic thread;
   final String? currentUserId;
   final VoidCallback onTap;
@@ -540,35 +609,10 @@ class _ThreadTile extends StatefulWidget {
   });
 
   @override
-  State<_ThreadTile> createState() => _ThreadTileState();
+  ConsumerState<_ThreadTile> createState() => _ThreadTileState();
 }
 
-class _ThreadTileState extends State<_ThreadTile> {
-  int _seenAt = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSeenAt();
-  }
-
-  @override
-  void didUpdateWidget(covariant _ThreadTile oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.thread['id']?.toString() != widget.thread['id']?.toString()) {
-      _loadSeenAt();
-    }
-  }
-
-  Future<void> _loadSeenAt() async {
-    final threadId = widget.thread['id']?.toString();
-    if (threadId == null || threadId.isEmpty) return;
-    final prefs = await SharedPreferences.getInstance();
-    final seenAt = prefs.getInt('ic_thread_seen_$threadId') ?? 0;
-    if (!mounted) return;
-    setState(() => _seenAt = seenAt);
-  }
-
+class _ThreadTileState extends ConsumerState<_ThreadTile> {
   @override
   Widget build(BuildContext context) {
     final thread = widget.thread;
@@ -581,13 +625,16 @@ class _ThreadTileState extends State<_ThreadTile> {
     final dateText = lastMessageAt == null
         ? ''
         : DateFormat('dd/MM/yyyy HH:mm').format(lastMessageAt.toLocal());
-    final lastSender = thread['last_message_sender'] as Map<String, dynamic>?;
-    final lastSenderId = lastSender?['id']?.toString();
-    final lastMessageMillis = lastMessageAt?.millisecondsSinceEpoch ?? 0;
-    final hasNewMessage =
-        lastSenderId != null &&
-        lastSenderId != widget.currentUserId &&
-        lastMessageMillis > _seenAt;
+    final hasNewMessage = ref
+        .watch(notificationProvider)
+        .notifications
+        .any(
+          (n) =>
+              !n.isRead &&
+              n.category == 'communication' &&
+              (n.actionPath?.split('?').first.endsWith('/${thread['id']}') ??
+                  false),
+        );
 
     return Card(
       color: hasNewMessage
@@ -701,7 +748,7 @@ class _ThreadTileState extends State<_ThreadTile> {
         return user;
       }
     }
-    return recipient ?? student ?? createdBy;
+    return null;
   }
 
   String _userLabel(Map<String, dynamic> user) {

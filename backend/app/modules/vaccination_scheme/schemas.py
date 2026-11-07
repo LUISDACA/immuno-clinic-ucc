@@ -40,6 +40,8 @@ class StudentDoseResponse(BaseModel):
     applied_date: date | None = None
     due_date: date | None = None
     days_until_due: int | None = None
+    is_overdue: bool | None = None
+    is_due_today: bool | None = None
     titer_value: str | None = None
     status: DoseStatus
     admin_notes: str | None = None
@@ -67,6 +69,13 @@ class UpdateDoseRequest(BaseModel):
     titer_value: str | None = Field(None, max_length=50)
 
 
+class UpdateDoseCommentRequest(BaseModel):
+    """Comment-only contract: clinical fields are rejected, never interpreted."""
+
+    admin_notes: str | None = Field(...)
+    model_config = {"extra": "forbid"}
+
+
 class ReviewDoseRequest(BaseModel):
     status: DoseStatus
     admin_notes: str | None = None
@@ -83,7 +92,19 @@ class SchemeOverviewResponse(BaseModel):
     pending_vaccines: int
     denied_vaccines: int
     in_review_vaccines: int
+    is_up_to_date: bool = False
+    is_complete: bool = False
+    is_certifiable: bool = False
+    evaluated_on: date | None = None
+    scheme_version: int = 0
     vaccines: list[StudentVaccineResponse] = []
+
+
+class SchemeEligibilityResponse(BaseModel):
+    is_up_to_date: bool
+    is_complete: bool
+    is_certifiable: bool
+    evaluated_on: date
 
 
 class MessageResponse(BaseModel):

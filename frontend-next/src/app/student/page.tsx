@@ -1,4 +1,5 @@
 "use client";
+import { QueryError } from "@/components/query-error";
 
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
@@ -11,6 +12,7 @@ import {
   Bell,
   History,
   UserRound,
+  RefreshCw,
 } from "lucide-react";
 import { useAuthStore } from "@/lib/auth/store";
 import { getMyScheme } from "@/lib/api/scheme";
@@ -22,11 +24,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   BrandSectionTitle,
   UccHeroPanel,
   UccLogo,
 } from "@/components/brand";
+import styles from "./student-dashboard.module.css";
 
 const QUICK_ACTIONS: Array<{
   href: string;
@@ -52,7 +56,7 @@ const QUICK_ACTIONS: Array<{
   {
     href: "/student/certificate",
     title: "Certificado",
-    desc: "Descarga el PDF cuando esté completo.",
+    desc: "Consulta la disponibilidad de tu certificado.",
     icon: <FileCheck2 className="h-5 w-5" />,
     color: "var(--accent)",
   },
@@ -88,7 +92,7 @@ const QUICK_ACTIONS: Array<{
 
 export default function StudentDashboard() {
   const { email } = useAuthStore();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetching, error, refetch } = useQuery({
     queryKey: ["scheme", "me"],
     queryFn: getMyScheme,
   });
@@ -98,63 +102,92 @@ export default function StudentDashboard() {
   const pending = data?.pending_vaccines ?? 0;
   const denied = data?.denied_vaccines ?? 0;
   const inReview = data?.in_review_vaccines ?? 0;
-  const ready = total > 0 && approved === total;
+  const ready = data?.is_up_to_date;
+  const refresh = () => refetch({ cancelRefetch: false });
 
   return (
-    <div className="flex flex-col gap-6">
-      <UccHeroPanel
-        eyebrow="Estudiante UCC"
-        title="Bienvenido"
-        subtitle={email ?? "Estudiante"}
-        icon={<GraduationCap className="h-6 w-6 text-white" />}
-        trailing={<UccLogo size={64} />}
-      />
-
-      <div>
-        <BrandSectionTitle
-          title="Estadísticas de vacunas"
-          trailing={
-            <Badge variant={ready ? "success" : "warning"}>
-              {ready ? "Esquema completo" : "En curso"}
-            </Badge>
-          }
+    <div className={`flex flex-col gap-6 ${styles.dashboard}`}>
+      <div className={styles.hero}>
+        <UccHeroPanel
+          eyebrow="Estudiante UCC"
+          title="Bienvenido"
+          subtitle={email ?? "Estudiante"}
+          icon={<GraduationCap className="h-6 w-6 text-white" />}
+          trailing={<UccLogo size={64} />}
         />
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Stat label="Total" value={total} loading={isLoading} />
-          <Stat
-            label="Aprobadas"
-            value={approved}
-            variant="success"
-            loading={isLoading}
+      </div>
+
+      <section aria-label="Estadísticas de vacunas" aria-busy={isFetching}>
+        <div className={styles.statsHeading}>
+          <BrandSectionTitle
+            title="Estadísticas de vacunas"
+            trailing={
+              <div className="flex shrink-0 items-center gap-2">
+                {data && !error && (
+                  <Badge variant={ready ? "success" : "warning"}>
+                    {ready ? "Al día" : "Requiere atención"}
+                  </Badge>
+                )}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="Actualizar estadísticas"
+                  title="Actualizar estadísticas"
+                  disabled={isFetching}
+                  onClick={() => {
+                    void refresh();
+                  }}
+                >
+                  <RefreshCw aria-hidden="true" className="h-4 w-4" />
+                </Button>
+              </div>
+            }
           />
-          <Stat
-            label="Pendientes"
-            value={pending}
-            variant="warning"
-            loading={isLoading}
-          />
-          <Stat
-            label="En revisión"
-            value={inReview}
-            variant="info"
-            loading={isLoading}
-          />
-          {denied > 0 && (
+        </div>
+        {error ? (
+          <div className="mt-3">
+            <QueryError error={error} retry={refresh} retrying={isFetching} />
+          </div>
+        ) : (
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat label="Total" value={total} loading={isLoading} />
             <Stat
-              label="Rechazadas"
+              label="Aprobadas"
+              value={approved}
+              variant="success"
+              loading={isLoading}
+            />
+            <Stat
+              label="Pendientes"
+              value={pending}
+              variant="warning"
+              loading={isLoading}
+            />
+            <Stat
+              label="Denegadas"
               value={denied}
               variant="destructive"
               loading={isLoading}
             />
-          )}
-        </div>
-      </div>
+            <Stat
+              label="En revisión"
+              value={inReview}
+              variant="info"
+              loading={isLoading}
+            />
+          </div>
+        )}
+      </section>
 
       <div>
         <BrandSectionTitle title="Acciones rápidas" />
         <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {QUICK_ACTIONS.map((tile) => (
-            <Link key={tile.href} href={tile.href} className="group">
+            <Link
+              key={tile.href}
+              href={tile.href}
+              className={`group ${styles.action}`}
+            >
               <Card className="h-full transition-all group-hover:-translate-y-0.5 group-hover:border-[color:var(--primary)] group-hover:shadow-md">
                 <CardHeader>
                   <div className="flex items-start gap-3">

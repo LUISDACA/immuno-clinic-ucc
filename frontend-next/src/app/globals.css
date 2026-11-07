@@ -43,6 +43,16 @@
   --divider: #ddeaea;
   --ring: #00afc6;
   --radius: 0.75rem;
+  /* Foregrounds/actions are independent of the unchanged brand palette. */
+  --action: #007f93;
+  --action-foreground: #ffffff;
+  --interactive-foreground: #006575;
+  --accent-action-foreground: #172629;
+  --success-text: #2f6418;
+  --warning-text: #715100;
+  --destructive-text: #8d2525;
+  --info-text: #006575;
+  color-scheme: light;
 }
 
 [data-theme="dark"] {
@@ -67,6 +77,15 @@
   --warning-light: #3d2c00;
   --destructive-light: #3a1313;
   --info-light: #103237;
+  --action: #45d2df;
+  --action-foreground: #071416;
+  --interactive-foreground: #45d2df;
+  --accent-action-foreground: #071416;
+  --success-text: #a7da64;
+  --warning-text: #e6a700;
+  --destructive-text: #ffaaaa;
+  --info-text: #45d2df;
+  color-scheme: dark;
 }
 
 /* Modo system: sigue al SO solo si no hay override manual */
@@ -93,6 +112,15 @@
     --warning-light: #3d2c00;
     --destructive-light: #3a1313;
     --info-light: #103237;
+    --action: #45d2df;
+    --action-foreground: #071416;
+    --interactive-foreground: #45d2df;
+    --accent-action-foreground: #071416;
+    --success-text: #a7da64;
+    --warning-text: #e6a700;
+    --destructive-text: #ffaaaa;
+    --info-text: #45d2df;
+    color-scheme: dark;
   }
 }
 
@@ -131,6 +159,39 @@ body {
 
 .ucc-soft-gradient {
   background-image: linear-gradient(135deg, #eafbfc 0%, #f5fbee 100%);
+}
+
+/* Login follows the Flutter card composition; the other auth pages keep the shared brand header. */
+.auth-layout-shell:has(.auth-login-card) {
+  padding: 24px;
+}
+
+.auth-layout-content:has(.auth-login-card) {
+  max-width: 460px;
+}
+
+.auth-layout-content:has(.auth-login-card) > .auth-brand-header {
+  display: none;
+}
+
+.auth-login-field .auth-floating-label {
+  position: absolute;
+  top: 50%;
+  left: 2.5rem;
+  z-index: 1;
+  transform: translateY(-50%);
+  background: var(--card);
+  padding: 0 0.25rem;
+  color: var(--muted-foreground);
+  pointer-events: none;
+  transition: top 120ms ease, color 120ms ease, font-size 120ms ease;
+}
+
+.auth-floating-field:focus-within .auth-floating-label,
+.auth-floating-field[data-filled="true"] .auth-floating-label {
+  top: 0;
+  color: var(--primary);
+  font-size: 0.75rem;
 }
 
 [data-theme="dark"] .ucc-soft-gradient {

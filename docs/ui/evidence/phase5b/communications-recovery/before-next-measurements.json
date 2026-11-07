@@ -1,0 +1,23 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "measurements": [
+    {
+      "case": "own_message_contrast",
+      "role": "admin",
+      "theme": "light",
+      "foreground": [
+        255,
+        255,
+        255
+      ],
+      "background": [
+        0,
+        175,
+        198
+      ],
+      "ratio": 2.642362874692484,
+      "source": "real-backend"
+    }
+  ]
+}

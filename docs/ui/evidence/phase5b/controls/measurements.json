@@ -1,0 +1,204 @@
+[
+  {
+    "role": "student",
+    "preference": "light",
+    "os": "dark",
+    "geometry": [
+      {
+        "width": 320,
+        "height": 568,
+        "viewport": 320,
+        "scrollWidth": 320,
+        "left": 48,
+        "right": 304
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "viewport": 390,
+        "scrollWidth": 390,
+        "left": 118,
+        "right": 374
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "viewport": 768,
+        "scrollWidth": 768,
+        "left": 496,
+        "right": 752
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "viewport": 1440,
+        "scrollWidth": 1440,
+        "left": 1088,
+        "right": 1344
+      }
+    ],
+    "sibling_buttons": true
+  },
+  {
+    "role": "student",
+    "preference": "dark",
+    "os": "light",
+    "geometry": [
+      {
+        "width": 320,
+        "height": 568,
+        "viewport": 320,
+        "scrollWidth": 320,
+        "left": 48,
+        "right": 304
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "viewport": 390,
+        "scrollWidth": 390,
+        "left": 118,
+        "right": 374
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "viewport": 768,
+        "scrollWidth": 768,
+        "left": 496,
+        "right": 752
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "viewport": 1440,
+        "scrollWidth": 1440,
+        "left": 1088,
+        "right": 1344
+      }
+    ],
+    "sibling_buttons": true
+  },
+  {
+    "role": "student",
+    "read_only_no_navigation": true,
+    "read_count_refreshed": true,
+    "open_preserves_backend_destination": true,
+    "persisted_after_reload": true
+  },
+  {
+    "role": "admin",
+    "preference": "light",
+    "os": "dark",
+    "geometry": [
+      {
+        "width": 320,
+        "height": 568,
+        "viewport": 320,
+        "scrollWidth": 320,
+        "left": 48,
+        "right": 304
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "viewport": 390,
+        "scrollWidth": 390,
+        "left": 118,
+        "right": 374
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "viewport": 768,
+        "scrollWidth": 768,
+        "left": 496,
+        "right": 752
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "viewport": 1440,
+        "scrollWidth": 1440,
+        "left": 1088,
+        "right": 1344
+      }
+    ],
+    "sibling_buttons": true
+  },
+  {
+    "role": "admin",
+    "preference": "dark",
+    "os": "light",
+    "geometry": [
+      {
+        "width": 320,
+        "height": 568,
+        "viewport": 320,
+        "scrollWidth": 320,
+        "left": 48,
+        "right": 304
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "viewport": 390,
+        "scrollWidth": 390,
+        "left": 118,
+        "right": 374
+      },
+      {
+        "width": 768,
+        "height": 1024,
+        "viewport": 768,
+        "scrollWidth": 768,
+        "left": 496,
+        "right": 752
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "viewport": 1440,
+        "scrollWidth": 1440,
+        "left": 1088,
+        "right": 1344
+      }
+    ],
+    "sibling_buttons": true
+  },
+  {
+    "role": "admin",
+    "read_only_no_navigation": true,
+    "read_count_refreshed": true,
+    "open_preserves_backend_destination": true,
+    "persisted_after_reload": true
+  },
+  {
+    "screen": "student-filters",
+    "count": 5,
+    "linked": true,
+    "unique": true,
+    "allIds": true
+  },
+  {
+    "screen": "student-create",
+    "count": 15,
+    "linked": true,
+    "unique": true,
+    "allIds": true
+  },
+  {
+    "screen": "student-edit",
+    "count": 11,
+    "linked": true,
+    "unique": true,
+    "allIds": true
+  },
+  {
+    "screen": "admin-create",
+    "count": 7,
+    "linked": true,
+    "unique": true,
+    "allIds": true
+  }
+]

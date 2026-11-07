@@ -1,0 +1,90 @@
+{
+  "data": {
+    "total_students": 100,
+    "active_students": 90,
+    "inactive_students": 10,
+    "by_sex": {
+      "male": 45,
+      "female": 55
+    },
+    "vaccination_status": {
+      "approved": 60,
+      "pending": 40
+    },
+    "by_campus": {
+      "Campus sintético A": 60,
+      "Campus sintético B": 40
+    },
+    "by_program": {
+      "Programa sintético A": 100
+    },
+    "vaccine_compliance": [
+      {
+        "vaccine_id": "fixture-1",
+        "name": "Vacuna sintética 1",
+        "code": "SYN1",
+        "up_to_date": 70,
+        "pending": 20,
+        "denied": 5,
+        "in_review": 5,
+        "total": 100
+      },
+      {
+        "vaccine_id": "fixture-2",
+        "name": "Vacuna sintética 2",
+        "code": "SYN2",
+        "up_to_date": 60,
+        "pending": 30,
+        "denied": 5,
+        "in_review": 5,
+        "total": 100
+      },
+      {
+        "vaccine_id": "fixture-3",
+        "name": "Vacuna sintética 3",
+        "code": "SYN3",
+        "up_to_date": 50,
+        "pending": 40,
+        "denied": 5,
+        "in_review": 5,
+        "total": 100
+      },
+      {
+        "vaccine_id": "fixture-4",
+        "name": "Vacuna sintética 4",
+        "code": "SYN4",
+        "up_to_date": 40,
+        "pending": 50,
+        "denied": 5,
+        "in_review": 5,
+        "total": 100
+      },
+      {
+        "vaccine_id": "fixture-5",
+        "name": "Vacuna sintética 5",
+        "code": "SYN5",
+        "up_to_date": 30,
+        "pending": 60,
+        "denied": 5,
+        "in_review": 5,
+        "total": 100
+      }
+    ]
+  },
+  "empty": {
+    "total_students": 0,
+    "active_students": 0,
+    "inactive_students": 0,
+    "by_sex": {
+      "male": 0,
+      "female": 0
+    },
+    "vaccination_status": {
+      "approved": 0,
+      "pending": 0
+    },
+    "by_campus": {},
+    "by_program": {},
+    "vaccine_compliance": []
+  }
+}

@@ -21,7 +21,7 @@ export function ThemeModeToggle({ className }: { className?: string }) {
       title={tooltip}
       aria-label={tooltip}
       className={cn(
-        "inline-flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--primary)]/12 text-[color:var(--primary)] transition-colors hover:bg-[color:var(--primary)]/20",
+        "inline-flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--primary)]/12 text-[color:var(--interactive-foreground)] transition-colors hover:bg-[color:var(--primary)]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
     >
@@ -40,7 +40,7 @@ export function ThemeModeToggle({ className }: { className?: string }) {
 export function ThemeModeSelector() {
   const { mode, setMode } = useThemeStore();
   return (
-    <div className="grid grid-cols-3 gap-1 rounded-xl border border-[color:var(--divider)] bg-[color:var(--surface-variant)]/50 p-1">
+    <div role="group" aria-label="Tema de apariencia" className="grid grid-cols-3 gap-1 rounded-xl border border-[color:var(--divider)] bg-[color:var(--surface-variant)]/50 p-1">
       {(["system", "light", "dark"] as const).map((m) => {
         const active = mode === m;
         const Icon = m === "system" ? Monitor : m === "light" ? Sun : Moon;
@@ -50,11 +50,12 @@ export function ThemeModeSelector() {
           <button
             key={m}
             type="button"
+            aria-pressed={active}
             onClick={() => setMode(m)}
             className={cn(
-              "inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-bold transition-colors",
+              "inline-flex items-center justify-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               active
-                ? "bg-card text-[color:var(--primary)] shadow-sm"
+                ? "bg-card text-[color:var(--interactive-foreground)] shadow-sm"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >

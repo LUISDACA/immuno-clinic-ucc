@@ -1,0 +1,61 @@
+{
+  "scope": "R02C/S22 base editor only; no integral screen closure",
+  "institutional_data": false,
+  "production_ready": false,
+  "new_next_tests": 27,
+  "additional_shell_cases": 2,
+  "changed_shell_expectation": 1,
+  "new_flutter_tests": 20,
+  "flutter_references": 4,
+  "next_screenshots": 4,
+  "signature_hook_unchanged": "a499f6f42fcf7cb2db0f5ebaa5e187dc7bed8b0279481eeeffb91b4353ab08c5",
+  "signature_markup_unchanged": "b4e7344bf2e25f0d92e9ff374b21c1489a89aa91c058687f3796547cebc16512",
+  "signature_validation_performed": false,
+  "notes": [
+    "Signature hook/setup, request/mutation, object-URL cleanup and rendered section are byte-identical to block baseline; ProfileView still unmounts on read errors. Shell layering fix is exact-route only.",
+    "Actual web PUT/GET recovery uses synthetic isolated PostgreSQL; read errors and one failed PUT are explicitly controlled. No institutional datasets or production-ready claim.",
+    "Flutter shared profile runtime/provider is unchanged; tests cover admin/app_admin. Four new goldens only; existing Flutter references are not regenerated. Native reader/keyboard/zoom and full contrast remain pending."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "cc7674f3615dd17327a3f15beae15378a2b43917e70da1342f43269ee9969b37"
+    },
+    {
+      "file": "flutter-admin-saved-get503-dark-390.png",
+      "sha256": "f9b703c0d6ce128967955bd17307b2fab3d7bcf76cf0fea497317d554fe2dd96"
+    },
+    {
+      "file": "flutter-admin-saved-get503-light-390.png",
+      "sha256": "015ba2cf8487a80d4500d5e0c52d1fe2575098aa115a80d389ed5d49a173ebc6"
+    },
+    {
+      "file": "flutter-app_admin-saved-get503-dark-390.png",
+      "sha256": "f9b703c0d6ce128967955bd17307b2fab3d7bcf76cf0fea497317d554fe2dd96"
+    },
+    {
+      "file": "flutter-app_admin-saved-get503-light-390.png",
+      "sha256": "015ba2cf8487a80d4500d5e0c52d1fe2575098aa115a80d389ed5d49a173ebc6"
+    },
+    {
+      "file": "next-admin-saved-get503-dark-390.png",
+      "sha256": "9d6a8a79f0de27c6710b315bcf585747d2129363334a10d6f78b3e79382a6576"
+    },
+    {
+      "file": "next-admin-saved-get503-light-390.png",
+      "sha256": "f0092054e1ec4718ab30f4ced8fe289f1d5ef0bdc00f55047fa10ef764ea2e78"
+    },
+    {
+      "file": "next-app_admin-saved-get503-dark-390.png",
+      "sha256": "119de1fef91b9cfc35e2a98bdfbf47efe7cb8e3d01707e5892573e077b2b4ab2"
+    },
+    {
+      "file": "next-app_admin-saved-get503-light-390.png",
+      "sha256": "bccdd1843198b42fed71d503c39612fe0cccc108292cfc4e0a178a67c8c6b862"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "3d881732de9cc80e757e87181e97279c63502e80fe15e9f094b9fc9a21630e75"
+    }
+  ]
+}

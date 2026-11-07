@@ -1,0 +1,1802 @@
+[
+  {
+    "state": "data",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "width": 164.5,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 344,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 260,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "data",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "data",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "labels": [
+      {
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "width": 775.5,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 955,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 214.34375,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 221.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 473.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "width": 164.5,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 344,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 260,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "empty",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "empty",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "labels": [
+      {
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "width": 775.5,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 955,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 214.34375,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 221.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 473.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "width": 296,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 344,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 260,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "loading",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "loading",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "labels": [
+      {
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "width": 907,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 955,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 214.34375,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 221.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 473.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "width": 296,
+        "clipped": false
+      },
+      {
+        "width": 344,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 260,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "error",
+    "theme": "light",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "error",
+    "theme": "light",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "labels": [
+      {
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "width": 922,
+        "clipped": false
+      },
+      {
+        "width": 970,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 219.34375,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 232.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 390.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "data",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "width": 164.5,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 344,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 260,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "data",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "data",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "labels": [
+      {
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "width": 775.5,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 955,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 214.34375,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 221.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 473.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "width": 164.5,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 344,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 260,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "empty",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "empty",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "labels": [
+      {
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "width": 775.5,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 955,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 214.34375,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 221.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 473.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "width": 296,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 321,
+        "clipped": false
+      },
+      {
+        "width": 344,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 260,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "loading",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 252,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "loading",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1265,
+    "labels": [
+      {
+        "width": 781,
+        "clipped": false
+      },
+      {
+        "width": 907,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 196.25,
+        "clipped": false
+      },
+      {
+        "width": 955,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 214.34375,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 221.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 473.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 1,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 170,
+        "clipped": false
+      },
+      {
+        "width": 296,
+        "clipped": false
+      },
+      {
+        "width": 344,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 260,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 84.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "error",
+    "theme": "dark",
+    "width": 390,
+    "cssZoom": 2,
+    "viewport": 390,
+    "scrollWidth": 390,
+    "labels": [
+      {
+        "width": 246,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 298,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      },
+      {
+        "width": 242,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "actionsPosition": {
+      "headingTop": 150,
+      "headerBottom": 134
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  },
+  {
+    "state": "error",
+    "theme": "dark",
+    "width": 1280,
+    "cssZoom": 1,
+    "viewport": 1280,
+    "scrollWidth": 1280,
+    "labels": [
+      {
+        "width": 796,
+        "clipped": false
+      },
+      {
+        "width": 922,
+        "clipped": false
+      },
+      {
+        "width": 970,
+        "clipped": false
+      },
+      {
+        "width": 209.25,
+        "clipped": false
+      },
+      {
+        "width": 137.46875,
+        "clipped": false
+      },
+      {
+        "width": 219.34375,
+        "clipped": false
+      },
+      {
+        "width": 206.265625,
+        "clipped": false
+      },
+      {
+        "width": 154.125,
+        "clipped": false
+      },
+      {
+        "width": 148.46875,
+        "clipped": false
+      },
+      {
+        "width": 119.03125,
+        "clipped": false
+      }
+    ],
+    "statsPosition": {
+      "headingTop": 232.5,
+      "headerBottom": 69
+    },
+    "actionsPosition": {
+      "headingTop": 390.5,
+      "headerBottom": 69
+    },
+    "source": "controlled-synthetic-aggregate-presentation",
+    "nativeZoom": false
+  }
+]

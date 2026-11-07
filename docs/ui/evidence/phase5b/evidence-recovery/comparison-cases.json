@@ -1,0 +1,23 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "pixel_equality_claimed": false,
+  "viewport_width": 390,
+  "pairs": [
+    {
+      "scenario": "confirmed_post_get503",
+      "theme": "light",
+      "flutter": "flutter-confirmed-light-390.png",
+      "next": "next-confirmed-get503-light-390.png",
+      "note": "Same acknowledged POST and failed read, same safe message and GET-only recovery. Flutter widget uses controlled datasource/plugin; Next Chrome confirms real local PostgreSQL upload with controlled GET503. Both viewport390x844, different platform shell and feedback representation. No pixel equality/native-device claim."
+    },
+    {
+      "scenario": "confirmed_post_get503",
+      "theme": "dark",
+      "flutter": "flutter-confirmed-dark-390.png",
+      "next": "next-confirmed-get503-dark-390.png",
+      "note": "Same acknowledged POST and failed read, same safe message and GET-only recovery. Flutter widget uses controlled datasource/plugin; Next Chrome confirms real local PostgreSQL upload with controlled GET503. Both viewport390x844, different platform shell and feedback representation. No pixel equality/native-device claim."
+    }
+  ],
+  "additional_web_cases": "Controlled GET403 and unconfirmed POST503 + GET403 are captured per theme but have no new native screenshot pair; native tests cover equivalent outcomes."
+}

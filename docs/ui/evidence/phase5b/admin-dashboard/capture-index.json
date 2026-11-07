@@ -1,0 +1,929 @@
+{
+  "scope": "administrative dashboards presentation only",
+  "institutional_data": false,
+  "clinical_auth_or_API_rules_changed": false,
+  "flutter_renderer": "Flutter 3.41.6 widget tests, local Inter and MaterialIcons, DPR 1",
+  "next_renderer": "Chrome 155, Next 16.3.6 production webpack, DPR 1",
+  "comparison": "same synthetic aggregate DTO and states; not cross-renderer pixel equality",
+  "flutter_cases": 32,
+  "next_cases": 48,
+  "native_zoom_and_physical_reader": "UNKNOWN",
+  "diagnostic_files_are_not_PASS": true,
+  "clinical_label_and_semester_policy_unchanged": true,
+  "references": [
+    {
+      "file": "after-flutter-admin-data-dark-390-text1-content.png",
+      "sha256": "4dd83922f33189f8426f0c5c6a785a3975b6b635460e8691a9639b87e71d79de"
+    },
+    {
+      "file": "after-flutter-admin-data-dark-390-text1-top.png",
+      "sha256": "14a5926c9521195fca4bedd8ba4e0e673812f665b8b96474bb6a5187b2051726"
+    },
+    {
+      "file": "after-flutter-admin-data-dark-390-text2-content.png",
+      "sha256": "3f56c4d8755c34cdf0e973397b6d47584e5ba589da335e217cf61679b45acbfb"
+    },
+    {
+      "file": "after-flutter-admin-data-dark-390-text2-top.png",
+      "sha256": "c4fa290b5f6c1f4a3dc7927e53fad3fd49893c421d91eeddefb9bcc680d98950"
+    },
+    {
+      "file": "after-flutter-admin-data-light-390-text1-content.png",
+      "sha256": "483ac5a1530f431b524b70834351fc8de37e4ad073811e5b1022747b6f361ed0"
+    },
+    {
+      "file": "after-flutter-admin-data-light-390-text1-top.png",
+      "sha256": "3350b671c4bf13bc388ade0930a7640d430cfb1e8159f37022e29aa1571665b1"
+    },
+    {
+      "file": "after-flutter-admin-data-light-390-text2-content.png",
+      "sha256": "c57a6d6ebe55edac26503849293641996a1af32b3a59ec7875987baf3aee8ab4"
+    },
+    {
+      "file": "after-flutter-admin-data-light-390-text2-top.png",
+      "sha256": "287351b9f0d58b37aa73498a97ed78fee1abaed31c3b3a7dc16272e69963b25a"
+    },
+    {
+      "file": "after-flutter-admin-empty-dark-390-text1-content.png",
+      "sha256": "28d43d2ed77b8bd9f3279609def39d4b40b4b69a8d215cc32f953889c603758b"
+    },
+    {
+      "file": "after-flutter-admin-empty-dark-390-text1-top.png",
+      "sha256": "effd68b554b699228d1065ae68f00c49598ba85ac45eeec9f37e440e526d915c"
+    },
+    {
+      "file": "after-flutter-admin-empty-dark-390-text2-content.png",
+      "sha256": "3f56c4d8755c34cdf0e973397b6d47584e5ba589da335e217cf61679b45acbfb"
+    },
+    {
+      "file": "after-flutter-admin-empty-dark-390-text2-top.png",
+      "sha256": "908412364cfe0806c893c78ac0c03ab3cc74953f75c9f658a724bd1b52d0e3d9"
+    },
+    {
+      "file": "after-flutter-admin-empty-light-390-text1-content.png",
+      "sha256": "e20ac00d1a9465aefb4803966b7f0aa14bd57cfb4366f81be8832a5fec281b90"
+    },
+    {
+      "file": "after-flutter-admin-empty-light-390-text1-top.png",
+      "sha256": "f4292d1193ba4c01ae762a98772b823f5e12dcba9eb29a187800cc3bedd36951"
+    },
+    {
+      "file": "after-flutter-admin-empty-light-390-text2-content.png",
+      "sha256": "c57a6d6ebe55edac26503849293641996a1af32b3a59ec7875987baf3aee8ab4"
+    },
+    {
+      "file": "after-flutter-admin-empty-light-390-text2-top.png",
+      "sha256": "ad909d6b67dde9ae00de77e99a19ed69943a9f846fdbf8aece9650d761119e43"
+    },
+    {
+      "file": "after-flutter-admin-error-dark-390-text1-content.png",
+      "sha256": "9f33f1453fdf2eaed088f8c71d4da1a8efb34cddc74b5d4b372d9d7f6577c669"
+    },
+    {
+      "file": "after-flutter-admin-error-dark-390-text1-top.png",
+      "sha256": "9f33f1453fdf2eaed088f8c71d4da1a8efb34cddc74b5d4b372d9d7f6577c669"
+    },
+    {
+      "file": "after-flutter-admin-error-dark-390-text2-content.png",
+      "sha256": "74b2c9cf160bac6659d088b23dd083a238a63ec1512f4a0cec21faad86795ebd"
+    },
+    {
+      "file": "after-flutter-admin-error-dark-390-text2-top.png",
+      "sha256": "de1b5cf4fe9ef706f33953fe4de865d7ac82b7944c66b201810e2c71f7160945"
+    },
+    {
+      "file": "after-flutter-admin-error-light-390-text1-content.png",
+      "sha256": "c515c4d679c635be8cf3a7b95f58b5d554b76c4e790bec67c11863b9305037c1"
+    },
+    {
+      "file": "after-flutter-admin-error-light-390-text1-top.png",
+      "sha256": "c515c4d679c635be8cf3a7b95f58b5d554b76c4e790bec67c11863b9305037c1"
+    },
+    {
+      "file": "after-flutter-admin-error-light-390-text2-content.png",
+      "sha256": "faf4f260195f60710784566d8d5b3a46d582a90f6b8cf205cdaf33d62359e173"
+    },
+    {
+      "file": "after-flutter-admin-error-light-390-text2-top.png",
+      "sha256": "cabdb2af483eb25fde7a212ba37457b53851ec87df9cf6953b23fc75a2cdf230"
+    },
+    {
+      "file": "after-flutter-admin-loading-dark-390-text1-content.png",
+      "sha256": "aed2510309496b148d3b2391252ecf93fe4e9f51da635a19364e72d061a23571"
+    },
+    {
+      "file": "after-flutter-admin-loading-dark-390-text1-top.png",
+      "sha256": "c0dfd5d51c66db81d5328d7a2a57ad013a06a94eebb1099d67601e55735184f6"
+    },
+    {
+      "file": "after-flutter-admin-loading-dark-390-text2-content.png",
+      "sha256": "3f56c4d8755c34cdf0e973397b6d47584e5ba589da335e217cf61679b45acbfb"
+    },
+    {
+      "file": "after-flutter-admin-loading-dark-390-text2-top.png",
+      "sha256": "43ae192f730ab161ee385d939e1fa6e066e219c9f1435f144f71ab95361504bd"
+    },
+    {
+      "file": "after-flutter-admin-loading-light-390-text1-content.png",
+      "sha256": "436deeabfec3b234b39d51a0df7c3f53cc1edd357f9ef81927387e370c158f68"
+    },
+    {
+      "file": "after-flutter-admin-loading-light-390-text1-top.png",
+      "sha256": "d492f30b3b0c2d65c7a699778a5577bd881e09bfd15d8293769bb1db70cde13d"
+    },
+    {
+      "file": "after-flutter-admin-loading-light-390-text2-content.png",
+      "sha256": "c57a6d6ebe55edac26503849293641996a1af32b3a59ec7875987baf3aee8ab4"
+    },
+    {
+      "file": "after-flutter-admin-loading-light-390-text2-top.png",
+      "sha256": "d25f3274acade0dbf59c10d5a62a0e5376234497047d05304298a96a65fcefb3"
+    },
+    {
+      "file": "after-flutter-app_admin-data-dark-390-text1-content.png",
+      "sha256": "2dcab5d0103926edf65aa595a096950e59e45edd036bfffcc9650e51d2bf54fd"
+    },
+    {
+      "file": "after-flutter-app_admin-data-dark-390-text1-top.png",
+      "sha256": "18c08d407981718bc895eff8bf8ecaa668b4ecd96695cf1be16752ca56dc67ba"
+    },
+    {
+      "file": "after-flutter-app_admin-data-dark-390-text2-content.png",
+      "sha256": "892ee524b86b11534b22effd7eba4c8e4570766ac8f9a28c2ab2260f630b566f"
+    },
+    {
+      "file": "after-flutter-app_admin-data-dark-390-text2-top.png",
+      "sha256": "5c99e618b381d40f5639a94a389513e3af3291a9ef0d50494e36b45b7936858c"
+    },
+    {
+      "file": "after-flutter-app_admin-data-light-390-text1-content.png",
+      "sha256": "a454aea4d43170cb601c774d2afe1870017f53757f88cbb22876a541ff785091"
+    },
+    {
+      "file": "after-flutter-app_admin-data-light-390-text1-top.png",
+      "sha256": "31b46243b18312de6367f3eb96fb58fb94d15611022ea2a3fa4207b828513d15"
+    },
+    {
+      "file": "after-flutter-app_admin-data-light-390-text2-content.png",
+      "sha256": "f1a8f6d182d531f796a123ffa595ad258239e0cbfa682821e96b2f9a904a7585"
+    },
+    {
+      "file": "after-flutter-app_admin-data-light-390-text2-top.png",
+      "sha256": "4e53083dc797a51854112c8652f818b9a3968f3b61aa70fb981c9d17184c6b9b"
+    },
+    {
+      "file": "after-flutter-app_admin-empty-dark-390-text1-content.png",
+      "sha256": "d667b7d6a09706519a6d4f56c98aa6c5717dd7f9593a6d535a47482d6ac6aa74"
+    },
+    {
+      "file": "after-flutter-app_admin-empty-dark-390-text1-top.png",
+      "sha256": "d667b7d6a09706519a6d4f56c98aa6c5717dd7f9593a6d535a47482d6ac6aa74"
+    },
+    {
+      "file": "after-flutter-app_admin-empty-dark-390-text2-content.png",
+      "sha256": "ddd00490ff5e2a5510d55dbb982b2058e5070b995a6af5958a5ec5886bd4341c"
+    },
+    {
+      "file": "after-flutter-app_admin-empty-dark-390-text2-top.png",
+      "sha256": "ddd00490ff5e2a5510d55dbb982b2058e5070b995a6af5958a5ec5886bd4341c"
+    },
+    {
+      "file": "after-flutter-app_admin-empty-light-390-text1-content.png",
+      "sha256": "4825b54cd97d3848c175c7f3f3fc489535beb97336942e050aa6712455e34c88"
+    },
+    {
+      "file": "after-flutter-app_admin-empty-light-390-text1-top.png",
+      "sha256": "4825b54cd97d3848c175c7f3f3fc489535beb97336942e050aa6712455e34c88"
+    },
+    {
+      "file": "after-flutter-app_admin-empty-light-390-text2-content.png",
+      "sha256": "8d8dbcdc6ea956cad83978c5849a1fba94944a4ff31d3bae90f4bc5d750cada8"
+    },
+    {
+      "file": "after-flutter-app_admin-empty-light-390-text2-top.png",
+      "sha256": "8d8dbcdc6ea956cad83978c5849a1fba94944a4ff31d3bae90f4bc5d750cada8"
+    },
+    {
+      "file": "after-flutter-app_admin-error-dark-390-text1-content.png",
+      "sha256": "28ab4742602769ae3b96ce454186c0ca430117b4b91d646f56a0c65666baff80"
+    },
+    {
+      "file": "after-flutter-app_admin-error-dark-390-text1-top.png",
+      "sha256": "28ab4742602769ae3b96ce454186c0ca430117b4b91d646f56a0c65666baff80"
+    },
+    {
+      "file": "after-flutter-app_admin-error-dark-390-text2-content.png",
+      "sha256": "4ce0fdfe2dd7eea6f48318aedf805c11604dfd9e48f2f1b9512dcfb9be9e08af"
+    },
+    {
+      "file": "after-flutter-app_admin-error-dark-390-text2-top.png",
+      "sha256": "40c07d070e2ba42cca3f94f8b7af016b3de746ca7d2c4722617bf00b27fda16d"
+    },
+    {
+      "file": "after-flutter-app_admin-error-light-390-text1-content.png",
+      "sha256": "4baa435f2cd85fba265b495f527325dee54a98a811f3382516a77e382ab5f9b6"
+    },
+    {
+      "file": "after-flutter-app_admin-error-light-390-text1-top.png",
+      "sha256": "4baa435f2cd85fba265b495f527325dee54a98a811f3382516a77e382ab5f9b6"
+    },
+    {
+      "file": "after-flutter-app_admin-error-light-390-text2-content.png",
+      "sha256": "caae17a8b0ccafd57018ee8f23320777cb30cc77ba946912400fbbd44b9ca7a0"
+    },
+    {
+      "file": "after-flutter-app_admin-error-light-390-text2-top.png",
+      "sha256": "4cec43885851f8041ccf1f103445bd4b89f6ff02a17b11dbd3af171f9cf0e2ce"
+    },
+    {
+      "file": "after-flutter-app_admin-loading-dark-390-text1-content.png",
+      "sha256": "48f448c3f434e42a2fa21688ea19aabe163efce255cd257bd389cd1d1619f65f"
+    },
+    {
+      "file": "after-flutter-app_admin-loading-dark-390-text1-top.png",
+      "sha256": "9f93d2ca3d06abe52d75ea2cdf9be2be3c13de9951847be0f2cc517273c85b8e"
+    },
+    {
+      "file": "after-flutter-app_admin-loading-dark-390-text2-content.png",
+      "sha256": "7700fe55c0942cc40d89d89d6bbf7c03fc9c5a7d88070c64844cacbd81c4f536"
+    },
+    {
+      "file": "after-flutter-app_admin-loading-dark-390-text2-top.png",
+      "sha256": "ddd00490ff5e2a5510d55dbb982b2058e5070b995a6af5958a5ec5886bd4341c"
+    },
+    {
+      "file": "after-flutter-app_admin-loading-light-390-text1-content.png",
+      "sha256": "15eef95521352751c19155f0ee29170e105e0d65b0c101eb3a5d629bad9e2777"
+    },
+    {
+      "file": "after-flutter-app_admin-loading-light-390-text1-top.png",
+      "sha256": "24d730fcc753d22453d425d7faa9418e33b32f0e3da6937fdd1d8b6631fe9a2f"
+    },
+    {
+      "file": "after-flutter-app_admin-loading-light-390-text2-content.png",
+      "sha256": "6c3a45f64bb577447a01e7c9fa62a15819472ec2e9ac817d2b6507516dc5e633"
+    },
+    {
+      "file": "after-flutter-app_admin-loading-light-390-text2-top.png",
+      "sha256": "8d8dbcdc6ea956cad83978c5849a1fba94944a4ff31d3bae90f4bc5d750cada8"
+    },
+    {
+      "file": "after-next-admin-data-dark-1280-csszoom1-actions.png",
+      "sha256": "af2c904f6238ab729ab272e87bde259d3c2f4406bbd5012bd45b6d158684db94"
+    },
+    {
+      "file": "after-next-admin-data-dark-1280-csszoom1-stats.png",
+      "sha256": "9b1d532e3c6f1989683648729cb5373f40b05e1f357a1ed5f0fec16c5dccf73c"
+    },
+    {
+      "file": "after-next-admin-data-dark-390-csszoom1-actions.png",
+      "sha256": "9b56ba77105ce1b47e7e5bd1cca09a1d53f6ca203abbf2e8a5e84be1b7bfd5c5"
+    },
+    {
+      "file": "after-next-admin-data-dark-390-csszoom1-stats.png",
+      "sha256": "f99986e6bdd106930a5d9b54a928a3351e349ebf80625810be85f471b381631d"
+    },
+    {
+      "file": "after-next-admin-data-dark-390-csszoom2-actions.png",
+      "sha256": "3f562bc9ade94d804244a3909fc26f5a368e4a079aeff9cb0e4585c092d55b83"
+    },
+    {
+      "file": "after-next-admin-data-dark-390-csszoom2-stats.png",
+      "sha256": "e1e215a4e0d10fda39f8e4a048d54c0a334dc11d94da906d7818cd385bf5fc6e"
+    },
+    {
+      "file": "after-next-admin-data-light-1280-csszoom1-actions.png",
+      "sha256": "5e812a5c8d94339b6f7f73429de580f612107cc6f1a75f006aaf1beaee0b4fe9"
+    },
+    {
+      "file": "after-next-admin-data-light-1280-csszoom1-stats.png",
+      "sha256": "ec5d7c0214687b02e54ad6bd072a7887d2db8898793fe280b39f67951b471190"
+    },
+    {
+      "file": "after-next-admin-data-light-390-csszoom1-actions.png",
+      "sha256": "44c0e207a942e45d49f1de5c25b929b724b9ff52710d190c52bfd346b178ccee"
+    },
+    {
+      "file": "after-next-admin-data-light-390-csszoom1-stats.png",
+      "sha256": "7959b6ccb975cdded71d8dde4a96dd78bc0f02c04efac06abb5a4b29ad1a1bb1"
+    },
+    {
+      "file": "after-next-admin-data-light-390-csszoom2-actions.png",
+      "sha256": "427e807e3afc2e49b8481d25f5ad12dbf2ee4710934c87a253eb4e1cfdb1b0fa"
+    },
+    {
+      "file": "after-next-admin-data-light-390-csszoom2-stats.png",
+      "sha256": "42d01ecb2b7740026e7ef41957158608fb0d06595c72166ae50e0de156862087"
+    },
+    {
+      "file": "after-next-admin-empty-dark-1280-csszoom1-actions.png",
+      "sha256": "2b67a88304922f571889c61d960ea7da7387fbbe26e9a4be95d2995ce9601222"
+    },
+    {
+      "file": "after-next-admin-empty-dark-1280-csszoom1-stats.png",
+      "sha256": "2b67a88304922f571889c61d960ea7da7387fbbe26e9a4be95d2995ce9601222"
+    },
+    {
+      "file": "after-next-admin-empty-dark-390-csszoom1-actions.png",
+      "sha256": "6733714ad0419c1d06873d4981eeffed79a5f0c05db2afc474d83cddae2dcbe5"
+    },
+    {
+      "file": "after-next-admin-empty-dark-390-csszoom1-stats.png",
+      "sha256": "f037abf270f86f6d4a1981cb10ee1cd2e5f3a939992977292a5f1341138579e5"
+    },
+    {
+      "file": "after-next-admin-empty-dark-390-csszoom2-actions.png",
+      "sha256": "60d1d3a80be07994dcec04ba40bac515175498baae3aa4d0688a8e2850a7f870"
+    },
+    {
+      "file": "after-next-admin-empty-dark-390-csszoom2-stats.png",
+      "sha256": "4a11bf12ec64c5ca3f5518b781e53b272a5b05c5161c831eac401814da6de8bb"
+    },
+    {
+      "file": "after-next-admin-empty-light-1280-csszoom1-actions.png",
+      "sha256": "8af2922d9f807a8070fc7fe875a86ade2ebdee7a22a631cd155c8b0d650c1401"
+    },
+    {
+      "file": "after-next-admin-empty-light-1280-csszoom1-stats.png",
+      "sha256": "8af2922d9f807a8070fc7fe875a86ade2ebdee7a22a631cd155c8b0d650c1401"
+    },
+    {
+      "file": "after-next-admin-empty-light-390-csszoom1-actions.png",
+      "sha256": "3ce797bc535c6d74dcf719ea92c6c8db5fe30e405a506c90e98dd69e972ef01a"
+    },
+    {
+      "file": "after-next-admin-empty-light-390-csszoom1-stats.png",
+      "sha256": "3bd3b9d6ea4b1080bac33b47376e35266bec8fa48043b820ea3905ad84d4ff42"
+    },
+    {
+      "file": "after-next-admin-empty-light-390-csszoom2-actions.png",
+      "sha256": "0b4034a3540e5ffd6233f40849d575d84d9a9fcb8125a4fcee4309e84066bc30"
+    },
+    {
+      "file": "after-next-admin-empty-light-390-csszoom2-stats.png",
+      "sha256": "c5f3b3c754207cb8fb4414f41ad8587489a0d8d794cc9c3484c8eb66b074b720"
+    },
+    {
+      "file": "after-next-admin-error-dark-1280-csszoom1-actions.png",
+      "sha256": "03ca07abc2571cf6f2949f8bb03c8f575c9683b0430f36be4fe2394611af77d9"
+    },
+    {
+      "file": "after-next-admin-error-dark-1280-csszoom1-stats.png",
+      "sha256": "03ca07abc2571cf6f2949f8bb03c8f575c9683b0430f36be4fe2394611af77d9"
+    },
+    {
+      "file": "after-next-admin-error-dark-390-csszoom1-actions.png",
+      "sha256": "5d07eb93a7dd62346187293b710c2487e49348ca13729d38f0f7b059a6e9b6e9"
+    },
+    {
+      "file": "after-next-admin-error-dark-390-csszoom1-stats.png",
+      "sha256": "c033e69b8553c956b261a190345493e6097ff1a7ba4d1cb29c1a674b212d9298"
+    },
+    {
+      "file": "after-next-admin-error-dark-390-csszoom2-actions.png",
+      "sha256": "a771cd285bde55155f6ddf2a1a4f170e29243ae99b9a9fdbda47c3ce32a7af73"
+    },
+    {
+      "file": "after-next-admin-error-dark-390-csszoom2-stats.png",
+      "sha256": "67b7c622534d9ab3f02ba4f0d58130d6a73981200d707ee890572e91ce992498"
+    },
+    {
+      "file": "after-next-admin-error-light-1280-csszoom1-actions.png",
+      "sha256": "e0ca525aca0d36b76c58ec689a67a8b50d2ff9ebf00bbe836ebdffe100271d49"
+    },
+    {
+      "file": "after-next-admin-error-light-1280-csszoom1-stats.png",
+      "sha256": "e0ca525aca0d36b76c58ec689a67a8b50d2ff9ebf00bbe836ebdffe100271d49"
+    },
+    {
+      "file": "after-next-admin-error-light-390-csszoom1-actions.png",
+      "sha256": "6e9e2c1ad4fffd048108b697a6d78c4d91a1109f8aa91281c9585fcb3ad8cde8"
+    },
+    {
+      "file": "after-next-admin-error-light-390-csszoom1-stats.png",
+      "sha256": "84bf3a5eec51fc28df53cbf14a8440b1223a8b055830ea9567628f7fbab14f52"
+    },
+    {
+      "file": "after-next-admin-error-light-390-csszoom2-actions.png",
+      "sha256": "d2bd83ef888f3e5d1ceb67297422a9c4491ced50fd02833496397b2f6a905640"
+    },
+    {
+      "file": "after-next-admin-error-light-390-csszoom2-stats.png",
+      "sha256": "c359cd9ad21e8a81bbe2e28432ab175772c7cc6f737e4f51fd757c1f416c6d58"
+    },
+    {
+      "file": "after-next-admin-loading-dark-1280-csszoom1-actions.png",
+      "sha256": "c0a2625df42ec05e8a4deb99cbb7cc6f70c93bbad7ecc02907d9f84cc94dcc76"
+    },
+    {
+      "file": "after-next-admin-loading-dark-1280-csszoom1-stats.png",
+      "sha256": "9036ebfe6e560a4dab1d8cfe1d2f8c4dbe52f13fc87e7d4cf26749018ad7841e"
+    },
+    {
+      "file": "after-next-admin-loading-dark-390-csszoom1-actions.png",
+      "sha256": "83a2539f92cb674db31e01ffb1d21e8d243b67e55b8a372aaf2b672c06b8481c"
+    },
+    {
+      "file": "after-next-admin-loading-dark-390-csszoom1-stats.png",
+      "sha256": "6629e3d9a68ea972ead97956386d229ded641b799fc82db5b613065554b39c72"
+    },
+    {
+      "file": "after-next-admin-loading-dark-390-csszoom2-actions.png",
+      "sha256": "4e7075348d2ff10b020c725750f5a932be384b6d925f2b6a44d39304ec3f224e"
+    },
+    {
+      "file": "after-next-admin-loading-dark-390-csszoom2-stats.png",
+      "sha256": "85b6d0ab0836b1e8ae215884a76d8789be191a7dee52fbe9016ccbd4a7d7980d"
+    },
+    {
+      "file": "after-next-admin-loading-light-1280-csszoom1-actions.png",
+      "sha256": "528e5d91d16696c7c96625adf059867ebfe1791c79e1e7bfaa79004ae3373dd3"
+    },
+    {
+      "file": "after-next-admin-loading-light-1280-csszoom1-stats.png",
+      "sha256": "dfff7cb182b9a2989543a00bc0a4383863fc870ba43b44678293ae48ca2bc935"
+    },
+    {
+      "file": "after-next-admin-loading-light-390-csszoom1-actions.png",
+      "sha256": "4a0ecda8558c1eab4e501aecd8d7a9aa9d0268f2548b3b03bdc9241f21ea1054"
+    },
+    {
+      "file": "after-next-admin-loading-light-390-csszoom1-stats.png",
+      "sha256": "5aadad71860436aebf6c7d536664907872860a393b458ff4c959807455e8de7b"
+    },
+    {
+      "file": "after-next-admin-loading-light-390-csszoom2-actions.png",
+      "sha256": "af99eead6ffdf915cd35f3a1ec516fcf487462727c7349849f73b126fa2e1d57"
+    },
+    {
+      "file": "after-next-admin-loading-light-390-csszoom2-stats.png",
+      "sha256": "049bade29d1755a687ea999fba79178d9a910f7d3175b6f16ce222ae386a3300"
+    },
+    {
+      "file": "after-next-app_admin-data-dark-1280-csszoom1-actions.png",
+      "sha256": "73c6d1353c7874a5f8a517584d710fe2eea9aee079ca2a80ed2b11e08760972a"
+    },
+    {
+      "file": "after-next-app_admin-data-dark-1280-csszoom1-stats.png",
+      "sha256": "73c6d1353c7874a5f8a517584d710fe2eea9aee079ca2a80ed2b11e08760972a"
+    },
+    {
+      "file": "after-next-app_admin-data-dark-390-csszoom1-actions.png",
+      "sha256": "2d30aeaf1e370eab1595dbca57a752254d04829486d358bf1a0e005f4569ac4d"
+    },
+    {
+      "file": "after-next-app_admin-data-dark-390-csszoom1-stats.png",
+      "sha256": "ebd7382b6cee48f9b39ce02d2f307b7c1b49d8e197735ea3ce2eacdf28a6c3d3"
+    },
+    {
+      "file": "after-next-app_admin-data-dark-390-csszoom2-actions.png",
+      "sha256": "74eec48a6a1a7bd55f5f8e5824b02291978f5f6d61f7e5b8a0fc52df5d50a574"
+    },
+    {
+      "file": "after-next-app_admin-data-dark-390-csszoom2-stats.png",
+      "sha256": "4efbba6f46b0dc1b6dd7676230caee1d61ae7053dae68533edfdb730d1696e02"
+    },
+    {
+      "file": "after-next-app_admin-data-light-1280-csszoom1-actions.png",
+      "sha256": "5feef4774b50d73fc8570268e31633f242827d07b00ca262026e895d1d93cb0a"
+    },
+    {
+      "file": "after-next-app_admin-data-light-1280-csszoom1-stats.png",
+      "sha256": "5feef4774b50d73fc8570268e31633f242827d07b00ca262026e895d1d93cb0a"
+    },
+    {
+      "file": "after-next-app_admin-data-light-390-csszoom1-actions.png",
+      "sha256": "dc24b1b78eea6b6e95d68c09c8346bb1ee08a7f523c96f7fc730eec466e9cadd"
+    },
+    {
+      "file": "after-next-app_admin-data-light-390-csszoom1-stats.png",
+      "sha256": "9bb9850c75085370dc893239ef6e5078923cae5cd96e20b468d99cf6a431f620"
+    },
+    {
+      "file": "after-next-app_admin-data-light-390-csszoom2-actions.png",
+      "sha256": "274f08b8effda9b27fe689ebb9f022fdd2c9ec33fbc76a6c60281e7fa90f83f6"
+    },
+    {
+      "file": "after-next-app_admin-data-light-390-csszoom2-stats.png",
+      "sha256": "a5eea7871e092a23e128dea54abad71abefab40b636539a64da14950a61cdf9c"
+    },
+    {
+      "file": "after-next-app_admin-empty-dark-1280-csszoom1-actions.png",
+      "sha256": "df2661710142a1d6520c31d2f688fea48c5d1d7f70150a7bfdb895975e413f09"
+    },
+    {
+      "file": "after-next-app_admin-empty-dark-1280-csszoom1-stats.png",
+      "sha256": "df2661710142a1d6520c31d2f688fea48c5d1d7f70150a7bfdb895975e413f09"
+    },
+    {
+      "file": "after-next-app_admin-empty-dark-390-csszoom1-actions.png",
+      "sha256": "b6df25d51d68c95c4d18dd214882992964d59b00a0128cfcffe5570ad6107cfa"
+    },
+    {
+      "file": "after-next-app_admin-empty-dark-390-csszoom1-stats.png",
+      "sha256": "c744bfbc60eb1912a5aa06e199d8d4ff4da319d96390ded731b5a38e22a2f6d8"
+    },
+    {
+      "file": "after-next-app_admin-empty-dark-390-csszoom2-actions.png",
+      "sha256": "bcb58d234f67c4e01a765a50f098d546bc9113441cd0d2678b57fa164c509e3d"
+    },
+    {
+      "file": "after-next-app_admin-empty-dark-390-csszoom2-stats.png",
+      "sha256": "7ead5084d19b2b135376cf00b599f50ffd70c40d3da7b4eebc7cf489ccec7275"
+    },
+    {
+      "file": "after-next-app_admin-empty-light-1280-csszoom1-actions.png",
+      "sha256": "d823bba127f74db43c9c255f833c6b12b4897cd144f3aacccf5a3d04e836ec06"
+    },
+    {
+      "file": "after-next-app_admin-empty-light-1280-csszoom1-stats.png",
+      "sha256": "d823bba127f74db43c9c255f833c6b12b4897cd144f3aacccf5a3d04e836ec06"
+    },
+    {
+      "file": "after-next-app_admin-empty-light-390-csszoom1-actions.png",
+      "sha256": "7f8e44b04d037dcd56a9f0c89dfd2b7aff3c71c5d2572fd136578ea18805f486"
+    },
+    {
+      "file": "after-next-app_admin-empty-light-390-csszoom1-stats.png",
+      "sha256": "54207effeffa587c89a2edb7e598ae0e143f181c10e866129cf0ba8646f5d68f"
+    },
+    {
+      "file": "after-next-app_admin-empty-light-390-csszoom2-actions.png",
+      "sha256": "4abf6ec094fbbc1492353af9154e3ab558594f1d79ccec3c7f495f206a497abd"
+    },
+    {
+      "file": "after-next-app_admin-empty-light-390-csszoom2-stats.png",
+      "sha256": "20b7c29a55533bd535e43d00c6c887fcad9b5680ebbc05e88d91c3c1d96a7e15"
+    },
+    {
+      "file": "after-next-app_admin-error-dark-1280-csszoom1-actions.png",
+      "sha256": "f6062964ca6a5e62e1ae569924ca28e6e3da073d5aa30b57a97f216034fdb8f7"
+    },
+    {
+      "file": "after-next-app_admin-error-dark-1280-csszoom1-stats.png",
+      "sha256": "f6062964ca6a5e62e1ae569924ca28e6e3da073d5aa30b57a97f216034fdb8f7"
+    },
+    {
+      "file": "after-next-app_admin-error-dark-390-csszoom1-actions.png",
+      "sha256": "1fbd688de3f6cfe1a7d633cee19f3dc8e585796ab3458b8d54fa650a51cef808"
+    },
+    {
+      "file": "after-next-app_admin-error-dark-390-csszoom1-stats.png",
+      "sha256": "b117cf2754138826ede6e63f831a695742aaa9cde425bc55262313c15988993f"
+    },
+    {
+      "file": "after-next-app_admin-error-dark-390-csszoom2-actions.png",
+      "sha256": "85fe23d4f77636a328d03ddcd7d46ff835612a2b2693ef90b48a6552e7972846"
+    },
+    {
+      "file": "after-next-app_admin-error-dark-390-csszoom2-stats.png",
+      "sha256": "393a794d4f9466844d4000e389928634f7c16f77cc22da629d7cba9c62704592"
+    },
+    {
+      "file": "after-next-app_admin-error-light-1280-csszoom1-actions.png",
+      "sha256": "85753765faefc8b8848ecc25fe245f84d72df275cef4ddf725d103d34f5c34d2"
+    },
+    {
+      "file": "after-next-app_admin-error-light-1280-csszoom1-stats.png",
+      "sha256": "85753765faefc8b8848ecc25fe245f84d72df275cef4ddf725d103d34f5c34d2"
+    },
+    {
+      "file": "after-next-app_admin-error-light-390-csszoom1-actions.png",
+      "sha256": "0a70bcb61db233a47c25a083a7247684c9c208d248b15710cbafff1cad5d5818"
+    },
+    {
+      "file": "after-next-app_admin-error-light-390-csszoom1-stats.png",
+      "sha256": "2242d61c2aaf5ded713530dda1ceb51d3f9a787fa3013f0ee3c844ea196a7e6a"
+    },
+    {
+      "file": "after-next-app_admin-error-light-390-csszoom2-actions.png",
+      "sha256": "9f2a3a82e9011c39c45843780c2b5ee276c844f0174e78670cfeadc7ccc5497b"
+    },
+    {
+      "file": "after-next-app_admin-error-light-390-csszoom2-stats.png",
+      "sha256": "ecd7a44897fee272436fec655a4a99d41fc9032ec4fe0d3388c2934d03b38bb8"
+    },
+    {
+      "file": "after-next-app_admin-loading-dark-1280-csszoom1-actions.png",
+      "sha256": "3494ddc27306a83092cc1e4f031cbade5b2a0b55eb03943b46b14a814eb15df9"
+    },
+    {
+      "file": "after-next-app_admin-loading-dark-1280-csszoom1-stats.png",
+      "sha256": "ec8be8968aabe697ce1c9d702ceede3d6161d7ab6acd81cc582e6e9c605dc9ae"
+    },
+    {
+      "file": "after-next-app_admin-loading-dark-390-csszoom1-actions.png",
+      "sha256": "cc8dac758bcbd61f0cb4890e029c9e6c68c14ea5d11963e9b292541c96d2e2ef"
+    },
+    {
+      "file": "after-next-app_admin-loading-dark-390-csszoom1-stats.png",
+      "sha256": "e6bf51c5faaecffa9a610f42db5b2a1d44adef4a471dd5e48b7f526571de9585"
+    },
+    {
+      "file": "after-next-app_admin-loading-dark-390-csszoom2-actions.png",
+      "sha256": "1eaa9ff9074f17963550ca98b90cd6a4aed9fabe989f382694bcae0b28d3fd0f"
+    },
+    {
+      "file": "after-next-app_admin-loading-dark-390-csszoom2-stats.png",
+      "sha256": "3c6a682ce0df06d42eaf49adb806c1e4cd6c5ca6567864a40eb14a9609656bef"
+    },
+    {
+      "file": "after-next-app_admin-loading-light-1280-csszoom1-actions.png",
+      "sha256": "3936db4856a06d492fbc47a02e3b6efdfc67793421267f5219a9a8779fd87306"
+    },
+    {
+      "file": "after-next-app_admin-loading-light-1280-csszoom1-stats.png",
+      "sha256": "b840ea83f45937c4d815a6edba38324cd5ec1c63c9076fa7f98c0cc122e071ae"
+    },
+    {
+      "file": "after-next-app_admin-loading-light-390-csszoom1-actions.png",
+      "sha256": "28431d0308c13bede68130b77c9ccf49ab36c9e819fa4bcdd8b322493c79efeb"
+    },
+    {
+      "file": "after-next-app_admin-loading-light-390-csszoom1-stats.png",
+      "sha256": "1eb433b22c7a5369d341831bbf65634359c963b61557e2a6207e09777ee731d1"
+    },
+    {
+      "file": "after-next-app_admin-loading-light-390-csszoom2-actions.png",
+      "sha256": "68a801d0e48059ece956d55aa97acd69108607b46e346483c330b93a80b93507"
+    },
+    {
+      "file": "after-next-app_admin-loading-light-390-csszoom2-stats.png",
+      "sha256": "81b5688131e509e3a3e0308dd593630d06a19039da1af3821d876b404a50f700"
+    },
+    {
+      "file": "before-flutter-admin-data-dark-390-text1-content.png",
+      "sha256": "4dd83922f33189f8426f0c5c6a785a3975b6b635460e8691a9639b87e71d79de"
+    },
+    {
+      "file": "before-flutter-admin-data-dark-390-text1-top.png",
+      "sha256": "14a5926c9521195fca4bedd8ba4e0e673812f665b8b96474bb6a5187b2051726"
+    },
+    {
+      "file": "before-flutter-admin-data-dark-390-text2-content.png",
+      "sha256": "3f56c4d8755c34cdf0e973397b6d47584e5ba589da335e217cf61679b45acbfb"
+    },
+    {
+      "file": "before-flutter-admin-data-dark-390-text2-top.png",
+      "sha256": "c4fa290b5f6c1f4a3dc7927e53fad3fd49893c421d91eeddefb9bcc680d98950"
+    },
+    {
+      "file": "before-flutter-admin-data-light-390-text1-content.png",
+      "sha256": "483ac5a1530f431b524b70834351fc8de37e4ad073811e5b1022747b6f361ed0"
+    },
+    {
+      "file": "before-flutter-admin-data-light-390-text1-top.png",
+      "sha256": "3350b671c4bf13bc388ade0930a7640d430cfb1e8159f37022e29aa1571665b1"
+    },
+    {
+      "file": "before-flutter-admin-data-light-390-text2-content.png",
+      "sha256": "c57a6d6ebe55edac26503849293641996a1af32b3a59ec7875987baf3aee8ab4"
+    },
+    {
+      "file": "before-flutter-admin-data-light-390-text2-top.png",
+      "sha256": "287351b9f0d58b37aa73498a97ed78fee1abaed31c3b3a7dc16272e69963b25a"
+    },
+    {
+      "file": "before-flutter-admin-empty-dark-390-text1-content.png",
+      "sha256": "28d43d2ed77b8bd9f3279609def39d4b40b4b69a8d215cc32f953889c603758b"
+    },
+    {
+      "file": "before-flutter-admin-empty-dark-390-text1-top.png",
+      "sha256": "effd68b554b699228d1065ae68f00c49598ba85ac45eeec9f37e440e526d915c"
+    },
+    {
+      "file": "before-flutter-admin-empty-dark-390-text2-content.png",
+      "sha256": "3f56c4d8755c34cdf0e973397b6d47584e5ba589da335e217cf61679b45acbfb"
+    },
+    {
+      "file": "before-flutter-admin-empty-dark-390-text2-top.png",
+      "sha256": "908412364cfe0806c893c78ac0c03ab3cc74953f75c9f658a724bd1b52d0e3d9"
+    },
+    {
+      "file": "before-flutter-admin-empty-light-390-text1-content.png",
+      "sha256": "e20ac00d1a9465aefb4803966b7f0aa14bd57cfb4366f81be8832a5fec281b90"
+    },
+    {
+      "file": "before-flutter-admin-empty-light-390-text1-top.png",
+      "sha256": "f4292d1193ba4c01ae762a98772b823f5e12dcba9eb29a187800cc3bedd36951"
+    },
+    {
+      "file": "before-flutter-admin-empty-light-390-text2-content.png",
+      "sha256": "c57a6d6ebe55edac26503849293641996a1af32b3a59ec7875987baf3aee8ab4"
+    },
+    {
+      "file": "before-flutter-admin-empty-light-390-text2-top.png",
+      "sha256": "ad909d6b67dde9ae00de77e99a19ed69943a9f846fdbf8aece9650d761119e43"
+    },
+    {
+      "file": "before-flutter-admin-error-dark-390-text1-content.png",
+      "sha256": "a686476d1eafd5b8ac2832618406d8247c8bea5d610c3e27660a0ce9041814fc"
+    },
+    {
+      "file": "before-flutter-admin-error-dark-390-text1-top.png",
+      "sha256": "a686476d1eafd5b8ac2832618406d8247c8bea5d610c3e27660a0ce9041814fc"
+    },
+    {
+      "file": "before-flutter-admin-error-dark-390-text2-content.png",
+      "sha256": "449cc719a284cf1ab34e48de7738aa5ba527734412d79ea4fc0481c4d3a572c5"
+    },
+    {
+      "file": "before-flutter-admin-error-dark-390-text2-top.png",
+      "sha256": "4d415dd5b5eb3b74e52de75a7ff62175496c02a92a4f5e72690718d57a413680"
+    },
+    {
+      "file": "before-flutter-admin-error-light-390-text1-content.png",
+      "sha256": "48994ed0f260f85619ce32613ee69e54138e34710f801bcce9d484401848c0b7"
+    },
+    {
+      "file": "before-flutter-admin-error-light-390-text1-top.png",
+      "sha256": "48994ed0f260f85619ce32613ee69e54138e34710f801bcce9d484401848c0b7"
+    },
+    {
+      "file": "before-flutter-admin-error-light-390-text2-content.png",
+      "sha256": "26da23c40b1b4fac80a540cd44aab1bc88507699e8ea5121ecd90be2a6a8341a"
+    },
+    {
+      "file": "before-flutter-admin-error-light-390-text2-top.png",
+      "sha256": "e181e89ec815a181d59635f88a32d95992febadfce8e7c0aa1b6dea6de09ff10"
+    },
+    {
+      "file": "before-flutter-admin-loading-dark-390-text1-content.png",
+      "sha256": "aed2510309496b148d3b2391252ecf93fe4e9f51da635a19364e72d061a23571"
+    },
+    {
+      "file": "before-flutter-admin-loading-dark-390-text1-top.png",
+      "sha256": "c0dfd5d51c66db81d5328d7a2a57ad013a06a94eebb1099d67601e55735184f6"
+    },
+    {
+      "file": "before-flutter-admin-loading-dark-390-text2-content.png",
+      "sha256": "3f56c4d8755c34cdf0e973397b6d47584e5ba589da335e217cf61679b45acbfb"
+    },
+    {
+      "file": "before-flutter-admin-loading-dark-390-text2-top.png",
+      "sha256": "43ae192f730ab161ee385d939e1fa6e066e219c9f1435f144f71ab95361504bd"
+    },
+    {
+      "file": "before-flutter-admin-loading-light-390-text1-content.png",
+      "sha256": "436deeabfec3b234b39d51a0df7c3f53cc1edd357f9ef81927387e370c158f68"
+    },
+    {
+      "file": "before-flutter-admin-loading-light-390-text1-top.png",
+      "sha256": "d492f30b3b0c2d65c7a699778a5577bd881e09bfd15d8293769bb1db70cde13d"
+    },
+    {
+      "file": "before-flutter-admin-loading-light-390-text2-content.png",
+      "sha256": "c57a6d6ebe55edac26503849293641996a1af32b3a59ec7875987baf3aee8ab4"
+    },
+    {
+      "file": "before-flutter-admin-loading-light-390-text2-top.png",
+      "sha256": "d25f3274acade0dbf59c10d5a62a0e5376234497047d05304298a96a65fcefb3"
+    },
+    {
+      "file": "before-flutter-app_admin-data-dark-390-text1-content.png",
+      "sha256": "2dcab5d0103926edf65aa595a096950e59e45edd036bfffcc9650e51d2bf54fd"
+    },
+    {
+      "file": "before-flutter-app_admin-data-dark-390-text1-top.png",
+      "sha256": "18c08d407981718bc895eff8bf8ecaa668b4ecd96695cf1be16752ca56dc67ba"
+    },
+    {
+      "file": "before-flutter-app_admin-data-dark-390-text2-content.png",
+      "sha256": "892ee524b86b11534b22effd7eba4c8e4570766ac8f9a28c2ab2260f630b566f"
+    },
+    {
+      "file": "before-flutter-app_admin-data-dark-390-text2-top.png",
+      "sha256": "5c99e618b381d40f5639a94a389513e3af3291a9ef0d50494e36b45b7936858c"
+    },
+    {
+      "file": "before-flutter-app_admin-data-light-390-text1-content.png",
+      "sha256": "a454aea4d43170cb601c774d2afe1870017f53757f88cbb22876a541ff785091"
+    },
+    {
+      "file": "before-flutter-app_admin-data-light-390-text1-top.png",
+      "sha256": "31b46243b18312de6367f3eb96fb58fb94d15611022ea2a3fa4207b828513d15"
+    },
+    {
+      "file": "before-flutter-app_admin-data-light-390-text2-content.png",
+      "sha256": "f1a8f6d182d531f796a123ffa595ad258239e0cbfa682821e96b2f9a904a7585"
+    },
+    {
+      "file": "before-flutter-app_admin-data-light-390-text2-top.png",
+      "sha256": "4e53083dc797a51854112c8652f818b9a3968f3b61aa70fb981c9d17184c6b9b"
+    },
+    {
+      "file": "before-flutter-app_admin-empty-dark-390-text1-content.png",
+      "sha256": "d667b7d6a09706519a6d4f56c98aa6c5717dd7f9593a6d535a47482d6ac6aa74"
+    },
+    {
+      "file": "before-flutter-app_admin-empty-dark-390-text1-top.png",
+      "sha256": "d667b7d6a09706519a6d4f56c98aa6c5717dd7f9593a6d535a47482d6ac6aa74"
+    },
+    {
+      "file": "before-flutter-app_admin-empty-dark-390-text2-content.png",
+      "sha256": "ddd00490ff5e2a5510d55dbb982b2058e5070b995a6af5958a5ec5886bd4341c"
+    },
+    {
+      "file": "before-flutter-app_admin-empty-dark-390-text2-top.png",
+      "sha256": "ddd00490ff5e2a5510d55dbb982b2058e5070b995a6af5958a5ec5886bd4341c"
+    },
+    {
+      "file": "before-flutter-app_admin-empty-light-390-text1-content.png",
+      "sha256": "4825b54cd97d3848c175c7f3f3fc489535beb97336942e050aa6712455e34c88"
+    },
+    {
+      "file": "before-flutter-app_admin-empty-light-390-text1-top.png",
+      "sha256": "4825b54cd97d3848c175c7f3f3fc489535beb97336942e050aa6712455e34c88"
+    },
+    {
+      "file": "before-flutter-app_admin-empty-light-390-text2-content.png",
+      "sha256": "8d8dbcdc6ea956cad83978c5849a1fba94944a4ff31d3bae90f4bc5d750cada8"
+    },
+    {
+      "file": "before-flutter-app_admin-empty-light-390-text2-top.png",
+      "sha256": "8d8dbcdc6ea956cad83978c5849a1fba94944a4ff31d3bae90f4bc5d750cada8"
+    },
+    {
+      "file": "before-flutter-app_admin-error-dark-390-text1-content.png",
+      "sha256": "01d38418a71740c6e876642622c6ad331ed553c45d41971e5b989273004d6a38"
+    },
+    {
+      "file": "before-flutter-app_admin-error-dark-390-text1-top.png",
+      "sha256": "01d38418a71740c6e876642622c6ad331ed553c45d41971e5b989273004d6a38"
+    },
+    {
+      "file": "before-flutter-app_admin-error-dark-390-text2-content.png",
+      "sha256": "051ed6e21739dbca45f453707c10b81d7b42cbb28c6f660a2ae559bca6dd36df"
+    },
+    {
+      "file": "before-flutter-app_admin-error-dark-390-text2-top.png",
+      "sha256": "24b054144c024b0b754f2ede21ef18eee766f142ea4468232f1bf212cb9dadda"
+    },
+    {
+      "file": "before-flutter-app_admin-error-light-390-text1-content.png",
+      "sha256": "48d41f1f51e775b70c895f37787fb45e885eb6b1b60fd4df2887a60e9868b552"
+    },
+    {
+      "file": "before-flutter-app_admin-error-light-390-text1-top.png",
+      "sha256": "48d41f1f51e775b70c895f37787fb45e885eb6b1b60fd4df2887a60e9868b552"
+    },
+    {
+      "file": "before-flutter-app_admin-error-light-390-text2-content.png",
+      "sha256": "92b2f771adc857919d11bf80735c7386dba2a2c2b6ca5c230b8cd71f439a9f87"
+    },
+    {
+      "file": "before-flutter-app_admin-error-light-390-text2-top.png",
+      "sha256": "1e40fe2757a246005e37c471672a7826216589dab936cb6835fe53a9c3fea4ae"
+    },
+    {
+      "file": "before-flutter-app_admin-loading-dark-390-text1-content.png",
+      "sha256": "48f448c3f434e42a2fa21688ea19aabe163efce255cd257bd389cd1d1619f65f"
+    },
+    {
+      "file": "before-flutter-app_admin-loading-dark-390-text1-top.png",
+      "sha256": "9f93d2ca3d06abe52d75ea2cdf9be2be3c13de9951847be0f2cc517273c85b8e"
+    },
+    {
+      "file": "before-flutter-app_admin-loading-dark-390-text2-content.png",
+      "sha256": "7700fe55c0942cc40d89d89d6bbf7c03fc9c5a7d88070c64844cacbd81c4f536"
+    },
+    {
+      "file": "before-flutter-app_admin-loading-dark-390-text2-top.png",
+      "sha256": "ddd00490ff5e2a5510d55dbb982b2058e5070b995a6af5958a5ec5886bd4341c"
+    },
+    {
+      "file": "before-flutter-app_admin-loading-light-390-text1-content.png",
+      "sha256": "15eef95521352751c19155f0ee29170e105e0d65b0c101eb3a5d629bad9e2777"
+    },
+    {
+      "file": "before-flutter-app_admin-loading-light-390-text1-top.png",
+      "sha256": "24d730fcc753d22453d425d7faa9418e33b32f0e3da6937fdd1d8b6631fe9a2f"
+    },
+    {
+      "file": "before-flutter-app_admin-loading-light-390-text2-content.png",
+      "sha256": "6c3a45f64bb577447a01e7c9fa62a15819472ec2e9ac817d2b6507516dc5e633"
+    },
+    {
+      "file": "before-flutter-app_admin-loading-light-390-text2-top.png",
+      "sha256": "8d8dbcdc6ea956cad83978c5849a1fba94944a4ff31d3bae90f4bc5d750cada8"
+    },
+    {
+      "file": "before-next-diagnostic-admin-light-390-csszoom2.png",
+      "sha256": "f5d6845fc8038ab8bf75e666f8cd5f761489e87023b3e2e04db7029990ca28f7"
+    }
+  ],
+  "measurements": [
+    {
+      "file": "diagnostic-layout.json",
+      "sha256": "98a57a7e87f029805d5ceafed6ad1d52424829aaa8d5874c92552304d581c6a9"
+    },
+    {
+      "file": "flutter-measurements.json",
+      "sha256": "b704210567bf75d1fa71ebf2a585e65b6649d03caa22460d6d85edff9f0294f0"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "402b8612e3fdca2bbdd1a2bd48c57bfb604e4a243d4d36eb1d9cddced1d363e6"
+    }
+  ]
+}

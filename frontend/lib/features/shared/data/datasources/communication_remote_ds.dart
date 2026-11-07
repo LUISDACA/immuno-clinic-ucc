@@ -20,9 +20,9 @@ class CommunicationRemoteDataSource {
     required String target,
     required String search,
   }) async {
-    final r = await _api.dio.get(
-      '/communications/recipients',
-      queryParameters: {'target': target, 'search': search},
+    final r = await _api.dio.post(
+      '/communications/recipients/search',
+      data: {'target': target, 'search': search},
     );
     return r.data as List<dynamic>;
   }

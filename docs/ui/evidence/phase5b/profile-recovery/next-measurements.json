@@ -1,0 +1,82 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "measurements": [
+    {
+      "case": "draft_get_error",
+      "theme": "light",
+      "status": 403,
+      "draft_restored": true,
+      "retry_writes": 0
+    },
+    {
+      "case": "confirmed_put_failed_get",
+      "theme": "light",
+      "status": 403,
+      "writes": 1,
+      "real_backend_recovery": true
+    },
+    {
+      "case": "draft_get_error",
+      "theme": "light",
+      "status": 503,
+      "draft_restored": true,
+      "retry_writes": 0
+    },
+    {
+      "case": "confirmed_put_failed_get",
+      "theme": "light",
+      "status": 503,
+      "writes": 1,
+      "real_backend_recovery": true
+    },
+    {
+      "case": "failed_put_failed_get",
+      "theme": "light",
+      "first_write_controlled": true,
+      "explicit_retry_confirmed": true,
+      "writes": 2
+    },
+    {
+      "case": "draft_get_error",
+      "theme": "dark",
+      "status": 403,
+      "draft_restored": true,
+      "retry_writes": 0
+    },
+    {
+      "case": "confirmed_put_failed_get",
+      "theme": "dark",
+      "status": 403,
+      "writes": 1,
+      "real_backend_recovery": true
+    },
+    {
+      "case": "draft_get_error",
+      "theme": "dark",
+      "status": 503,
+      "draft_restored": true,
+      "retry_writes": 0
+    },
+    {
+      "case": "confirmed_put_failed_get",
+      "theme": "dark",
+      "status": 503,
+      "writes": 1,
+      "real_backend_recovery": true
+    },
+    {
+      "case": "failed_put_failed_get",
+      "theme": "dark",
+      "first_write_controlled": true,
+      "explicit_retry_confirmed": true,
+      "writes": 2
+    },
+    {
+      "case": "expiration",
+      "controlled_status": 401,
+      "protected_content_removed": true,
+      "actual_admin_status": 403
+    }
+  ]
+}

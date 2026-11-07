@@ -1,8 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/error/account_form_error.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../data/datasources/auth_remote_ds.dart';
 
@@ -29,7 +29,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   }
 
   Future<void> _handleSubmit() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (_isLoading || _formKey.currentState?.validate() != true) return;
 
     setState(() {
       _isLoading = true;
@@ -40,14 +40,16 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       await ref
           .read(authRemoteDataSourceProvider)
           .forgotPassword(_emailController.text.trim().toLowerCase());
+      if (!mounted) return;
       setState(() {
         _emailSent = true;
         _isLoading = false;
       });
-    } on DioException {
+    } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
-        _error = 'Error al enviar la solicitud';
+        _error = accountFormError(e, AccountFormOperation.forgot);
       });
     }
   }
@@ -62,9 +64,18 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           onPressed: () => context.pop(),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(28),
-        child: _emailSent ? _buildSuccessView() : _buildFormView(),
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          padding: const EdgeInsets.all(28),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight > 56
+                  ? constraints.maxHeight - 56
+                  : 0,
+            ),
+            child: _emailSent ? _buildSuccessView() : _buildFormView(),
+          ),
+        ),
       ),
     );
   }
@@ -123,8 +134,11 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         Form(
           key: _formKey,
           child: TextFormField(
+            enabled: !_isLoading,
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.done,
+            onFieldSubmitted: (_) => _handleSubmit(),
             decoration: const InputDecoration(
               labelText: 'Correo electrónico',
               prefixIcon: Icon(Icons.email_outlined),
@@ -138,7 +152,17 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),
-          Text(_error!, style: const TextStyle(color: AppColors.error)),
+          Semantics(
+            liveRegion: true,
+            child: Text(
+              _error!,
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.darkTextPrimary
+                    : AppColors.error,
+              ),
+            ),
+          ),
         ],
         const SizedBox(height: 24),
         SizedBox(

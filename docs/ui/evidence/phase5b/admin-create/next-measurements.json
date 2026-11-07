@@ -1,0 +1,44 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "actual_backend": true,
+  "measurements": [
+    {
+      "case": "required",
+      "theme": "light",
+      "post_count": 0
+    },
+    {
+      "case": "required",
+      "theme": "dark",
+      "post_count": 0
+    },
+    {
+      "case": "malformed_email",
+      "post_count": 0
+    },
+    {
+      "case": "short_password",
+      "post_count": 0
+    },
+    {
+      "case": "creation",
+      "role": "app_admin",
+      "posts": 1,
+      "list_refreshes": 1,
+      "fields_frozen": true,
+      "optional_blank_names_omitted": true,
+      "password_cleared": true
+    },
+    {
+      "case": "creation_permission",
+      "role": "student",
+      "status": 403
+    },
+    {
+      "case": "creation_permission",
+      "role": "admin",
+      "status": 403
+    }
+  ]
+}

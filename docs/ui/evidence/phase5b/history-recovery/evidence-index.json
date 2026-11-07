@@ -1,0 +1,83 @@
+{
+  "scope": "B5-H01 history query recovery; H02 app_admin web route remains PARTIAL",
+  "institutional_data": false,
+  "production_ready": false,
+  "flutter_tests": 29,
+  "next_component_tests": 16,
+  "flutter_golden_references": 6,
+  "next_screenshots": 8,
+  "next_cases": 10,
+  "native_zoom": false,
+  "notes": [
+    "No backend, audit visibility, clinical rule, auth-protocol or API changes.",
+    "Flutter widgets control Dio; Next real local PostgreSQL receives scoped synthetic audit fixtures and controlled read failures.",
+    "Student and ordinary admin web recovery are tested; app_admin route still redirects despite its backend endpoint200. No claim of web parity for app_admin.",
+    "GET-only recovery preserves page2 and page_size20; new UI states do not calculate clinical meaning from audit events."
+  ],
+  "references": [
+    {
+      "file": "comparison-cases.json",
+      "sha256": "28ac16dd7fed45ca2b7034fb25fc323c210178c66db449216d618428d2d5dfb4"
+    },
+    {
+      "file": "flutter-admin-dark-390.png",
+      "sha256": "d34e1f3c4c7ae1abe4f09f407cb4371f9ee3d87d7f6fa69205ea18d76e9a3c37"
+    },
+    {
+      "file": "flutter-admin-light-390.png",
+      "sha256": "a83f0c66fb2a42f584400af06351f168f442d77c6108d779162b01554b061e02"
+    },
+    {
+      "file": "flutter-app_admin-dark-390.png",
+      "sha256": "d34e1f3c4c7ae1abe4f09f407cb4371f9ee3d87d7f6fa69205ea18d76e9a3c37"
+    },
+    {
+      "file": "flutter-app_admin-light-390.png",
+      "sha256": "a83f0c66fb2a42f584400af06351f168f442d77c6108d779162b01554b061e02"
+    },
+    {
+      "file": "flutter-student-dark-390.png",
+      "sha256": "889da1eb3f7493efafcfdf226213416bdb33c2c6b54ca79d49f1c0786b8f4b81"
+    },
+    {
+      "file": "flutter-student-light-390.png",
+      "sha256": "51154dab7c5006975c3987c3f9dc62a4a2d6878f6f02ea4726a7bad4baa88ac9"
+    },
+    {
+      "file": "next-admin-get403-dark-390.png",
+      "sha256": "8d4b1f144d2eec91678957690654ab9b5ac15be6c39220b826c1459f35747770"
+    },
+    {
+      "file": "next-admin-get403-light-390.png",
+      "sha256": "7ba3460d79ea776ab6ad8fe65e85926d6cdd74d918d1b95bfb63ea64d4c9b460"
+    },
+    {
+      "file": "next-admin-get503-dark-390.png",
+      "sha256": "ada6285c5ebb50d2ca04176f3f4c730d8fbfae9ce9f36d94c0a2b1fd8d06864c"
+    },
+    {
+      "file": "next-admin-get503-light-390.png",
+      "sha256": "0001d9d317549f03cf083dec79e8ca26d8238ecd23c64c18f20a08a05109a1fe"
+    },
+    {
+      "file": "next-measurements.json",
+      "sha256": "c94c3d8c14b898f82d7f894e60de603d647384047ec05694d4f8b99706866187"
+    },
+    {
+      "file": "next-student-get403-dark-390.png",
+      "sha256": "f052f52d77d25aba51ad1225573ae4039df1d62cf720781699b0ef42786a44be"
+    },
+    {
+      "file": "next-student-get403-light-390.png",
+      "sha256": "bd814e79700c368a2bc0f8149b6d0fce10856ba9a27fae0888643a40c5ce09cc"
+    },
+    {
+      "file": "next-student-get503-dark-390.png",
+      "sha256": "34774b1b5146bde4e7f8fc46e7bc272fd13768fc928486333fc84fbefc9dcbfc"
+    },
+    {
+      "file": "next-student-get503-light-390.png",
+      "sha256": "8ffe9de0c65b342a5509fe182fcce1235d00d5811c6cebb0d52507dc015600d6"
+    }
+  ]
+}

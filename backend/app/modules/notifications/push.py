@@ -46,10 +46,13 @@ class PushNotificationSender:
         if app is None:
             return
 
-        payload = {key: value for key, value in (data or {}).items() if value is not None}
+        payload = {"event": "updates_available"}
         message = messaging.MulticastMessage(
             tokens=tokens,
-            notification=messaging.Notification(title=title, body=body),
+            notification=messaging.Notification(
+                title="ImmunoClinic",
+                body="Tienes una actualización. Abre la aplicación para consultarla.",
+            ),
             data=payload,
         )
         await asyncio.to_thread(messaging.send_each_for_multicast, message, app=app)

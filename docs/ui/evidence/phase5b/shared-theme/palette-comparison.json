@@ -1,0 +1,262 @@
+{
+  "kind": "palette-only-not-screen-parity",
+  "matches": 32,
+  "comparisons": [
+    {
+      "preference": "light",
+      "os": "dark",
+      "token": "background",
+      "flutter": "#f6fafa",
+      "next": "#f6fafa",
+      "matches": true
+    },
+    {
+      "preference": "light",
+      "os": "dark",
+      "token": "surface",
+      "flutter": "#ffffff",
+      "next": "#ffffff",
+      "matches": true
+    },
+    {
+      "preference": "light",
+      "os": "dark",
+      "token": "surface_variant",
+      "flutter": "#eff7f7",
+      "next": "#eff7f7",
+      "matches": true
+    },
+    {
+      "preference": "light",
+      "os": "dark",
+      "token": "foreground",
+      "flutter": "#172629",
+      "next": "#172629",
+      "matches": true
+    },
+    {
+      "preference": "light",
+      "os": "dark",
+      "token": "muted_foreground",
+      "flutter": "#647478",
+      "next": "#647478",
+      "matches": true
+    },
+    {
+      "preference": "light",
+      "os": "dark",
+      "token": "primary",
+      "flutter": "#00afc6",
+      "next": "#00afc6",
+      "matches": true
+    },
+    {
+      "preference": "light",
+      "os": "dark",
+      "token": "border",
+      "flutter": "#c7dada",
+      "next": "#c7dada",
+      "matches": true
+    },
+    {
+      "preference": "light",
+      "os": "dark",
+      "token": "divider",
+      "flutter": "#ddeaea",
+      "next": "#ddeaea",
+      "matches": true
+    },
+    {
+      "preference": "dark",
+      "os": "light",
+      "token": "background",
+      "flutter": "#071416",
+      "next": "#071416",
+      "matches": true
+    },
+    {
+      "preference": "dark",
+      "os": "light",
+      "token": "surface",
+      "flutter": "#0e2023",
+      "next": "#0e2023",
+      "matches": true
+    },
+    {
+      "preference": "dark",
+      "os": "light",
+      "token": "surface_variant",
+      "flutter": "#142d31",
+      "next": "#142d31",
+      "matches": true
+    },
+    {
+      "preference": "dark",
+      "os": "light",
+      "token": "foreground",
+      "flutter": "#eaf7f7",
+      "next": "#eaf7f7",
+      "matches": true
+    },
+    {
+      "preference": "dark",
+      "os": "light",
+      "token": "muted_foreground",
+      "flutter": "#a8bfc2",
+      "next": "#a8bfc2",
+      "matches": true
+    },
+    {
+      "preference": "dark",
+      "os": "light",
+      "token": "primary",
+      "flutter": "#45d2df",
+      "next": "#45d2df",
+      "matches": true
+    },
+    {
+      "preference": "dark",
+      "os": "light",
+      "token": "border",
+      "flutter": "#2d4f55",
+      "next": "#2d4f55",
+      "matches": true
+    },
+    {
+      "preference": "dark",
+      "os": "light",
+      "token": "divider",
+      "flutter": "#244247",
+      "next": "#244247",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "light",
+      "token": "background",
+      "flutter": "#f6fafa",
+      "next": "#f6fafa",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "light",
+      "token": "surface",
+      "flutter": "#ffffff",
+      "next": "#ffffff",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "light",
+      "token": "surface_variant",
+      "flutter": "#eff7f7",
+      "next": "#eff7f7",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "light",
+      "token": "foreground",
+      "flutter": "#172629",
+      "next": "#172629",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "light",
+      "token": "muted_foreground",
+      "flutter": "#647478",
+      "next": "#647478",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "light",
+      "token": "primary",
+      "flutter": "#00afc6",
+      "next": "#00afc6",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "light",
+      "token": "border",
+      "flutter": "#c7dada",
+      "next": "#c7dada",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "light",
+      "token": "divider",
+      "flutter": "#ddeaea",
+      "next": "#ddeaea",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "dark",
+      "token": "background",
+      "flutter": "#071416",
+      "next": "#071416",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "dark",
+      "token": "surface",
+      "flutter": "#0e2023",
+      "next": "#0e2023",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "dark",
+      "token": "surface_variant",
+      "flutter": "#142d31",
+      "next": "#142d31",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "dark",
+      "token": "foreground",
+      "flutter": "#eaf7f7",
+      "next": "#eaf7f7",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "dark",
+      "token": "muted_foreground",
+      "flutter": "#a8bfc2",
+      "next": "#a8bfc2",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "dark",
+      "token": "primary",
+      "flutter": "#45d2df",
+      "next": "#45d2df",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "dark",
+      "token": "border",
+      "flutter": "#2d4f55",
+      "next": "#2d4f55",
+      "matches": true
+    },
+    {
+      "preference": "system",
+      "os": "dark",
+      "token": "divider",
+      "flutter": "#244247",
+      "next": "#244247",
+      "matches": true
+    }
+  ]
+}

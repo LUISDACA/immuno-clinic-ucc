@@ -4,13 +4,18 @@ import uuid
 from datetime import datetime, timezone
 
 from app.common.access import ensure_student_in_admin_scope, is_app_admin
-from app.common.enums import AuditAction, EvidenceBatchStatus, Role
+from app.common.enums import AuditAction, DoseStatus, EvidenceBatchStatus, Role
 from app.core.cache import invalidate_student_scheme
-from app.core.exceptions import BadRequestException, ForbiddenException, NotFoundException
+from app.core.exceptions import (
+    BadRequestException,
+    ForbiddenException,
+    NotFoundException,
+)
 from app.core.file_validators import validate_pdf_file
 from app.modules.audit.service import AuditService
 from app.modules.evidence.models import EvidenceBatch, EvidenceFile
 from app.modules.evidence.repository import EvidenceRepository
+from app.modules.evidence.schemas import EvidenceReviewRequest
 from app.modules.users.models import User
 from app.storage.base import StorageService
 from fastapi import UploadFile
@@ -29,15 +34,21 @@ class EvidenceService:
         user_id: uuid.UUID,
         files: list[UploadFile],
         notes: str | None = None,
+        *,
+        dose_id: uuid.UUID | None = None,
     ) -> EvidenceBatch:
         """Upload one or more PDFs as a general evidence batch."""
         if not files:
             raise BadRequestException("Debe subir al menos un archivo PDF")
 
+        if dose_id is not None and await self.repo.get_owned_dose(user_id, dose_id) is None:
+            raise NotFoundException("Dose", str(dose_id))
+
         batch = EvidenceBatch(
             user_id=user_id,
-            status=EvidenceBatchStatus.UPLOADED,
+            status=EvidenceBatchStatus.IN_REVIEW,
             notes=notes,
+            dose_id=dose_id,
         )
         batch = await self.repo.create_batch(batch)
 
@@ -76,7 +87,66 @@ class EvidenceService:
             },
         )
         await self.repo.commit()
-        invalidate_student_scheme(user_id)
+        return await self.repo.get_batch_by_id(batch.id)
+
+    async def review_batch(
+        self,
+        actor: User,
+        batch_id: uuid.UUID,
+        data: EvidenceReviewRequest,
+    ) -> EvidenceBatch:
+        batch = await self.repo.get_batch_by_id(batch_id, for_update=True)
+        if batch is None:
+            raise NotFoundException("Evidence batch", str(batch_id))
+        student = batch.user
+        if student is None:
+            raise NotFoundException("Evidence owner")
+        if actor.role == Role.STUDENT:
+            raise ForbiddenException()
+        if actor.role != Role.APP_ADMIN:
+            ensure_student_in_admin_scope(actor, student)
+
+        previous_status = batch.status
+        reviewed_at = datetime.now(timezone.utc)
+        dose = None
+        if data.status.value == EvidenceBatchStatus.APPROVED.value and batch.dose_id is not None:
+            dose = await self.repo.get_owned_dose(
+                batch.user_id,
+                batch.dose_id,
+                for_update=True,
+            )
+            if dose is None:
+                raise NotFoundException("Dose", str(batch.dose_id))
+
+        try:
+            batch.status = EvidenceBatchStatus(data.status.value)
+            batch.reviewed_by = actor.id
+            batch.reviewed_at = reviewed_at
+            if data.notes is not None:
+                batch.notes = data.notes
+            if dose is not None:
+                dose.status = DoseStatus.APPROVED
+                dose.reviewed_by = actor.id
+                dose.reviewed_at = reviewed_at
+            await self.audit.log(
+                actor_id=actor.id,
+                action=AuditAction.EVIDENCE_REVIEWED,
+                target_type="evidence_batch",
+                target_id=batch.id,
+                details={
+                    "student_id": str(batch.user_id),
+                    "old_status": previous_status.value,
+                    "new_status": data.status.value,
+                    "dose_id": str(batch.dose_id) if dose is not None else None,
+                },
+            )
+            await self.repo.commit()
+        except Exception:
+            await self.repo.rollback()
+            raise
+
+        if dose is not None:
+            invalidate_student_scheme(batch.user_id)
         return await self.repo.get_batch_by_id(batch.id)
 
     async def get_student_batches(
@@ -164,4 +234,3 @@ class EvidenceService:
         )
         await self.repo.delete_batch(batch)
         await self.repo.commit()
-        invalidate_student_scheme(batch.user_id)

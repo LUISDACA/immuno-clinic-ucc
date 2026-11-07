@@ -15,6 +15,8 @@ from app.core.exceptions import (
 from app.core.request_context import user_id_var
 from app.core.security import decode_access_token
 from app.db.session import get_db
+from app.modules.auth.models import AuthSession
+from app.modules.auth.sessions import active
 from app.modules.users.models import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
@@ -35,7 +37,8 @@ async def get_current_user(
 
     try:
         uid = uuid.UUID(user_id)
-    except ValueError as exc:
+        sid = uuid.UUID(payload["sid"])
+    except (ValueError, KeyError, TypeError) as exc:
         raise UnauthorizedException() from exc
 
     result = await db.execute(select(User).where(User.id == uid))
@@ -45,6 +48,9 @@ async def get_current_user(
         raise UnauthorizedException("User not found")
     if not user.is_active:
         raise InactiveUserException()
+    session = await db.get(AuthSession, sid)
+    if not active(session, user) or payload.get("av") != user.auth_version:
+        raise UnauthorizedException()
 
     user_id_var.set(str(user.id))
     return user

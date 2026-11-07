@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/theme/theme_mode_provider.dart';
+import '../../../../core/error/api_error_message.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/cache/scheme_cache.dart';
 import '../../data/datasources/scheme_remote_ds.dart';
@@ -46,12 +47,19 @@ class SchemeState {
 
 class SchemeNotifier extends StateNotifier<SchemeState> {
   static const _cacheTtl = Duration(minutes: 2);
+  static const _offlineCacheTtl = Duration(hours: 24);
 
   final SchemeRemoteDataSource _ds;
   final SharedPreferences _prefs;
   final String? _userId;
-  SchemeNotifier(this._ds, this._prefs, this._userId)
-    : super(const SchemeState());
+  final SchemeCacheStore _cacheStore;
+  SchemeNotifier(
+    this._ds,
+    this._prefs,
+    this._userId, {
+    SchemeCacheStore? cacheStore,
+  }) : _cacheStore = cacheStore ?? SchemeCache.store,
+       super(const SchemeState());
 
   DateTime? _lastLoadedAt;
   Future<void>? _inFlightLoad;
@@ -97,7 +105,10 @@ class SchemeNotifier extends StateNotifier<SchemeState> {
       }
     } catch (e) {
       debugPrint('SchemeNotifier._loadScheme unexpected error: $e');
-      state = state.copyWith(isLoading: false, error: 'Error inesperado. Intenta de nuevo.');
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Error inesperado. Intenta de nuevo.',
+      );
     }
   }
 
@@ -105,7 +116,13 @@ class SchemeNotifier extends StateNotifier<SchemeState> {
     await SchemeCache.clearLegacy(_prefs);
     final cacheKey = SchemeCache.keyForUser(_userId);
     if (cacheKey == null) return;
-    await _prefs.setString(cacheKey, jsonEncode(data));
+    await _cacheStore.write(
+      cacheKey,
+      jsonEncode({
+        'saved_at': DateTime.now().toUtc().millisecondsSinceEpoch,
+        'data': data,
+      }),
+    );
   }
 
   bool _canUseOfflineFallback(DioException e) {
@@ -115,12 +132,8 @@ class SchemeNotifier extends StateNotifier<SchemeState> {
   }
 
   String _errorMessageFromDio(DioException e) {
-    final data = e.response?.data;
-    if (data is Map<String, dynamic>) {
-      final detail = data['detail'];
-      if (detail is String && detail.isNotEmpty) return detail;
-    }
-    return 'Error al cargar esquema';
+    return apiErrorMessageFromData(e.response?.data) ??
+        'Error al cargar esquema';
   }
 
   Future<void> _handleOfflineFallback(String errorMessage) async {
@@ -131,10 +144,21 @@ class SchemeNotifier extends StateNotifier<SchemeState> {
       return;
     }
 
-    final cachedData = _prefs.getString(cacheKey);
+    final cachedData = await _cacheStore.read(cacheKey);
     if (cachedData != null) {
       try {
-        final data = jsonDecode(cachedData) as Map<String, dynamic>;
+        final envelope = jsonDecode(cachedData) as Map<String, dynamic>;
+        final savedAt = DateTime.fromMillisecondsSinceEpoch(
+          envelope['saved_at'] as int,
+          isUtc: true,
+        );
+        if (DateTime.now().toUtc().difference(savedAt) > _offlineCacheTtl ||
+            savedAt.isAfter(DateTime.now().toUtc())) {
+          await _cacheStore.deleteAll();
+          state = state.copyWith(isLoading: false, error: errorMessage);
+          return;
+        }
+        final data = envelope['data'] as Map<String, dynamic>;
         final overview = SchemeOverviewModel.fromJson(data);
         state = SchemeState(
           overview: overview,

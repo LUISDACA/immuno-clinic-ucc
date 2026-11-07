@@ -145,6 +145,23 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final actionLabel = authState.isLoading ? 'Ingresando' : 'Ingresar';
+    final actionButtonStyle = ElevatedButtonTheme.of(context).style;
+    final actionTextStyle =
+        actionButtonStyle?.textStyle?.resolve(const {}) ??
+        Theme.of(context).textTheme.labelLarge;
+    final actionVerticalPadding =
+        actionButtonStyle?.padding?.resolve(const {})?.vertical ?? 28.0;
+    final actionLabelPainter = TextPainter(
+      text: TextSpan(text: actionLabel, style: actionTextStyle),
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout();
+    // Reserve enough height for the scaled label plus the button theme padding.
+    final scaledActionHeight =
+        actionLabelPainter.height + actionVerticalPadding;
+    final actionMinHeight = scaledActionHeight > 52 ? scaledActionHeight : 52.0;
+
     return Padding(
       padding: const EdgeInsets.all(28),
       child: Column(
@@ -176,8 +193,13 @@ class _LoginForm extends StatelessWidget {
                 TextFormField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
-                    labelText: 'Correo electrónico',
+                    label: Text(
+                      'Correo electrónico',
+                      maxLines: 3,
+                      overflow: TextOverflow.visible,
+                    ),
                     prefixIcon: Icon(Icons.alternate_email),
                   ),
                   validator: (value) {
@@ -194,6 +216,8 @@ class _LoginForm extends StatelessWidget {
                 TextFormField(
                   controller: passwordController,
                   obscureText: obscurePassword,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => onLogin(),
                   decoration: InputDecoration(
                     labelText: 'Contraseña',
                     prefixIcon: const Icon(Icons.lock_outline),
@@ -229,40 +253,43 @@ class _LoginForm extends StatelessWidget {
           ),
           if (authState.errorMessage != null) ...[
             const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.errorLight,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppColors.error.withValues(alpha: 0.22),
-                ),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    color: AppColors.error,
-                    size: 20,
+            Semantics(
+              liveRegion: true,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.errorLight,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.error.withValues(alpha: 0.22),
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      authState.errorMessage!,
-                      style: const TextStyle(
-                        color: AppColors.error,
-                        fontSize: 13,
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      color: AppColors.error,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        authState.errorMessage!,
+                        style: const TextStyle(
+                          color: AppColors.error,
+                          fontSize: 13,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
           const SizedBox(height: 18),
-          SizedBox(
-            height: 52,
+          ConstrainedBox(
+            constraints: BoxConstraints(minHeight: actionMinHeight),
             child: ElevatedButton.icon(
               onPressed: authState.isLoading ? null : onLogin,
               icon: authState.isLoading
@@ -275,7 +302,7 @@ class _LoginForm extends StatelessWidget {
                       ),
                     )
                   : const Icon(Icons.login_rounded),
-              label: Text(authState.isLoading ? 'Ingresando' : 'Ingresar'),
+              label: Text(actionLabel),
             ),
           ),
         ],

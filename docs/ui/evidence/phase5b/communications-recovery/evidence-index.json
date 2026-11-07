@@ -1,0 +1,248 @@
+{
+  "scope": "B5-C04 read synchronization; B5-C05 own-message contrast; B5-C06 basic Next states",
+  "institutional_data": false,
+  "production_ready": false,
+  "renderer": "Chrome155.0.8059.39/Next16.3.6 webpack; Flutter3.41.6/Dart3.11.4/Inter local",
+  "new_flutter_golden_references": 4,
+  "before_contrast": 2.642362874692484,
+  "next_cases": 47,
+  "query_state_cases": 40,
+  "read_retry_real_success_cases": 2,
+  "notes": [
+    "Errors/loading/empty and final401 are controlled browser responses; successful recovery uses actual FastAPI/PostgreSQL.",
+    "Real student GET administrative statistics returns403.",
+    "Read retry retains category-wide backend semantics; no session protocol changes.",
+    "Flutter pending uses the actual optimistic-send path with a held synthetic datasource response.",
+    "Only own-message foregrounds were corrected; not overall screen accessibility."
+  ],
+  "references": [
+    {
+      "file": "after-flutter-detail-dark-pending-390.png",
+      "sha256": "dd114cbb0e5941f4b9492b6a6c56d45a4ab334aea1d1360523e1752fe5b473fb"
+    },
+    {
+      "file": "after-flutter-detail-dark-sent-390.png",
+      "sha256": "0ca29c112f919ed6db63084cee37b9943e293eb0e3ee90a782348cecd0499c5a"
+    },
+    {
+      "file": "after-flutter-detail-light-pending-390.png",
+      "sha256": "d8ee26b3f106aa319e23c03f334d31ccc18ecf8eea69c0180c5eeb8ba0d08b0c"
+    },
+    {
+      "file": "after-flutter-detail-light-sent-390.png",
+      "sha256": "62a72d94f1b69d09076c00816e6d159cba4a197f3989a75a5b68376fdf0b3e33"
+    },
+    {
+      "file": "after-flutter-measurements.json",
+      "sha256": "6108d04831d9494959fce57dc8cbaaed9c66410792a548eca6e007bbdfce3fbc"
+    },
+    {
+      "file": "after-next-admin-detail-403-dark-390.png",
+      "sha256": "2c440e6751f5b8d9597a91f77988f0378111d8e699711512a23931e8fc4e1a35"
+    },
+    {
+      "file": "after-next-admin-detail-403-light-390.png",
+      "sha256": "f8c96bd09b97efafcf5829c03f526f90b5b422c413906d8a2c1e5c0b3fe18b10"
+    },
+    {
+      "file": "after-next-admin-detail-404-dark-390.png",
+      "sha256": "5751addcdcc90011ffb0e59a4c906f49de0e0b1e0fdec186a52e5958ca5650c6"
+    },
+    {
+      "file": "after-next-admin-detail-404-light-390.png",
+      "sha256": "428b2c0befcc1b6870421049e3086b2ee729346a98c54daeb33cc61bd4b46228"
+    },
+    {
+      "file": "after-next-admin-detail-503-dark-390.png",
+      "sha256": "ebce188e12f06f6c5a13947edb4640f474af83f10e7df048239aa3e1a26c722b"
+    },
+    {
+      "file": "after-next-admin-detail-503-light-390.png",
+      "sha256": "aa73ca29955e4269172cdbe778b14646d14eb3e2cbd909db3d78cd5a2aa6d179"
+    },
+    {
+      "file": "after-next-admin-detail-empty-dark-390.png",
+      "sha256": "d27b26e39c2e606bd4cf45922c281fe28ca0c2a55955b03c89a72196a041d1b4"
+    },
+    {
+      "file": "after-next-admin-detail-empty-light-390.png",
+      "sha256": "df582bb636db8acb1abbb6f56bc10c5b01be3e4ba1998b20ce461cd71610263b"
+    },
+    {
+      "file": "after-next-admin-detail-hold-dark-390.png",
+      "sha256": "0da5d11c8a40e337171f46a9018096bc7ef9d335b262a3f777d514173a33e914"
+    },
+    {
+      "file": "after-next-admin-detail-hold-light-390.png",
+      "sha256": "53f79550c940fc89c3ed18344687e9a873d94a5e49ffc28dd654a738e79ebd28"
+    },
+    {
+      "file": "after-next-admin-list-403-dark-390.png",
+      "sha256": "b901f6395146461bd8a68258306563ba251e41ca926c86ad564f7a9a71ab3a5e"
+    },
+    {
+      "file": "after-next-admin-list-403-light-390.png",
+      "sha256": "0685704d007faede860e4be8c703da82ba070adbcc8bd2701a12fb5cc22a4f7f"
+    },
+    {
+      "file": "after-next-admin-list-404-dark-390.png",
+      "sha256": "e7719631d670fdeebc002007f9598b29432fdce341bd8e0d76762b2ff151440a"
+    },
+    {
+      "file": "after-next-admin-list-404-light-390.png",
+      "sha256": "5815f1c0c121a7cec20d06f05a095db6037834a52c082c96f8abff32ab026ac9"
+    },
+    {
+      "file": "after-next-admin-list-503-dark-390.png",
+      "sha256": "1a4ae4e17d9eb0babc813e5062f5f7db4b69d4435927b15c3503a983dffa4924"
+    },
+    {
+      "file": "after-next-admin-list-503-light-390.png",
+      "sha256": "afc81365af7243576f1ae2182e21b4380383d54ce52936de03b5169c2db346db"
+    },
+    {
+      "file": "after-next-admin-list-empty-dark-390.png",
+      "sha256": "4b1481e2044d5c5f29d0208f08fe381eb0c3f7b5441fbbe3b49fa074ec5921f2"
+    },
+    {
+      "file": "after-next-admin-list-empty-light-390.png",
+      "sha256": "1704ca6e00c8043fc168de4a73aab2d9508b04ee32fc612ec53562fdf91c881b"
+    },
+    {
+      "file": "after-next-admin-list-hold-dark-390.png",
+      "sha256": "6988a1b52d5a42fb962b46ef38d3fb1900f82b7ef4d3d817d72054a59105d86b"
+    },
+    {
+      "file": "after-next-admin-list-hold-light-390.png",
+      "sha256": "8ad9aa6c4cba8cf947e42409b78e588710a339a911fade9d54bd8b936ddbba3e"
+    },
+    {
+      "file": "after-next-admin-messages-dark-390.png",
+      "sha256": "554abd078f164c5223c35623decb35149d425c9e36eca0d07577c72c296db8f1"
+    },
+    {
+      "file": "after-next-admin-messages-light-390.png",
+      "sha256": "f6ba0632496e3b3909e62f6a64665e9fdba382952f33f46a2565d4b3d0c0b51f"
+    },
+    {
+      "file": "after-next-admin-read-retry-pending-light-390.png",
+      "sha256": "c90b4875db33c4c3c526016292c7ed8bda800b8a73eb778955cd4826421addd0"
+    },
+    {
+      "file": "after-next-measurements.json",
+      "sha256": "97c09f78500bc048348d16a3d2509604f4ada2a74c09da9a99bb48269b9e4a9e"
+    },
+    {
+      "file": "after-next-student-detail-403-dark-390.png",
+      "sha256": "192d737bb64d4afcc96e1c30c9980198e856b483d638dd7c13f0f6b5abd58ea3"
+    },
+    {
+      "file": "after-next-student-detail-403-light-390.png",
+      "sha256": "9cc097b1639e8013ec950f69401f39bda98a665d8cf0f8d3ff795b57b22ec0db"
+    },
+    {
+      "file": "after-next-student-detail-404-dark-390.png",
+      "sha256": "5632996ace938cfeac2c6e90f3ab47cf85316c4e0dd277a0fa83c175c5a23879"
+    },
+    {
+      "file": "after-next-student-detail-404-light-390.png",
+      "sha256": "de019e4d8c441c9e1d76705f4ee57b5c6c898b79bb8446c2e70865881cc85e7e"
+    },
+    {
+      "file": "after-next-student-detail-503-dark-390.png",
+      "sha256": "2c75fc770f392d111208da4eab0efac432a1bf8052051bbf722ed5cf30748dbd"
+    },
+    {
+      "file": "after-next-student-detail-503-light-390.png",
+      "sha256": "620309475d9c565cbd72ed1c3d0f75d713c338182903ce7bee2cae9faa91cf6b"
+    },
+    {
+      "file": "after-next-student-detail-empty-dark-390.png",
+      "sha256": "17f75a1d415542acc34f6eebe639aecdbbb2387c8d5dcc998d1b853d58c16529"
+    },
+    {
+      "file": "after-next-student-detail-empty-light-390.png",
+      "sha256": "21a8708f6d343449de04fb92e930356c846728a6d421f878fab78f1f12968e17"
+    },
+    {
+      "file": "after-next-student-detail-hold-dark-390.png",
+      "sha256": "90b9c6310bc204294aaa0c25c1aa40398b405554814f6cefb09ab7afc2022e75"
+    },
+    {
+      "file": "after-next-student-detail-hold-light-390.png",
+      "sha256": "1477e127a8b94866bdf5133ca09785b0e361b54b071691639f4cbd335d62c6a3"
+    },
+    {
+      "file": "after-next-student-list-403-dark-390.png",
+      "sha256": "01931d924e60c1362897a6059dd512d0d41998dee65a92a6c461d4419ea064eb"
+    },
+    {
+      "file": "after-next-student-list-403-light-390.png",
+      "sha256": "8d3467d587c19cb19dc713f035e53054ef7b07bfeb4d2ea5a406f68e1923c11b"
+    },
+    {
+      "file": "after-next-student-list-404-dark-390.png",
+      "sha256": "e17268036b1b2606f961e8695a4694ce194349e2832bfc81a6f955b1e8dfc3b7"
+    },
+    {
+      "file": "after-next-student-list-404-light-390.png",
+      "sha256": "7633a1673631d11262b9feefe86802d6e8398c752c1e7632525845996edb59c2"
+    },
+    {
+      "file": "after-next-student-list-503-dark-390.png",
+      "sha256": "add4ebaf68c1eb099d828dcaac30d798c8198f8ee66cbd1dc9dc4582e28880e7"
+    },
+    {
+      "file": "after-next-student-list-503-light-390.png",
+      "sha256": "03c34c3fd13fe5ddf8291c4077cc27f09d52ad59f1265433b67118b7b03c58d1"
+    },
+    {
+      "file": "after-next-student-list-empty-dark-390.png",
+      "sha256": "a3ddcb656edb8331bca77c456ea879ae5dd267547662e4c31dc87aab441faaef"
+    },
+    {
+      "file": "after-next-student-list-empty-light-390.png",
+      "sha256": "7f625320f77d2a10a8986637443e8266821613617c36a53af4c2c9357e627ce5"
+    },
+    {
+      "file": "after-next-student-list-hold-dark-390.png",
+      "sha256": "cd3f1300209b293d4015a224fcb773471355b8c0f45fe324b37fa7ce0ea4147a"
+    },
+    {
+      "file": "after-next-student-list-hold-light-390.png",
+      "sha256": "f45d1acf34aae823e13b075101a474c77045d62807e8dc0fbec70696e251d77e"
+    },
+    {
+      "file": "after-next-student-messages-dark-390.png",
+      "sha256": "dd010c40d049810c0f47ce8ad935cd668692513a75fcec6f25fc113b27323e4e"
+    },
+    {
+      "file": "after-next-student-messages-light-390.png",
+      "sha256": "0475ab144b7ad918fe25f1e528a0d391a33293c6e042684aa98d7bb84c3b32a9"
+    },
+    {
+      "file": "after-next-student-read-retry-pending-light-390.png",
+      "sha256": "8a7e7bf965fc7f032a75979deddf480518c2ca2719d6bdd983bc2ad1ae960e65"
+    },
+    {
+      "file": "before-flutter-detail-dark-sent-390.png",
+      "sha256": "c5a347f6894002000a7df0d14d44651cbc69732a9cc76abe1e3574a7cc27f1c9"
+    },
+    {
+      "file": "before-flutter-detail-light-sent-390.png",
+      "sha256": "ebbe9216ad695fcb473677d0051fd59801492ce70ba1e36b868d8b1fd6c50698"
+    },
+    {
+      "file": "before-flutter-measurements.json",
+      "sha256": "204347813554b3808909be9b74b113b297c83f0e1b11f87328558b2e2ee9b1ce"
+    },
+    {
+      "file": "before-next-admin-messages-light-390.png",
+      "sha256": "95fa4f2c9909f28d14735b1b5dfc5a2551c441377eed3725199c0c8588c70d40"
+    },
+    {
+      "file": "before-next-measurements.json",
+      "sha256": "001b777d3dfdb012e126a703aa3fa119e7c9d54b624a0495ca10d875bf6b609c"
+    }
+  ]
+}

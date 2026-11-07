@@ -1,0 +1,339 @@
+{
+  "stage": "verified-after",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "measurements": [
+    {
+      "screen": "admin-detail-scheme",
+      "preference": "light",
+      "os": "dark",
+      "root": {
+        "foreground": "rgb(23, 38, 41)",
+        "background": "rgb(246, 250, 250)",
+        "contrast": 14.842307374341344
+      },
+      "card": {
+        "foreground": "rgb(23, 38, 41)",
+        "background": "rgb(255, 255, 255)",
+        "contrast": 15.605306997810734
+      },
+      "status": {
+        "foreground": "rgb(113, 81, 0)",
+        "contrast": 7.293910724901275
+      },
+      "doseLabel": {
+        "foreground": "rgb(23, 38, 41)",
+        "contrast": 15.605306997810734
+      },
+      "comment": {
+        "foreground": "rgb(0, 101, 117)",
+        "background": "rgb(226, 247, 250)",
+        "contrast": 6.066837811062071
+      },
+      "reviewActions": [
+        {
+          "action": "Aprobar",
+          "actionColor": {
+            "foreground": "rgb(47, 100, 24)",
+            "background": "rgb(234, 246, 228)",
+            "contrast": 6.358319825064485
+          },
+          "confirmation": {
+            "foreground": "rgb(23, 38, 41)",
+            "background": "rgb(234, 246, 228)",
+            "contrast": 13.971267263950061
+          },
+          "cancelled": true
+        },
+        {
+          "action": "Denegar",
+          "actionColor": {
+            "foreground": "rgb(141, 37, 37)",
+            "background": "rgb(255, 236, 236)",
+            "contrast": 7.616451705567846
+          },
+          "confirmation": {
+            "foreground": "rgb(23, 38, 41)",
+            "background": "rgb(255, 236, 236)",
+            "contrast": 13.718853395295236
+          },
+          "cancelled": true
+        }
+      ],
+      "accordion": {
+        "expanded": "true",
+        "hidden": false,
+        "labelled": true,
+        "region": "region"
+      },
+      "reflow": [
+        {
+          "width": 320,
+          "height": 568,
+          "mobile": true,
+          "innerWidth": 320,
+          "clientWidth": 320,
+          "scrollWidth": 320
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "mobile": true,
+          "innerWidth": 390,
+          "clientWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "mobile": true,
+          "innerWidth": 768,
+          "clientWidth": 768,
+          "scrollWidth": 768
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "mobile": false,
+          "innerWidth": 1440,
+          "clientWidth": 1440,
+          "scrollWidth": 1440
+        }
+      ]
+    },
+    {
+      "screen": "admin-detail-scheme",
+      "preference": "dark",
+      "os": "light",
+      "root": {
+        "foreground": "rgb(234, 247, 247)",
+        "background": "rgb(7, 20, 22)",
+        "contrast": 17.084124280520665
+      },
+      "card": {
+        "foreground": "rgb(234, 247, 247)",
+        "background": "rgb(14, 32, 35)",
+        "contrast": 15.322249432121158
+      },
+      "status": {
+        "foreground": "rgb(230, 167, 0)",
+        "contrast": 7.916537317789441
+      },
+      "doseLabel": {
+        "foreground": "rgb(234, 247, 247)",
+        "contrast": 15.322249432121158
+      },
+      "comment": {
+        "foreground": "rgb(69, 210, 223)",
+        "background": "rgb(16, 50, 55)",
+        "contrast": 7.523752772207049
+      },
+      "reviewActions": [
+        {
+          "action": "Aprobar",
+          "actionColor": {
+            "foreground": "rgb(167, 218, 100)",
+            "background": "rgb(17, 52, 26)",
+            "contrast": 8.402696002480354
+          },
+          "confirmation": {
+            "foreground": "rgb(234, 247, 247)",
+            "background": "rgb(17, 52, 26)",
+            "contrast": 12.514074669043719
+          },
+          "cancelled": true
+        },
+        {
+          "action": "Denegar",
+          "actionColor": {
+            "foreground": "rgb(255, 170, 170)",
+            "background": "rgb(58, 19, 19)",
+            "contrast": 9.031347056848475
+          },
+          "confirmation": {
+            "foreground": "rgb(234, 247, 247)",
+            "background": "rgb(58, 19, 19)",
+            "contrast": 14.929013775203211
+          },
+          "cancelled": true
+        }
+      ],
+      "accordion": {
+        "expanded": "true",
+        "hidden": false,
+        "labelled": true,
+        "region": "region"
+      },
+      "reflow": [
+        {
+          "width": 320,
+          "height": 568,
+          "mobile": true,
+          "innerWidth": 320,
+          "clientWidth": 320,
+          "scrollWidth": 320
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "mobile": true,
+          "innerWidth": 390,
+          "clientWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "mobile": true,
+          "innerWidth": 768,
+          "clientWidth": 768,
+          "scrollWidth": 768
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "mobile": false,
+          "innerWidth": 1440,
+          "clientWidth": 1440,
+          "scrollWidth": 1440
+        }
+      ]
+    },
+    {
+      "screen": "admin-detail-evidence",
+      "long_filename_reflow": {
+        "width": 320,
+        "height": 568,
+        "mobile": true,
+        "viewport": 320,
+        "scrollWidth": 320,
+        "panel": {
+          "left": 12,
+          "right": 308
+        },
+        "filename": {
+          "left": 25,
+          "right": 295,
+          "scrollWidth": 270,
+          "clientWidth": 270
+        }
+      }
+    },
+    {
+      "screen": "admin-detail-navigation",
+      "manual_activation": true,
+      "reload_context": true,
+      "accordion_keyboard": true
+    },
+    {
+      "screen": "student-scheme",
+      "preference": "light",
+      "os": "dark",
+      "card": {
+        "foreground": "rgb(23, 38, 41)",
+        "background": "rgb(255, 255, 255)",
+        "contrast": 15.605306997810734
+      },
+      "status": {
+        "foreground": "rgb(113, 81, 0)",
+        "contrast": 7.293910724901275
+      },
+      "accordion": {
+        "expanded": "true",
+        "hidden": false,
+        "labelled": true,
+        "region": "region"
+      },
+      "reflow": [
+        {
+          "width": 320,
+          "height": 568,
+          "mobile": true,
+          "innerWidth": 320,
+          "clientWidth": 320,
+          "scrollWidth": 320
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "mobile": true,
+          "innerWidth": 390,
+          "clientWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "mobile": true,
+          "innerWidth": 768,
+          "clientWidth": 768,
+          "scrollWidth": 768
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "mobile": false,
+          "innerWidth": 1440,
+          "clientWidth": 1440,
+          "scrollWidth": 1440
+        }
+      ]
+    },
+    {
+      "screen": "student-scheme",
+      "preference": "dark",
+      "os": "light",
+      "card": {
+        "foreground": "rgb(234, 247, 247)",
+        "background": "rgb(14, 32, 35)",
+        "contrast": 15.322249432121158
+      },
+      "status": {
+        "foreground": "rgb(230, 167, 0)",
+        "contrast": 7.916537317789441
+      },
+      "accordion": {
+        "expanded": "true",
+        "hidden": false,
+        "labelled": true,
+        "region": "region"
+      },
+      "reflow": [
+        {
+          "width": 320,
+          "height": 568,
+          "mobile": true,
+          "innerWidth": 320,
+          "clientWidth": 320,
+          "scrollWidth": 320
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "mobile": true,
+          "innerWidth": 390,
+          "clientWidth": 390,
+          "scrollWidth": 390
+        },
+        {
+          "width": 768,
+          "height": 1024,
+          "mobile": true,
+          "innerWidth": 768,
+          "clientWidth": 768,
+          "scrollWidth": 768
+        },
+        {
+          "width": 1440,
+          "height": 900,
+          "mobile": false,
+          "innerWidth": 1440,
+          "clientWidth": 1440,
+          "scrollWidth": 1440
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "file": "Inter-Regular.ttf",
+    "sha256": "ecdb53099b1a68cd24c6900ea5beeafec81bd3c8cb9d0f3c51b9986583ba3982",
+    "bytes": 303384,
+    "source": "https://fonts.gstatic.com/s/a/ecdb53099b1a68cd24c6900ea5beeafec81bd3c8cb9d0f3c51b9986583ba3982.ttf"
+  },
+  {
+    "file": "Inter-Medium.ttf",
+    "sha256": "492dec3bc33255f9d81bd5fb18704ad72f96f9b9318e4171bc9f9be9dd4bf44b",
+    "bytes": 308288,
+    "source": "https://fonts.gstatic.com/s/a/492dec3bc33255f9d81bd5fb18704ad72f96f9b9318e4171bc9f9be9dd4bf44b.ttf"
+  },
+  {
+    "file": "Inter-SemiBold.ttf",
+    "sha256": "d7ba633bab7f40576e539a7e934a1301d7618dceea59c743de477c2c493462fc",
+    "bytes": 309376,
+    "source": "https://fonts.gstatic.com/s/a/d7ba633bab7f40576e539a7e934a1301d7618dceea59c743de477c2c493462fc.ttf"
+  },
+  {
+    "file": "Inter-Bold.ttf",
+    "sha256": "b7e339223d56e8c4210c86f1ba87b3d43d6c47e03956ea56f0a7a938ae61b2a3",
+    "bytes": 309732,
+    "source": "https://fonts.gstatic.com/s/a/b7e339223d56e8c4210c86f1ba87b3d43d6c47e03956ea56f0a7a938ae61b2a3.ttf"
+  }
+]

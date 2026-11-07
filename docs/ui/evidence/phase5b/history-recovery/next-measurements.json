@@ -1,0 +1,109 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "actual_backend": true,
+  "measurements": [
+    {
+      "role": "app_admin",
+      "case": "authorized_history_route",
+      "api_status": 200,
+      "history_route_allowed": true,
+      "page": 2,
+      "page_size": 20,
+      "outside_visible": true
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "status": 403,
+      "retry_gets": 1,
+      "page": 2,
+      "page_size": 20,
+      "cached_data_hidden": true,
+      "admin_status": 403,
+      "outside_visible": false
+    },
+    {
+      "role": "student",
+      "theme": "light",
+      "status": 503,
+      "retry_gets": 1,
+      "page": 2,
+      "page_size": 20,
+      "cached_data_hidden": true,
+      "admin_status": 403,
+      "outside_visible": false
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "status": 403,
+      "retry_gets": 1,
+      "page": 2,
+      "page_size": 20,
+      "cached_data_hidden": true,
+      "admin_status": 403,
+      "outside_visible": false
+    },
+    {
+      "role": "student",
+      "theme": "dark",
+      "status": 503,
+      "retry_gets": 1,
+      "page": 2,
+      "page_size": 20,
+      "cached_data_hidden": true,
+      "admin_status": 403,
+      "outside_visible": false
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "status": 403,
+      "retry_gets": 1,
+      "page": 2,
+      "page_size": 20,
+      "cached_data_hidden": true,
+      "admin_status": 200,
+      "outside_visible": false
+    },
+    {
+      "role": "admin",
+      "theme": "light",
+      "status": 503,
+      "retry_gets": 1,
+      "page": 2,
+      "page_size": 20,
+      "cached_data_hidden": true,
+      "admin_status": 200,
+      "outside_visible": false
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "status": 403,
+      "retry_gets": 1,
+      "page": 2,
+      "page_size": 20,
+      "cached_data_hidden": true,
+      "admin_status": 200,
+      "outside_visible": false
+    },
+    {
+      "role": "admin",
+      "theme": "dark",
+      "status": 503,
+      "retry_gets": 1,
+      "page": 2,
+      "page_size": 20,
+      "cached_data_hidden": true,
+      "admin_status": 200,
+      "outside_visible": false
+    },
+    {
+      "case": "expiration",
+      "controlled_status": 401,
+      "protected_history_removed": true
+    }
+  ]
+}

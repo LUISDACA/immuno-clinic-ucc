@@ -1,0 +1,113 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "pixel_equality_claimed": false,
+  "pairs": [
+    {
+      "theme": "light",
+      "width": 320,
+      "scale": 1,
+      "flutter": "flutter-light-data-320-text1.png",
+      "next": "after-next-data-light-320-csszoom1.png",
+      "note": "TextScaler and CSS zoom are distinct emulations; no native zoom or pixel equality claim."
+    },
+    {
+      "theme": "light",
+      "width": 320,
+      "scale": 2,
+      "flutter": "flutter-light-data-320-text2.png",
+      "next": "after-next-data-light-320-csszoom2.png",
+      "note": "TextScaler and CSS zoom are distinct emulations; no native zoom or pixel equality claim."
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "scale": 1,
+      "flutter": "flutter-light-data-390-text1.png",
+      "next": "after-next-data-light-390-csszoom1.png",
+      "note": "TextScaler and CSS zoom are distinct emulations; no native zoom or pixel equality claim."
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "scale": 2,
+      "flutter": "flutter-light-data-390-text2.png",
+      "next": "after-next-data-light-390-csszoom2.png",
+      "note": "TextScaler and CSS zoom are distinct emulations; no native zoom or pixel equality claim."
+    },
+    {
+      "theme": "light",
+      "state": "loading",
+      "flutter": "flutter-light-loading-390.png",
+      "next": "after-next-loading-light-390.png",
+      "note": "Controlled datasource/HTTP errors; recovery and contact save also checked on real local PostgreSQL."
+    },
+    {
+      "theme": "light",
+      "state": "absent",
+      "flutter": "flutter-light-absent-390.png",
+      "next": "after-next-absent-light-390.png",
+      "note": "Controlled datasource/HTTP errors; recovery and contact save also checked on real local PostgreSQL."
+    },
+    {
+      "theme": "light",
+      "state": "503",
+      "flutter": "flutter-light-error-390.png",
+      "next": "after-next-503-light-390.png",
+      "note": "Controlled datasource/HTTP errors; recovery and contact save also checked on real local PostgreSQL."
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "scale": 1,
+      "flutter": "flutter-dark-data-320-text1.png",
+      "next": "after-next-data-dark-320-csszoom1.png",
+      "note": "TextScaler and CSS zoom are distinct emulations; no native zoom or pixel equality claim."
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "scale": 2,
+      "flutter": "flutter-dark-data-320-text2.png",
+      "next": "after-next-data-dark-320-csszoom2.png",
+      "note": "TextScaler and CSS zoom are distinct emulations; no native zoom or pixel equality claim."
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "scale": 1,
+      "flutter": "flutter-dark-data-390-text1.png",
+      "next": "after-next-data-dark-390-csszoom1.png",
+      "note": "TextScaler and CSS zoom are distinct emulations; no native zoom or pixel equality claim."
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "scale": 2,
+      "flutter": "flutter-dark-data-390-text2.png",
+      "next": "after-next-data-dark-390-csszoom2.png",
+      "note": "TextScaler and CSS zoom are distinct emulations; no native zoom or pixel equality claim."
+    },
+    {
+      "theme": "dark",
+      "state": "loading",
+      "flutter": "flutter-dark-loading-390.png",
+      "next": "after-next-loading-dark-390.png",
+      "note": "Controlled datasource/HTTP errors; recovery and contact save also checked on real local PostgreSQL."
+    },
+    {
+      "theme": "dark",
+      "state": "absent",
+      "flutter": "flutter-dark-absent-390.png",
+      "next": "after-next-absent-dark-390.png",
+      "note": "Controlled datasource/HTTP errors; recovery and contact save also checked on real local PostgreSQL."
+    },
+    {
+      "theme": "dark",
+      "state": "503",
+      "flutter": "flutter-dark-error-390.png",
+      "next": "after-next-503-dark-390.png",
+      "note": "Controlled datasource/HTTP errors; recovery and contact save also checked on real local PostgreSQL."
+    }
+  ]
+}

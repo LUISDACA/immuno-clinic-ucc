@@ -3,6 +3,7 @@ import { fetchAndDownload, type DownloadOptions } from "@/lib/api/download";
 import { API_BASE_URL } from "@/lib/config";
 import {
   AdminStatistics,
+  AcademicOptions,
   AdminStudentListResponse,
   AdminStudentListItem,
   AppliesTo,
@@ -14,6 +15,11 @@ import {
   VaccineDoseConfigInput,
 } from "@/lib/api/types";
 
+export async function getAcademicOptions(): Promise<AcademicOptions> {
+  const { data } = await apiClient.get<AcademicOptions>("/admin/academic-options");
+  return data;
+}
+
 export interface ListStudentsParams {
   search?: string;
   is_active?: boolean;
@@ -23,6 +29,7 @@ export interface ListStudentsParams {
   semester?: number;
   vaccination_status?: "approved" | "pending";
   page?: number;
+  size?: number;
   page_size?: number;
 }
 
@@ -48,13 +55,13 @@ export interface UpdateStudentProfileRequest {
   first_name?: string;
   last_name?: string;
   document_number?: string;
-  student_id?: string;
-  birth_date?: string;
+  student_id?: string | null;
+  birth_date?: string | null;
   sex?: Gender;
-  phone?: string;
-  eps_affiliation?: string;
-  emergency_contact_name?: string;
-  emergency_contact_phone?: string;
+  phone?: string | null;
+  eps_affiliation?: string | null;
+  emergency_contact_name?: string | null;
+  emergency_contact_phone?: string | null;
   program?: string;
   campus?: string;
   semester?: number;
@@ -98,9 +105,9 @@ export interface VaccineUpdateRequest {
 export async function listStudents(
   params: ListStudentsParams = {},
 ): Promise<AdminStudentListResponse> {
-  const { data } = await apiClient.get<AdminStudentListResponse>(
-    "/admin/students",
-    { params },
+  const { data } = await apiClient.post<AdminStudentListResponse>(
+    "/admin/students/search",
+    params,
   );
   return data;
 }
@@ -108,13 +115,14 @@ export async function listStudents(
 export async function listAllStudents(
   params: Omit<ListStudentsParams, "page" | "page_size"> = {},
 ): Promise<AdminStudentListItem[]> {
-  const pageSize = 100;
-  const first = await listStudents({ ...params, page: 1, page_size: pageSize });
-  if (first.total_pages <= 1) return first.items;
+  const size = 100;
+  const first = await listStudents({ ...params, page: 1, size });
+  const pages = first.pages ?? first.total_pages;
+  if (pages <= 1) return first.items;
 
   const rest = await Promise.all(
-    Array.from({ length: first.total_pages - 1 }, (_, i) =>
-      listStudents({ ...params, page: i + 2, page_size: pageSize }),
+    Array.from({ length: pages - 1 }, (_, i) =>
+      listStudents({ ...params, page: i + 2, size }),
     ),
   );
   return [first, ...rest].flatMap((page) => page.items);
@@ -242,7 +250,7 @@ export async function downloadStudentsExport(
   params: ListStudentsParams = {},
   options: DownloadOptions = {},
 ): Promise<void> {
-  const url = new URL(`${API_BASE_URL}/admin/students/export`);
+  const url = new URL(`${API_BASE_URL}/admin/students/export`, window.location.origin);
   Object.entries(params).forEach(([k, v]) => {
     if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, String(v));
   });
@@ -251,12 +259,29 @@ export async function downloadStudentsExport(
 
 export async function downloadStudentCertificate(
   studentId: string,
-  email: string,
   options: DownloadOptions = {},
 ): Promise<void> {
   await fetchAndDownload(
     `${API_BASE_URL}/admin/students/${studentId}/certificate`,
-    `certificado_vacunacion_${email.split("@")[0]}.pdf`,
+    "certificado_vacunacion.pdf",
     options,
   );
+}
+
+export interface CertificateEmissionItem {
+  id: string;
+  public_id: string;
+  issued_at: string;
+  status: "ISSUED" | "REVOKED";
+  revoked_at: string | null;
+  document_sha256: string;
+}
+
+export async function listStudentCertificates(studentId: string): Promise<CertificateEmissionItem[]> {
+  const { data } = await apiClient.get<CertificateEmissionItem[]>(`/certificates/students/${studentId}`);
+  return data;
+}
+
+export async function revokeStudentCertificate(certificateId: string, reason: string): Promise<void> {
+  await apiClient.post(`/certificates/${certificateId}/revoke`, { reason });
 }

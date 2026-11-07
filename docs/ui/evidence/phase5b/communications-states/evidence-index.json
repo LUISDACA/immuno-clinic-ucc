@@ -1,0 +1,275 @@
+{
+  "scope": "B5-C06 Flutter communications query states and recovery",
+  "institutional_data": false,
+  "production_ready": false,
+  "flutter_golden_references": 60,
+  "flutter_test_cases": 30,
+  "renderer": "Flutter3.41.6/Dart3.11.4; AppTheme, Inter and MaterialIcons loaded offline",
+  "roles": [
+    "student",
+    "admin",
+    "app_admin"
+  ],
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "states": [
+    "loading",
+    "empty",
+    "error",
+    "retrying",
+    "success"
+  ],
+  "limits": [
+    "Controlled Flutter datasources, not native device-to-backend integration.",
+    "No new Next code; existing component and browser evidence referenced explicitly.",
+    "No global visual equality, native reader, zoom or real-device assertion."
+  ],
+  "references": [
+    {
+      "file": "flutter-admin-dark-detail-empty-390.png",
+      "sha256": "47ef289fa914427011140c0a4ba7a2f3c43d5a8940365a8725531580d8c571e2"
+    },
+    {
+      "file": "flutter-admin-dark-detail-error-390.png",
+      "sha256": "8b3c6aa112ae41f20625e0782b16e800e352fcd06ea2e53ef733ca0a323e46af"
+    },
+    {
+      "file": "flutter-admin-dark-detail-loading-390.png",
+      "sha256": "c37dd5ebd3c4413c6c1bed91a0dd3928da5ae4d7cad0b0eae90962b6fca8d34d"
+    },
+    {
+      "file": "flutter-admin-dark-detail-retrying-390.png",
+      "sha256": "19f2d156fd6e14a7a46462d428c7b29ca820b5822b5092d9b0a670aece10bd2d"
+    },
+    {
+      "file": "flutter-admin-dark-detail-success-390.png",
+      "sha256": "d6c147eefa2ab2ec2155b56af17216b4210e94fedf19bcaedbf6fa4969f2a554"
+    },
+    {
+      "file": "flutter-admin-dark-list-empty-390.png",
+      "sha256": "b10196cf1609a8b2dc0526c0e20f8e526b659da2a361a6e26a5a53324d0ebdc1"
+    },
+    {
+      "file": "flutter-admin-dark-list-error-390.png",
+      "sha256": "0c078a2c2a29179463d9d47f88aaf4b1588a01974fe90ac9a344c74963c64509"
+    },
+    {
+      "file": "flutter-admin-dark-list-loading-390.png",
+      "sha256": "6f002067c39a35fb9805e8364d07a26d08061d1b2b3b0844e988ccf736e38d1d"
+    },
+    {
+      "file": "flutter-admin-dark-list-retrying-390.png",
+      "sha256": "ce56f1f8b253582967b6ccab995240fa7a71ceca04628666134fda4791873e42"
+    },
+    {
+      "file": "flutter-admin-dark-list-success-390.png",
+      "sha256": "69aa9d699f8c7660b3125f272b24d1ff033235dd2df6f43e46b2919da452485b"
+    },
+    {
+      "file": "flutter-admin-light-detail-empty-390.png",
+      "sha256": "f101a34e632a79aa68644edb429139275d9fbb6017e80740158d6a0d7d0cc252"
+    },
+    {
+      "file": "flutter-admin-light-detail-error-390.png",
+      "sha256": "060b12ef47f080033b0d0b993b662ead94f7bd551dfcb61d4949d510600bf3b1"
+    },
+    {
+      "file": "flutter-admin-light-detail-loading-390.png",
+      "sha256": "2da32a4613bf12726325068915e0975f42b6f9ffe5ea219c10360a1d6f6d6ae4"
+    },
+    {
+      "file": "flutter-admin-light-detail-retrying-390.png",
+      "sha256": "447d78a08085cb26320fceb91c8c03228273568ad5df8e58375a77b9f3d6c17b"
+    },
+    {
+      "file": "flutter-admin-light-detail-success-390.png",
+      "sha256": "ba52abe2b5d37859ef83b9383b07738a350a43cdf85a9c288ff0cdcf0ee1f194"
+    },
+    {
+      "file": "flutter-admin-light-list-empty-390.png",
+      "sha256": "0918ce791a6f05fc86baa336f789bbdceb72e5110b81b2d7d0e7240cc98d6704"
+    },
+    {
+      "file": "flutter-admin-light-list-error-390.png",
+      "sha256": "7f961c1c5facc9fe5a2c603d8ba2193f5cdf4094ef3a05c21d5d68f96d7b84d5"
+    },
+    {
+      "file": "flutter-admin-light-list-loading-390.png",
+      "sha256": "4aaedca6963662b1dfaa04520dff867e67225ef97329cbd0e032094b0e61bd2c"
+    },
+    {
+      "file": "flutter-admin-light-list-retrying-390.png",
+      "sha256": "d10003e445302a62b237fd72c646e6248ae21eafa62747969a6752d0d0b09224"
+    },
+    {
+      "file": "flutter-admin-light-list-success-390.png",
+      "sha256": "3729174bd7ce03557bd4d7e5e7565c33525bb7a559248d215c59fd438c5981ef"
+    },
+    {
+      "file": "flutter-app_admin-dark-detail-empty-390.png",
+      "sha256": "7a756390d894849e516230032d172e480abd918024b636bca494b981c66cfccb"
+    },
+    {
+      "file": "flutter-app_admin-dark-detail-error-390.png",
+      "sha256": "8b3c6aa112ae41f20625e0782b16e800e352fcd06ea2e53ef733ca0a323e46af"
+    },
+    {
+      "file": "flutter-app_admin-dark-detail-loading-390.png",
+      "sha256": "c37dd5ebd3c4413c6c1bed91a0dd3928da5ae4d7cad0b0eae90962b6fca8d34d"
+    },
+    {
+      "file": "flutter-app_admin-dark-detail-retrying-390.png",
+      "sha256": "19f2d156fd6e14a7a46462d428c7b29ca820b5822b5092d9b0a670aece10bd2d"
+    },
+    {
+      "file": "flutter-app_admin-dark-detail-success-390.png",
+      "sha256": "2e9d25ad3d71907ddbbb578e218d6903472d242c2ec2d386697d4cda88308ce4"
+    },
+    {
+      "file": "flutter-app_admin-dark-list-empty-390.png",
+      "sha256": "e40880ae2b8f328ebe46a9b93fb6d169002d380d244a076ee9fbd1c633f7ecc3"
+    },
+    {
+      "file": "flutter-app_admin-dark-list-error-390.png",
+      "sha256": "e74a2c3069095edaa01967d34a890d9772be30fbecccf851df20fe8cb711de5f"
+    },
+    {
+      "file": "flutter-app_admin-dark-list-loading-390.png",
+      "sha256": "df8cc192ea66ed6a47a1c693607098b8b83909063708c89951922673f913c064"
+    },
+    {
+      "file": "flutter-app_admin-dark-list-retrying-390.png",
+      "sha256": "700eaf09a7be9efcccd0923f2bfaa3db239233e8d0e265ae355f83ce928109ad"
+    },
+    {
+      "file": "flutter-app_admin-dark-list-success-390.png",
+      "sha256": "be742e928c0e155cbffa39aaa54c2d9fe6eb54819682c91b3a35b071dd83dac5"
+    },
+    {
+      "file": "flutter-app_admin-light-detail-empty-390.png",
+      "sha256": "77d4d3b98ff2d0bad055f651e54efb4b5c22d3367db76a8a0f46b2cf5ef86e97"
+    },
+    {
+      "file": "flutter-app_admin-light-detail-error-390.png",
+      "sha256": "060b12ef47f080033b0d0b993b662ead94f7bd551dfcb61d4949d510600bf3b1"
+    },
+    {
+      "file": "flutter-app_admin-light-detail-loading-390.png",
+      "sha256": "2da32a4613bf12726325068915e0975f42b6f9ffe5ea219c10360a1d6f6d6ae4"
+    },
+    {
+      "file": "flutter-app_admin-light-detail-retrying-390.png",
+      "sha256": "447d78a08085cb26320fceb91c8c03228273568ad5df8e58375a77b9f3d6c17b"
+    },
+    {
+      "file": "flutter-app_admin-light-detail-success-390.png",
+      "sha256": "2356857ed09bd3276dd01aa7ed6c0c84632ce14b44d5b3347497530bcba72d93"
+    },
+    {
+      "file": "flutter-app_admin-light-list-empty-390.png",
+      "sha256": "3b5c0370e4845ebc8985bb40bd68e633b1375bec012e65427664d708210eeff5"
+    },
+    {
+      "file": "flutter-app_admin-light-list-error-390.png",
+      "sha256": "03077817e9ee0ad7f8f78c31134f196e81c624c76d5bbbc868eeb0f6b5bb1315"
+    },
+    {
+      "file": "flutter-app_admin-light-list-loading-390.png",
+      "sha256": "e7c3a55daccb87ca857daab3db303db3e53ad37e2816f87a58d31cb60eabd19b"
+    },
+    {
+      "file": "flutter-app_admin-light-list-retrying-390.png",
+      "sha256": "710515b19e6e505be0e5ff3ab1b4ac065e3c27ceed088d217ee5824e339a1014"
+    },
+    {
+      "file": "flutter-app_admin-light-list-success-390.png",
+      "sha256": "af3b7c64e5d72b8850d51167ecef976130d4a47066f57865433a87b4a106c6f1"
+    },
+    {
+      "file": "flutter-student-dark-detail-empty-390.png",
+      "sha256": "7a756390d894849e516230032d172e480abd918024b636bca494b981c66cfccb"
+    },
+    {
+      "file": "flutter-student-dark-detail-error-390.png",
+      "sha256": "8b3c6aa112ae41f20625e0782b16e800e352fcd06ea2e53ef733ca0a323e46af"
+    },
+    {
+      "file": "flutter-student-dark-detail-loading-390.png",
+      "sha256": "c37dd5ebd3c4413c6c1bed91a0dd3928da5ae4d7cad0b0eae90962b6fca8d34d"
+    },
+    {
+      "file": "flutter-student-dark-detail-retrying-390.png",
+      "sha256": "19f2d156fd6e14a7a46462d428c7b29ca820b5822b5092d9b0a670aece10bd2d"
+    },
+    {
+      "file": "flutter-student-dark-detail-success-390.png",
+      "sha256": "2e9d25ad3d71907ddbbb578e218d6903472d242c2ec2d386697d4cda88308ce4"
+    },
+    {
+      "file": "flutter-student-dark-list-empty-390.png",
+      "sha256": "ae1d3a232ec35382a7d65427b47999148215ce5106a2d283fb4362299d5e6dda"
+    },
+    {
+      "file": "flutter-student-dark-list-error-390.png",
+      "sha256": "01d64ef23a0f90ed5307bd1c289ff80b3d260760b145b9ea5e57ce5f0bbbc828"
+    },
+    {
+      "file": "flutter-student-dark-list-loading-390.png",
+      "sha256": "26ff456d70bb0b445715d3dc83712985741bf64eecf11329043d2d060a134c36"
+    },
+    {
+      "file": "flutter-student-dark-list-retrying-390.png",
+      "sha256": "3f295c2f9a4bfeca8ff2c9692d1b882878e39625280a94029f6501caf210a15e"
+    },
+    {
+      "file": "flutter-student-dark-list-success-390.png",
+      "sha256": "53ff39d359b225c123225ad15c11c619fa268b32980da2da2f048517190de6fa"
+    },
+    {
+      "file": "flutter-student-light-detail-empty-390.png",
+      "sha256": "77d4d3b98ff2d0bad055f651e54efb4b5c22d3367db76a8a0f46b2cf5ef86e97"
+    },
+    {
+      "file": "flutter-student-light-detail-error-390.png",
+      "sha256": "060b12ef47f080033b0d0b993b662ead94f7bd551dfcb61d4949d510600bf3b1"
+    },
+    {
+      "file": "flutter-student-light-detail-loading-390.png",
+      "sha256": "2da32a4613bf12726325068915e0975f42b6f9ffe5ea219c10360a1d6f6d6ae4"
+    },
+    {
+      "file": "flutter-student-light-detail-retrying-390.png",
+      "sha256": "447d78a08085cb26320fceb91c8c03228273568ad5df8e58375a77b9f3d6c17b"
+    },
+    {
+      "file": "flutter-student-light-detail-success-390.png",
+      "sha256": "2356857ed09bd3276dd01aa7ed6c0c84632ce14b44d5b3347497530bcba72d93"
+    },
+    {
+      "file": "flutter-student-light-list-empty-390.png",
+      "sha256": "65f72503b6ab1747c0be90cdd320f1e60dad0b9f7f8fbaa086567043cdf3010e"
+    },
+    {
+      "file": "flutter-student-light-list-error-390.png",
+      "sha256": "d32b87dc0c84b917f19a6ef2aa4f1444bcfa7b8dd393b1f134ad66c39ff4d557"
+    },
+    {
+      "file": "flutter-student-light-list-loading-390.png",
+      "sha256": "cbc942cdc1e59295753f49076273c48f4744fa84ae9d534d508d33bff83a4f15"
+    },
+    {
+      "file": "flutter-student-light-list-retrying-390.png",
+      "sha256": "a8f6c9070771f7c3589e9a844c3f861739f957965f4855506298ed94764586b5"
+    },
+    {
+      "file": "flutter-student-light-list-success-390.png",
+      "sha256": "f1a8f5bcbbd20d49d87871d7b919f22828380d733ed79c88b6d1bba39456de2c"
+    },
+    {
+      "file": "parity-cases.json",
+      "sha256": "a971e9d5a2f33b2749e158cda491960ba1aaf09cb6537a8bb22738e78175ac8e"
+    }
+  ]
+}

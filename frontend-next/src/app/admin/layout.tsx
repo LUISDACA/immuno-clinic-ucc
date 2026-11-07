@@ -9,6 +9,7 @@ const APP_ADMIN_NAV: NavItem[] = [
   { href: "/admin", label: "Inicio" },
   { href: "/admin/admins", label: "Administradores" },
   { href: "/admin/vaccines", label: "Catálogo de vacunas" },
+  { href: "/admin/history", label: "Historial" },
   { href: "/admin/communications", label: "Comunicaciones" },
   { href: "/admin/profile", label: "Mi perfil" },
 ];

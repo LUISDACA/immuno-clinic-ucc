@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/error/api_error_message.dart';
 import '../../../../core/utils/file_download.dart';
 import '../../data/datasources/admin_remote_ds.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/models/admin_models.dart';
 
 class AdminStudentListState {
@@ -41,8 +43,14 @@ class AdminStudentListState {
   }
 }
 
+final academicOptionsProvider = FutureProvider<AcademicOptions>((ref) {
+  return ref.read(adminRemoteDataSourceProvider).getAcademicOptions();
+});
+
 class AdminStudentListNotifier extends StateNotifier<AdminStudentListState> {
   final AdminRemoteDataSource _ds;
+  int _request = 0;
+  bool _writing = false;
   String? _search;
   bool? _isActive;
   int? _semester;
@@ -52,39 +60,67 @@ class AdminStudentListNotifier extends StateNotifier<AdminStudentListState> {
 
   Future<void> load({
     int page = 1,
+    bool afterWrite = false,
     String? search,
     bool? isActive,
     int? semester,
     String? vaccinationStatus,
   }) async {
+    if (!mounted || (_writing && !afterWrite)) return;
+    final request = ++_request;
     _search = search;
     _isActive = isActive;
     _semester = semester;
     _vaccinationStatus = vaccinationStatus;
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final students = await _ds.listAllStudents(
+      final result = await _ds.listStudents(
+        page: page,
+        pageSize: 20,
         search: search,
         isActive: isActive,
         semester: semester,
         vaccinationStatus: vaccinationStatus,
       );
+      if (!mounted || request != _request) return;
+      if (page > 1 && result.items.isEmpty) {
+        await load(
+          page: result.totalPages > 0
+              ? (result.totalPages < page ? result.totalPages : page - 1)
+              : 1,
+          afterWrite: afterWrite,
+          search: search,
+          isActive: isActive,
+          semester: semester,
+          vaccinationStatus: vaccinationStatus,
+        );
+        return;
+      }
       state = AdminStudentListState(
-        students: students,
-        total: students.length,
-        page: 1,
-        totalPages: 1,
+        students: result.items,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages,
       );
     } on DioException catch (e) {
+      if (!mounted || request != _request) return;
       state = state.copyWith(
         isLoading: false,
-        error: e.response?.data?['detail'] ?? 'Error',
+        error: apiErrorMessageFromData(e.response?.data) ?? 'Error',
       );
     }
   }
 
+  Future<void> refresh() => load(
+    page: state.page,
+    search: _search,
+    isActive: _isActive,
+    semester: _semester,
+    vaccinationStatus: _vaccinationStatus,
+  );
+
   Future<void> nextPage() async {
-    if (state.page < state.totalPages) {
+    if (!state.isLoading && state.page < state.totalPages) {
       await load(
         page: state.page + 1,
         search: _search,
@@ -96,7 +132,7 @@ class AdminStudentListNotifier extends StateNotifier<AdminStudentListState> {
   }
 
   Future<void> prevPage() async {
-    if (state.page > 1) {
+    if (!state.isLoading && state.page > 1) {
       await load(
         page: state.page - 1,
         search: _search,
@@ -107,59 +143,39 @@ class AdminStudentListNotifier extends StateNotifier<AdminStudentListState> {
     }
   }
 
-  Future<bool> deactivate(String studentId) async {
+  Future<bool> _write(Future<void> Function() action) async {
+    if (!mounted || _writing) return false;
+    _writing = true;
+    ++_request;
     try {
-      await _ds.deactivateStudent(studentId);
+      await action();
+      if (!mounted) return false;
       await load(
         page: state.page,
         search: _search,
         isActive: _isActive,
         semester: _semester,
         vaccinationStatus: _vaccinationStatus,
+        afterWrite: true,
       );
       return true;
     } catch (_) {
       return false;
+    } finally {
+      _writing = false;
     }
   }
 
-  Future<bool> reactivate(String studentId) async {
-    try {
-      await _ds.reactivateStudent(studentId);
-      await load(
-        page: state.page,
-        search: _search,
-        isActive: _isActive,
-        semester: _semester,
-        vaccinationStatus: _vaccinationStatus,
-      );
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  Future<bool> deleteStudent(String studentId) async {
-    try {
-      await _ds.deleteStudent(studentId);
-      await load(
-        page: state.page,
-        search: _search,
-        isActive: _isActive,
-        semester: _semester,
-        vaccinationStatus: _vaccinationStatus,
-      );
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
+  Future<bool> deactivate(String id) => _write(() => _ds.deactivateStudent(id));
+  Future<bool> reactivate(String id) => _write(() => _ds.reactivateStudent(id));
+  Future<bool> deleteStudent(String id) => _write(() => _ds.deleteStudent(id));
 }
 
 final adminStudentListProvider =
     StateNotifierProvider<AdminStudentListNotifier, AdminStudentListState>((
       ref,
     ) {
+      ref.watch(authStateProvider.select((state) => state.userId));
       return AdminStudentListNotifier(ref.read(adminRemoteDataSourceProvider));
     });
 
@@ -188,22 +204,30 @@ final adminExportReportProvider = Provider((ref) {
 class VaccineCatalogState {
   final bool isLoading;
   final String? error;
+  final String? writeError;
+  final String? confirmedChange;
   final List<VaccineCatalogItem> vaccines;
 
   const VaccineCatalogState({
     this.isLoading = false,
     this.error,
+    this.writeError,
+    this.confirmedChange,
     this.vaccines = const [],
   });
 
   VaccineCatalogState copyWith({
     bool? isLoading,
     String? error,
+    String? writeError,
+    String? confirmedChange,
     List<VaccineCatalogItem>? vaccines,
   }) {
     return VaccineCatalogState(
       isLoading: isLoading ?? this.isLoading,
       error: error,
+      writeError: writeError,
+      confirmedChange: confirmedChange,
       vaccines: vaccines ?? this.vaccines,
     );
   }
@@ -226,7 +250,14 @@ class VaccineCatalogNotifier extends StateNotifier<VaccineCatalogState> {
     } on DioException catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: e.response?.data?.toString() ?? e.message,
+        error:
+            apiErrorMessageFromData(e.response?.data) ??
+            'Error al cargar vacunas',
+      );
+    } catch (_) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'No se pudo cargar el catálogo. Intenta nuevamente.',
       );
     }
   }
@@ -234,10 +265,19 @@ class VaccineCatalogNotifier extends StateNotifier<VaccineCatalogState> {
   Future<bool> create(Map<String, dynamic> payload) async {
     try {
       await _ds.createVaccine(payload);
-      await load();
+      await _reloadAfterWrite(
+        'La vacuna se creó, pero no se pudo actualizar el catálogo.',
+      );
       return true;
     } on DioException catch (e) {
-      state = state.copyWith(error: e.response?.data?.toString() ?? e.message);
+      state = state.copyWith(
+        writeError:
+            apiErrorMessageFromData(e.response?.data) ??
+            'Error al crear vacuna',
+      );
+      return false;
+    } catch (_) {
+      state = state.copyWith(writeError: 'No se pudo crear la vacuna.');
       return false;
     }
   }
@@ -245,10 +285,19 @@ class VaccineCatalogNotifier extends StateNotifier<VaccineCatalogState> {
   Future<bool> update(String id, Map<String, dynamic> payload) async {
     try {
       await _ds.updateVaccine(id, payload);
-      await load();
+      await _reloadAfterWrite(
+        'Los cambios se guardaron, pero no se pudo actualizar el catálogo.',
+      );
       return true;
     } on DioException catch (e) {
-      state = state.copyWith(error: e.response?.data?.toString() ?? e.message);
+      state = state.copyWith(
+        writeError:
+            apiErrorMessageFromData(e.response?.data) ??
+            'Error al actualizar vacuna',
+      );
+      return false;
+    } catch (_) {
+      state = state.copyWith(writeError: 'No se pudo actualizar la vacuna.');
       return false;
     }
   }
@@ -260,11 +309,31 @@ class VaccineCatalogNotifier extends StateNotifier<VaccineCatalogState> {
       } else {
         await _ds.deactivateVaccine(id);
       }
-      await load();
+      await _reloadAfterWrite(
+        'El estado se actualizó, pero no se pudo actualizar el catálogo.',
+      );
       return true;
     } on DioException catch (e) {
-      state = state.copyWith(error: e.response?.data?.toString() ?? e.message);
+      state = state.copyWith(
+        writeError:
+            apiErrorMessageFromData(e.response?.data) ??
+            'Error al actualizar vacuna',
+      );
       return false;
+    } catch (_) {
+      state = state.copyWith(writeError: 'No se pudo actualizar la vacuna.');
+      return false;
+    }
+  }
+
+  Future<void> _reloadAfterWrite(String confirmedMessage) async {
+    await load();
+    if (state.error != null) {
+      state = VaccineCatalogState(
+        error: state.error,
+        confirmedChange: confirmedMessage,
+        vaccines: state.vaccines,
+      );
     }
   }
 }

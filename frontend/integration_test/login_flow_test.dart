@@ -27,6 +27,9 @@ class _RecordingAuthNotifier extends StateNotifier<AuthState>
   Future<void> checkSession() async {}
 
   @override
+  void cancelPendingSessionRestore() {}
+
+  @override
   Future<void> login(String email, String password) async {
     loginCalls++;
     lastEmail = email;
@@ -49,8 +52,9 @@ class _RecordingAuthNotifier extends StateNotifier<AuthState>
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Login form validates input and calls AuthNotifier.login',
-      (tester) async {
+  testWidgets('Login form validates input and calls AuthNotifier.login', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
     final fakeAuth = _RecordingAuthNotifier();
@@ -76,8 +80,7 @@ void main() {
 
     // 2. Filling in credentials and submitting calls login() once.
     await tester.enterText(
-      find.widgetWithText(TextFormField, 'Correo electrónico')
-          .first,
+      find.widgetWithText(TextFormField, 'Correo electrónico').first,
       'student@test.com',
     );
     await tester.enterText(

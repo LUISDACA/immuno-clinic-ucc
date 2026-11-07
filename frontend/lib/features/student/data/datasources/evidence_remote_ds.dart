@@ -10,18 +10,18 @@ class EvidenceRemoteDataSource {
   final ApiClient _api;
   EvidenceRemoteDataSource(this._api);
 
-  Future<List<EvidenceBatchModel>> getMyBatches() async {
-    final r = await _api.dio.get('/evidence/');
-    return ((r.data as List<dynamic>?) ?? const [])
-        .map(
-          (item) => EvidenceBatchModel.fromJson(item as Map<String, dynamic>),
-        )
-        .toList();
+  Future<EvidencePageModel> getMyBatches({int page = 1, int size = 20}) async {
+    final r = await _api.dio.get(
+      '/evidence/page',
+      queryParameters: {'page': page, 'size': size},
+    );
+    return EvidencePageModel.fromJson(r.data as Map<String, dynamic>);
   }
 
   Future<Map<String, dynamic>> uploadEvidence(
     List<PlatformFile> files, {
     String? notes,
+    String? doseId,
   }) async {
     final formData = FormData();
     for (final file in files) {
@@ -42,6 +42,7 @@ class EvidenceRemoteDataSource {
       }
     }
     if (notes != null) formData.fields.add(MapEntry('notes', notes));
+    if (doseId != null) formData.fields.add(MapEntry('dose_id', doseId));
     final r = await _api.dio.post('/evidence/upload', data: formData);
     return r.data;
   }

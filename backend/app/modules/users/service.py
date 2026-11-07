@@ -3,7 +3,7 @@
 import uuid
 
 from app.common.enums import AuditAction, Role
-from app.core.exceptions import NotFoundException
+from app.core.exceptions import ForbiddenException, NotFoundException
 from app.modules.audit.service import AuditService, build_change_details
 from app.modules.users.models import User
 from app.modules.users.repository import UserRepository
@@ -28,6 +28,14 @@ class UserService:
             raise NotFoundException("Profile")
 
         update_data = data.model_dump(exclude_unset=True)
+        requested_sex = update_data.pop("sex", None)
+        if requested_sex is not None:
+            raise ForbiddenException("Solo un administrador autorizado puede cambiar el sexo")
+        if user.role == Role.ADMIN and any(
+            key in update_data and update_data[key] != getattr(user.profile, key)
+            for key in ("program", "campus")
+        ):
+            raise ForbiddenException("No puedes modificar tu propio alcance administrativo")
         if user.role == Role.STUDENT:
             update_data.pop("job_title", None)
             update_data.pop("birth_date", None)

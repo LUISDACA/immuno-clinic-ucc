@@ -1,0 +1,76 @@
+{
+  "institutional_data": false,
+  "production_ready": false,
+  "actual_backend": true,
+  "measurements": [
+    {
+      "case": "confirmed_post_failed_get",
+      "theme": "light",
+      "status": 403,
+      "writes": 1,
+      "retry_get_only": true,
+      "page": 2,
+      "page_size": 20,
+      "actual_upload_verified": true,
+      "admin_status": 403
+    },
+    {
+      "case": "confirmed_post_failed_get",
+      "theme": "light",
+      "status": 503,
+      "writes": 1,
+      "retry_get_only": true,
+      "page": 2,
+      "page_size": 20,
+      "actual_upload_verified": true,
+      "admin_status": 403
+    },
+    {
+      "case": "unconfirmed_post_failed_get",
+      "theme": "light",
+      "controlled_post_status": 503,
+      "controlled_get_status": 403,
+      "draft_preserved": true,
+      "retry_get_only": true,
+      "explicit_upload_real": true,
+      "writes": 2
+    },
+    {
+      "case": "confirmed_post_failed_get",
+      "theme": "dark",
+      "status": 403,
+      "writes": 1,
+      "retry_get_only": true,
+      "page": 2,
+      "page_size": 20,
+      "actual_upload_verified": true,
+      "admin_status": 403
+    },
+    {
+      "case": "confirmed_post_failed_get",
+      "theme": "dark",
+      "status": 503,
+      "writes": 1,
+      "retry_get_only": true,
+      "page": 2,
+      "page_size": 20,
+      "actual_upload_verified": true,
+      "admin_status": 403
+    },
+    {
+      "case": "unconfirmed_post_failed_get",
+      "theme": "dark",
+      "controlled_post_status": 503,
+      "controlled_get_status": 403,
+      "draft_preserved": true,
+      "retry_get_only": true,
+      "explicit_upload_real": true,
+      "writes": 2
+    },
+    {
+      "case": "expiration",
+      "controlled_get_status": 401,
+      "protected_content_removed": true
+    }
+  ]
+}

@@ -66,25 +66,5 @@ class UserRepository:
         )
         return list(result.unique().scalars().all())
 
-    async def find_admin_by_scope(
-        self,
-        program: str | None,
-        campus: str | None,
-    ) -> User | None:
-        result = await self.db.execute(
-            select(User)
-            .join(Profile)
-            .options(joinedload(User.profile))
-            .where(
-                User.role == Role.ADMIN,
-                User.is_active.is_(True),
-                Profile.program == program,
-                Profile.campus == campus,
-            )
-            .order_by(User.created_at.asc())
-            .limit(1)
-        )
-        return result.scalar_one_or_none()
-
     async def commit(self) -> None:
         await self.db.commit()

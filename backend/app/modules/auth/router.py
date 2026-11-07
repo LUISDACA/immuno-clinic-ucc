@@ -2,7 +2,7 @@
 
 from app.core.config import settings
 from app.core.dependencies import get_current_active_user
-from app.core.rate_limit import limiter
+from app.core.rate_limit import RateLimitedRoute, limiter
 from app.db.session import get_db
 from app.modules.auth.repository import AuthRepository
 from app.modules.auth.schemas import (
@@ -21,7 +21,7 @@ from app.modules.users.models import User
 from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(route_class=RateLimitedRoute, prefix="/auth", tags=["Authentication"])
 
 
 def _get_auth_service(db: AsyncSession = Depends(get_db)) -> AuthService:

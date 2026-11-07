@@ -5,5 +5,5 @@ export default function HistoryLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <RoleGuard allow="plain_admin">{children}</RoleGuard>;
+  return <RoleGuard allow="admin">{children}</RoleGuard>;
 }

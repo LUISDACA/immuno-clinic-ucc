@@ -1,0 +1,102 @@
+{
+  "scope": "B5-C03 communications layering only",
+  "institutional_data": false,
+  "production_ready": false,
+  "runtime_backend_or_flutter_changes": false,
+  "renderer": "Chrome155,Next16.3.6 production webpack",
+  "source": "actual synthetic PostgreSQL participants and production UI; no controlled API read responses",
+  "reference_flutter": "Scaffold/Column/_Composer and existing widget tests; no new paired golden",
+  "before": {
+    "state": "FAILED",
+    "sampled_pixels": 57,
+    "mismatched_pixels": 4
+  },
+  "after": {
+    "scenes": 48,
+    "sampled_pixels": 2736,
+    "mismatched_pixels": 0,
+    "roles": [
+      "admin",
+      "student",
+      "app_admin"
+    ],
+    "screens": [
+      "detail",
+      "list"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "widths": [
+      390,
+      320,
+      768,
+      1440
+    ],
+    "screenshots_width": 390,
+    "complete_visual_parity": false
+  },
+  "references": [
+    {
+      "file": "after-admin-detail-dark-390.png",
+      "sha256": "26f5a2cb9eff6ebc90d288d597c4ee77524af3f7c27a00651ea9b7515207300e"
+    },
+    {
+      "file": "after-admin-detail-light-390.png",
+      "sha256": "9a67da79154eadcdd392380cbca322ca1bb0a56cc000d7660d07604b2d256134"
+    },
+    {
+      "file": "after-admin-list-dark-390.png",
+      "sha256": "1b98fff5daed3c14ad808bbff6b527e303052e5f2848d8f74f192e18653dc26e"
+    },
+    {
+      "file": "after-admin-list-light-390.png",
+      "sha256": "869ab540832996d41109fdef48297c42f5ced4ed21c5966dd286d75988d1c6e5"
+    },
+    {
+      "file": "after-app_admin-detail-dark-390.png",
+      "sha256": "2d39022d511a0408a420c9ee70c39803d94a7dd2dc80090dedd2798ebc9987f2"
+    },
+    {
+      "file": "after-app_admin-detail-light-390.png",
+      "sha256": "b05fe65c2845ea9ee6af6ae9a642253fbb9eaccb5ce35a2ca8b35f677848ceec"
+    },
+    {
+      "file": "after-app_admin-list-dark-390.png",
+      "sha256": "49ebe01fb27a457d9a276a9926b71fb5e1a251b2255cf58af2ad9efb91197e5b"
+    },
+    {
+      "file": "after-app_admin-list-light-390.png",
+      "sha256": "7d283d74df1384d9c0cac67436f67ced0df247c08313187a1bb63b80beb9bfed"
+    },
+    {
+      "file": "after-measurements.json",
+      "sha256": "c12a8e4f997d2d3844d3333e3cc1c592337d4660edd436086b25e7e6cd5a4ebf"
+    },
+    {
+      "file": "after-student-detail-dark-390.png",
+      "sha256": "770ad530c64229673cd3ba319ac0c92840efd5b72b4feb59bf1438fd3fc1c582"
+    },
+    {
+      "file": "after-student-detail-light-390.png",
+      "sha256": "584c222fd9b859f19bddce1e8aa7509ee18e68197ed2bb0500a18ad44dc88a28"
+    },
+    {
+      "file": "after-student-list-dark-390.png",
+      "sha256": "4aefffa097e1c33d7918535676288af1260edfaf48a7f8a98f7e5d26637257be"
+    },
+    {
+      "file": "after-student-list-light-390.png",
+      "sha256": "7eaedc4c9c4a782bc7a18f7715bf929403ff7786666d20f48d58a9b731c2d72e"
+    },
+    {
+      "file": "before-admin-detail-light-390.png",
+      "sha256": "6760cb37268c5a12aef22eb9a03fd8d85025dedad2fe9003b8da009c9953d9c5"
+    },
+    {
+      "file": "before-measurements.json",
+      "sha256": "fdbe80945b72e4ca665013932141df072f3c244ca4e527a4d3088bedf3178f45"
+    }
+  ]
+}

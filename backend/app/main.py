@@ -9,16 +9,20 @@ from contextlib import asynccontextmanager, suppress
 from urllib.parse import quote
 
 from fastapi import Depends, FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.openapi.utils import get_openapi
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from slowapi.errors import RateLimitExceeded
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.common.api_contracts import ApiErrorResponse
 from app.core.config import settings
 from app.core.logging_config import configure_logging
-from app.core.rate_limit import limiter
+from app.core.rate_limit import cleanup_expired_buckets_loop, limiter
 from app.core.request_context import request_id_var
 from app.db.seed import seed_admin_user, seed_vaccines
 from app.db.session import AsyncSessionLocal, get_db
@@ -28,7 +32,9 @@ from app.modules.auth.repository import AuthRepository
 
 # Import all routers
 from app.modules.auth.router import router as auth_router
+from app.modules.auth.router_v2 import router as auth_router_v2
 from app.modules.certificates.router import router as certificates_router
+from app.modules.certificates.router import verification_router as certificate_verification_router
 from app.modules.communications.router import router as communications_router
 from app.modules.evidence.router import router as evidence_router
 from app.modules.notifications.router import router as notifications_router
@@ -38,6 +44,53 @@ from app.modules.vaccination_scheme.router import router as scheme_router
 
 configure_logging(level=settings.LOG_LEVEL)
 logger = logging.getLogger(__name__)
+
+_ERROR_CODES = {
+    400: "BAD_REQUEST",
+    401: "UNAUTHENTICATED",
+    403: "FORBIDDEN",
+    404: "NOT_FOUND",
+    409: "CONFLICT",
+    422: "INVALID_REQUEST",
+    429: "RATE_LIMITED",
+    500: "INTERNAL_ERROR",
+    503: "SERVICE_UNAVAILABLE",
+}
+_SAFE_ERROR_MESSAGES = {
+    400: "La solicitud no se pudo procesar.",
+    401: "La autenticación no es válida.",
+    403: "No tienes permiso para realizar esta acción.",
+    404: "No se encontró el recurso solicitado.",
+    409: "La operación entra en conflicto con el estado actual.",
+    422: "La solicitud no es válida.",
+    429: "Demasiadas solicitudes. Intenta de nuevo más tarde.",
+    500: "Ocurrió un error interno.",
+    503: "El servicio no está disponible temporalmente.",
+}
+
+
+def _api_error(
+    status_code: int,
+    detail=None,
+    *,
+    code: str | None = None,
+    details=None,
+) -> dict:
+    """Build the canonical safe fields and retain the legacy ``detail`` field."""
+    safe_code = code or _ERROR_CODES.get(
+        status_code,
+        "INTERNAL_ERROR" if status_code >= 500 else "REQUEST_FAILED",
+    )
+    safe_message = _SAFE_ERROR_MESSAGES.get(
+        status_code,
+        _SAFE_ERROR_MESSAGES[500] if status_code >= 500 else "No se pudo procesar la solicitud.",
+    )
+    return {
+        "code": safe_code,
+        "message": safe_message,
+        "details": details,
+        "detail": detail if detail is not None else safe_message,
+    }
 
 
 @asynccontextmanager
@@ -51,6 +104,7 @@ async def lifespan(app: FastAPI):
         if deleted:
             logger.info("Purged %d expired/revoked refresh tokens", deleted)
     reminder_task = None
+    cleanup_task = asyncio.create_task(cleanup_expired_buckets_loop())
     if settings.VACCINE_REMINDER_ENABLED:
         reminder_task = asyncio.create_task(run_vaccine_due_reminder_loop())
     yield
@@ -58,6 +112,9 @@ async def lifespan(app: FastAPI):
         reminder_task.cancel()
         with suppress(asyncio.CancelledError):
             await reminder_task
+    cleanup_task.cancel()
+    with suppress(asyncio.CancelledError):
+        await cleanup_task
 
 
 app = FastAPI(
@@ -78,18 +135,82 @@ app.state.limiter = limiter
 async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
     return JSONResponse(
         status_code=429,
-        content={"detail": "Demasiados intentos. Intenta de nuevo más tarde."},
+        content=_api_error(429),
     )
+
+
+@app.exception_handler(StarletteHTTPException)
+async def http_error(request: Request, exc: StarletteHTTPException):
+    content = _api_error(
+        exc.status_code,
+        exc.detail,
+        code=getattr(exc, "code", None),
+    )
+    if getattr(exc, "safe_message", None):
+        content["message"] = exc.safe_message
+    if request.url.path.startswith("/api/v2/auth"):
+        codes = {
+            401: "SESSION_INVALID",
+            410: "AUTH_VERSION_RETIRED",
+            429: "RATE_LIMITED",
+            503: "AUTH_UNAVAILABLE",
+        }
+        if exc.status_code in codes:
+            content["code"] = codes[exc.status_code]
+    return JSONResponse(status_code=exc.status_code, content=content, headers=exc.headers)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error(request: Request, exc: RequestValidationError):
+    if "/auth/" in request.url.path:
+        auth_code = "INVALID_REQUEST"
+        return JSONResponse(
+            status_code=422,
+            content=_api_error(422, "Solicitud inválida", code=auth_code),
+        )
+    # Pydantic errors can carry rejected clinical input; return only locations/types/messages.
+    safe_errors = [
+        {key: error[key] for key in ("loc", "type") if key in error} for error in exc.errors()
+    ]
+    legacy_errors = [
+        {key: error[key] for key in ("loc", "msg", "type") if key in error}
+        for error in exc.errors()
+    ]
+    return JSONResponse(
+        status_code=422,
+        content=_api_error(422, legacy_errors, details={"field_errors": safe_errors}),
+    )
+
+
+@app.exception_handler(Exception)
+async def unhandled_error(request: Request, exc: Exception):
+    # Do not reflect exception text: it may contain request or database values.
+    route = request.scope.get("route")
+    logger.error(
+        "Unhandled request error",
+        extra={"path": getattr(route, "path", "<unmatched>")},
+    )
+    return JSONResponse(status_code=500, content=_api_error(500))
 
 
 # ── Security headers middleware ───────────────────────────────────────
 @app.middleware("http")
 async def security_headers_middleware(request: Request, call_next):
     response = await call_next(request)
+    if "/auth/" in request.url.path:
+        response.headers["Cache-Control"] = "no-store"
+        response.headers["Pragma"] = "no-cache"
+    if request.url.path.startswith("/verify/"):
+        response.headers["Cache-Control"] = "no-store, max-age=0"
+        response.headers["Pragma"] = "no-cache"
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-XSS-Protection"] = "0"
-    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Referrer-Policy"] = (
+        "no-referrer"
+        if request.url.path.startswith("/verify/")
+        else "strict-origin-when-cross-origin"
+    )
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; script-src 'self' 'unsafe-inline'; "
         "style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
@@ -113,28 +234,30 @@ async def request_middleware(request: Request, call_next):
     elapsed_ms = (time.perf_counter() - start) * 1000
 
     response.headers["X-Request-ID"] = rid
+    route = request.scope.get("route")
+    log_path = getattr(route, "path", "<unmatched>")
 
-    if request.url.path not in _SILENT_PATHS:
+    if log_path not in _SILENT_PATHS:
         status = response.status_code
         extra = {
             "method": request.method,
-            "path": request.url.path,
+            "path": log_path,
             "status": status,
             "duration_ms": round(elapsed_ms),
         }
         if status >= 500:
-            logger.error("%s %s → %s", request.method, request.url.path, status, extra=extra)
+            logger.error("%s %s → %s", request.method, log_path, status, extra=extra)
         elif elapsed_ms > 1000:
             logger.warning(
                 "SLOW %s %s → %s (%.0fms)",
                 request.method,
-                request.url.path,
+                log_path,
                 status,
                 elapsed_ms,
                 extra=extra,
             )
         else:
-            logger.info("%s %s → %s", request.method, request.url.path, status, extra=extra)
+            logger.info("%s %s → %s", request.method, log_path, status, extra=extra)
 
     return response
 
@@ -161,14 +284,50 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 API_V1 = "/api/v1"
 
 app.include_router(auth_router, prefix=API_V1)
+app.include_router(auth_router_v2, prefix="/api/v2")
 app.include_router(users_router, prefix=API_V1)
 app.include_router(scheme_router, prefix=API_V1)
 app.include_router(evidence_router, prefix=API_V1)
 app.include_router(notifications_router, prefix=API_V1)
 app.include_router(admin_router, prefix=API_V1)
 app.include_router(certificates_router, prefix=API_V1)
+app.include_router(certificate_verification_router)
 app.include_router(audit_router, prefix=API_V1)
 app.include_router(communications_router, prefix=API_V1)
+
+
+def _custom_openapi() -> dict:
+    """Publish the shared error envelope in the authoritative OpenAPI document."""
+    if app.openapi_schema:
+        return app.openapi_schema
+    schema = get_openapi(
+        title=app.title,
+        version=app.version,
+        description=app.description,
+        routes=app.routes,
+    )
+    schema.setdefault("components", {}).setdefault("schemas", {})["ApiErrorResponse"] = (
+        ApiErrorResponse.model_json_schema()
+    )
+    error_codes = (400, 401, 403, 404, 409, 422, 429, 500, 503)
+    for path_item in schema.get("paths", {}).values():
+        for operation in path_item.values():
+            if not isinstance(operation, dict) or "responses" not in operation:
+                continue
+            for status_code in error_codes:
+                response = operation["responses"].setdefault(
+                    str(status_code), {"description": "Error response"}
+                )
+                response["content"] = {
+                    "application/json": {
+                        "schema": {"$ref": "#/components/schemas/ApiErrorResponse"}
+                    }
+                }
+    app.openapi_schema = schema
+    return app.openapi_schema
+
+
+app.openapi = _custom_openapi
 
 
 @app.get("/", tags=["Health"])

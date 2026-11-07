@@ -28,6 +28,9 @@ class User(Base, UUIDMixin, TimestampMixin):
     role: Mapped[Role] = mapped_column(Enum(Role, name="role_enum"), nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     must_change_password: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    auth_version: Mapped[int] = mapped_column(
+        Integer, default=0, server_default="0", nullable=False
+    )
 
     # ── Relationships ─────────────────────────────────────────────────
     profile: Mapped["Profile"] = relationship(
@@ -40,10 +43,12 @@ class User(Base, UUIDMixin, TimestampMixin):
         back_populates="user",
         cascade="all, delete-orphan",
         foreign_keys="StudentVaccine.user_id",
+        primaryjoin="and_(User.id == StudentVaccine.user_id, StudentVaccine.is_active == True)",
         lazy="noload",
     )
     evidence_batches: Mapped[list["EvidenceBatch"]] = relationship(
         back_populates="user",
+        foreign_keys="EvidenceBatch.user_id",
         cascade="all, delete-orphan",
         lazy="noload",
     )

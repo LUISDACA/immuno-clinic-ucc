@@ -13,6 +13,7 @@ from app.modules.communications.schemas import (
     ConversationUserResponse,
     CreateMessageRequest,
     CreateThreadRequest,
+    RecipientSearchRequest,
     UpdateThreadStatusRequest,
 )
 from app.modules.communications.service import CommunicationService
@@ -109,6 +110,17 @@ async def search_recipients(
     service: CommunicationService = Depends(_get_service),
 ):
     users = await service.search_recipients(current_user, target, search)
+    return [_user_response(user) for user in users]
+
+
+@router.post("/recipients/search", response_model=list[ConversationUserResponse])
+async def search_recipients_body(
+    data: RecipientSearchRequest,
+    current_user: User = Depends(get_current_active_user),
+    service: CommunicationService = Depends(_get_service),
+):
+    """Body-based search avoids putting names or emails in request URLs."""
+    users = await service.search_recipients(current_user, data.target, data.search)
     return [_user_response(user) for user in users]
 
 

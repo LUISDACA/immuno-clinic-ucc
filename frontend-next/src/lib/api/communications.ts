@@ -60,9 +60,9 @@ export async function searchRecipients(
   target: "admins" | "students",
   search: string,
 ): Promise<ConversationUser[]> {
-  const { data } = await apiClient.get<ConversationUser[]>(
-    "/communications/recipients",
-    { params: { target, search } },
+  const { data } = await apiClient.post<ConversationUser[]>(
+    "/communications/recipients/search",
+    { target, search },
   );
   return data;
 }

@@ -1,0 +1,16 @@
+{
+  "scope": "dashboard semester navigation only",
+  "institutional_data": false,
+  "clinical_auth_or_backend_changes": false,
+  "production_ready": false,
+  "renderer": "Chrome155.0.8059.39,Next16.3.6 production webpack",
+  "source": "synthetic PostgreSQL and controlled old-semester response",
+  "references": [
+    {
+      "file": "results.json",
+      "sha256": "ad505aac73184d3864cbbec92a8eef84755a7716cbdda8014228bb049680940a"
+    }
+  ],
+  "screenshots_added": 0,
+  "flutter_new_golden_references": 0
+}

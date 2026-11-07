@@ -1,0 +1,31 @@
+{
+  "stage": "before-source-change-not-parity-validation",
+  "measurements": [
+    {
+      "screen": "admin-detail",
+      "preference": "light",
+      "os": "dark",
+      "card": {
+        "background": "rgb(14, 32, 35)",
+        "foreground": "rgb(234, 247, 247)"
+      },
+      "shell": {
+        "foreground": "rgb(23, 38, 41)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "screen": "admin-detail",
+      "preference": "dark",
+      "os": "light",
+      "card": {
+        "background": "rgb(14, 32, 35)",
+        "foreground": "rgb(234, 247, 247)"
+      },
+      "shell": {
+        "foreground": "rgb(234, 247, 247)",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    }
+  ]
+}

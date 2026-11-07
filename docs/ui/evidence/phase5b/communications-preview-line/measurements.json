@@ -1,0 +1,37 @@
+{
+  "synthetic_data_only": true,
+  "production_ready": false,
+  "flutter_reference_max_lines": 1,
+  "measurements": [
+    {
+      "scenario": "mobile-320-css-px",
+      "viewport": 320,
+      "documentWidth": 320,
+      "height": 20,
+      "lineHeight": 20,
+      "webkitLineClamp": "1",
+      "clientWidth": 198,
+      "scrollWidth": 198
+    },
+    {
+      "scenario": "mobile-wide-640-css-px",
+      "viewport": 640,
+      "documentWidth": 640,
+      "height": 20,
+      "lineHeight": 20,
+      "webkitLineClamp": "1",
+      "clientWidth": 518,
+      "scrollWidth": 518
+    },
+    {
+      "scenario": "200-percent-reflow-equivalent-720-css-px",
+      "viewport": 720,
+      "documentWidth": 720,
+      "height": 20,
+      "lineHeight": 20,
+      "webkitLineClamp": "1",
+      "clientWidth": 598,
+      "scrollWidth": 598
+    }
+  ]
+}
